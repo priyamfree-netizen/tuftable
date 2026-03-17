@@ -14,7 +14,13 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->enum('order_type', ['dine_in', 'delivery', 'pickup'])->default('dine_in');
-            $table->enum('status', ['draft', 'kot', 'billed', 'paid', 'canceled', 'payment_due', 'ready', 'out_for_delivery', 'delivered'])->default('kot')->change();
+            // ENUM change() drops are problematic in PGSQL, using DB::statement workaround
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['draft', 'kot', 'billed', 'paid', 'canceled', 'payment_due', 'ready', 'out_for_delivery', 'delivered'])->default('kot')->change();
+            } else {
+                \DB::statement("ALTER TABLE orders DROP CONSTRAINT IF EXISTS orders_status_check");
+                $table->string('status')->default('kot')->change();
+            }
             $table->foreignId('delivery_executive_id')->nullable()->constrained('delivery_executives')->onDelete('set null');
             $table->text('delivery_address')->nullable();
             $table->datetime('delivery_time')->nullable();
@@ -38,7 +44,12 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['delivery_executive_id']);
             $table->dropColumn(['order_type', 'delivery_address', 'delivery_time', 'estimated_delivery_time', 'delivery_executive_id']);
-            $table->enum('status', ['draft', 'kot', 'billed', 'paid', 'canceled', 'payment_due'])->default('kot')->change();
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['draft', 'kot', 'billed', 'paid', 'canceled', 'payment_due'])->default('kot')->change();
+            } else {
+                 \DB::statement("ALTER TABLE orders DROP CONSTRAINT IF EXISTS orders_status_check");
+                 $table->string('status')->default('kot')->change();
+            }
         });
     }
 
