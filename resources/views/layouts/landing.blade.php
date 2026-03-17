@@ -55,7 +55,7 @@
                             alt="App Logo" />
                         @if (global_setting()->show_logo_text)
                             <span
-                                class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{{ global_setting()->name }}</span>
+                                class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white">Table</span></span>
                         @endif
                     </a>
                     <div class="flex items-center">
@@ -141,7 +141,7 @@
                             alt="App Logo" />
                         @if (global_setting()->show_logo_text)
                             <span
-                                class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{{ global_setting()->name }}</span>
+                                class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white">Table</span></span>
                         @endif
                     </a>
                     <div class="flex items-center lg:order-2">

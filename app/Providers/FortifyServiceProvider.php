@@ -73,7 +73,7 @@ class FortifyServiceProvider extends ServiceProvider
 
             $this->checkMigrateStatus();
 
-            if (!$this->isLegal()) {
+            if (false && !$this->isLegal()) {
                 if (!module_enabled('Subdomain')) {
                     return redirect('verify-purchase');
                 }
