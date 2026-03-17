@@ -95,11 +95,10 @@ return new class extends Migration
             // Index might not exist, continue
         }
         
-        // Change column to JSON
-        Schema::table('branch_operational_shifts', function (Blueprint $table) {
-            $table->json('day_of_week')->change();
-        
-		});
+        // Change column to JSON using USING cast for PostgreSQL
+        // Must drop default first, then alter type, then set new default
+        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week DROP DEFAULT");
+        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week TYPE json USING day_of_week::json");
     }
 
     /**
@@ -107,25 +106,22 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Convert JSON back to single string (take first day or 'All')
+        // Convert JSON back to single string (take first day or 'All') - PostgreSQL syntax
         DB::statement("
             UPDATE branch_operational_shifts 
             SET day_of_week = CASE 
-                WHEN JSON_CONTAINS(day_of_week, '\"All\"') THEN 'All'
-                ELSE JSON_UNQUOTE(JSON_EXTRACT(day_of_week, '$[0]'))
+                WHEN day_of_week::jsonb @> '\"All\"'::jsonb THEN 'All'
+                ELSE day_of_week::jsonb->0 #>> '{}'
             END
         ");
         
-        // Change back to VARCHAR
-        Schema::table('branch_operational_shifts', function (Blueprint $table) {
-            $table->string('day_of_week', 20)->default('All')->change();
-        
-		});
+        // Change back to VARCHAR using USING cast
+        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week TYPE varchar(20) USING day_of_week::text");
+        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week SET DEFAULT 'All'");
         
         // Re-add the composite index
         Schema::table('branch_operational_shifts', function (Blueprint $table) {
             $table->index(['branch_id', 'day_of_week']);
-        
-		});
+        });
     }
 };

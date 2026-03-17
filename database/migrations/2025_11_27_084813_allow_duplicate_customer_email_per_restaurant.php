@@ -59,21 +59,11 @@ return new class extends Migration
         }
     }
 
-    /**
-     * Check if an index exists on a table.
-     */
     private function indexExists(string $table, string $index): bool
     {
-        $connection = Schema::getConnection();
-        $database = $connection->getDatabaseName();
-
-        $result = $connection->selectOne(
-            "SELECT COUNT(*) as count
-             FROM information_schema.statistics
-             WHERE table_schema = ?
-             AND table_name = ?
-             AND index_name = ?",
-            [$database, $table, $index]
+        $result = \Illuminate\Support\Facades\DB::selectOne(
+            "SELECT COUNT(*) as count FROM pg_indexes WHERE tablename = ? AND indexname = ?",
+            [$table, $index]
         );
 
         return $result->count > 0;

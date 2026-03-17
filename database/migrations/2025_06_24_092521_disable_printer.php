@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Use mass update instead of individual saves for better performance
-        Printer::where('restaurant_id', '>', 0)
-            ->update(['printing_choice' => 'browserPopupPrint']);
+        // Only update if the column exists (may not exist in fresh installs)
+        if (Schema::hasColumn('printers', 'restaurant_id') && Schema::hasColumn('printers', 'printing_choice')) {
+            Printer::where('restaurant_id', '>', 0)
+                ->update(['printing_choice' => 'browserPopupPrint']);
+        }
     }
 
     /**
@@ -23,8 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Revert to direct print if needed
-        Printer::where('restaurant_id', '>', 0)
-            ->update(['printing_choice' => 'directPrint']);
+        if (Schema::hasColumn('printers', 'restaurant_id') && Schema::hasColumn('printers', 'printing_choice')) {
+            Printer::where('restaurant_id', '>', 0)
+                ->update(['printing_choice' => 'directPrint']);
+        }
     }
 };

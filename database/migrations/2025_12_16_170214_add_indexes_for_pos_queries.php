@@ -230,23 +230,18 @@ return new class extends Migration
     }
 
     /**
-     * Check if an index exists on a table
+     * Check if an index exists on a table (PostgreSQL compatible)
      */
     private function hasIndex(string $table, string $index): bool
     {
         try {
-            $connection = Schema::getConnection();
-            $database = $connection->getDatabaseName();
-            
-            $result = $connection->select(
-                "SELECT COUNT(*) as count FROM information_schema.statistics 
-                 WHERE table_schema = ? AND table_name = ? AND index_name = ?",
-                [$database, $table, $index]
+            $result = \Illuminate\Support\Facades\DB::select(
+                "SELECT COUNT(*) as count FROM pg_indexes WHERE tablename = ? AND indexname = ?",
+                [$table, $index]
             );
-            
+
             return isset($result[0]) && $result[0]->count > 0;
         } catch (\Exception $e) {
-            // If we can't check, assume it doesn't exist and let the database handle duplicate errors
             return false;
         }
     }
