@@ -18,7 +18,12 @@ return new class extends Migration
         }
 
         Schema::table('reservations', function (Blueprint $table) {
-            $table->enum('reservation_status', ['Pending', 'Confirmed', 'Checked_In', 'Cancelled', 'No_Show'])->default('Confirmed')->change();
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('reservation_status', ['Pending', 'Confirmed', 'Checked_In', 'Cancelled', 'No_Show'])->default('Confirmed')->change();
+            } else {
+                \DB::statement("ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_reservation_status_check");
+                $table->string('reservation_status')->default('Confirmed')->change();
+            }
         });
     }
 
@@ -32,7 +37,12 @@ return new class extends Migration
         });
 
         Schema::table('reservations', function (Blueprint $table) {
-            $table->enum('reservation_status', ['Confirmed', 'Checked_In', 'Cancelled', 'No_Show'])->default('Confirmed')->change();
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('reservation_status', ['Confirmed', 'Checked_In', 'Cancelled', 'No_Show'])->default('Confirmed')->change();
+            } else {
+                \DB::statement("ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_reservation_status_check");
+                $table->string('reservation_status')->default('Confirmed')->change();
+            }
         });
     }
 };
