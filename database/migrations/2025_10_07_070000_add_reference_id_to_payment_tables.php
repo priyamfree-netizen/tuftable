@@ -15,14 +15,16 @@ return new class extends Migration
         if (!Schema::hasColumn('restaurant_payments', 'reference_id')) {
             Schema::table('restaurant_payments', function (Blueprint $table) {
                 $table->string('reference_id')->nullable()->after('transaction_id');
-            });
+            
+		});
         }
 
         // Add reference_id to global_invoices table
         if (!Schema::hasColumn('global_invoices', 'reference_id')) {
             Schema::table('global_invoices', function (Blueprint $table) {
                 $table->string('reference_id')->nullable()->after('transaction_id');
-            });
+            
+		});
         }
     }
 
@@ -35,13 +37,15 @@ return new class extends Migration
             if (Schema::hasColumn('restaurant_payments', 'reference_id')) {
                 $table->dropColumn('reference_id');
             }
-        });
+        
+		});
 
         Schema::table('global_invoices', function (Blueprint $table) {
             if (Schema::hasColumn('global_invoices', 'reference_id')) {
                 $table->dropColumn('reference_id');
             }
-        });
+        
+		});
     }
 };
 

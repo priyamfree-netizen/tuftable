@@ -15,7 +15,8 @@ return new class extends Migration
             $table->boolean('auto_confirm_orders_before_payment')->default(false)->after('auto_confirm_orders');
 
             $table->boolean('auto_confirm_orders_after_payment')->default(false)->after('auto_confirm_orders_before_payment');
-        });
+        
+		});
     }
 
     /**
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('auto_confirm_orders_before_payment');
             $table->dropColumn('auto_confirm_orders_after_payment');
-        });
+        
+		});
     }
 };

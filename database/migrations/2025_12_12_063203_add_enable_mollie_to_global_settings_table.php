@@ -15,7 +15,8 @@ return new class extends Migration
             if (!Schema::hasColumn('global_settings', 'enable_mollie')) {
                 $table->boolean('enable_mollie')->default(true);
             }
-        });
+        
+		});
     }
 
     /**
@@ -27,6 +28,7 @@ return new class extends Migration
             if (Schema::hasColumn('global_settings', 'enable_mollie')) {
                 $table->dropColumn('enable_mollie');
             }
-        });
+        
+		});
     }
 };

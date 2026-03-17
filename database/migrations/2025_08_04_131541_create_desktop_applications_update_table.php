@@ -21,7 +21,8 @@ return new class extends Migration
         if (!Schema::hasColumn('desktop_applications', 'mac_file_path')) {
             Schema::table('desktop_applications', function (Blueprint $table) {
                 $table->string('mac_file_path')->nullable()->after('windows_file_path');
-            });
+            
+		});
         }
 
         // Update or create the desktop application

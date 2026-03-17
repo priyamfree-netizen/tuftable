@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('item_modifiers', function (Blueprint $table) {
             $table->unsignedBigInteger('menu_item_variation_id')->nullable()->after('menu_item_id');
             $table->foreign('menu_item_variation_id')->references('id')->on('menu_item_variations')->onDelete('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('item_modifiers', function (Blueprint $table) {
             $table->dropForeign(['menu_item_variation_id']);
             $table->dropColumn('menu_item_variation_id');
-        });
+        
+		});
     }
 };

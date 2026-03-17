@@ -17,19 +17,23 @@ return new class extends Migration
         if (!Schema::hasColumn('branches', 'unique_hash')) {
             Schema::table('branches', function (Blueprint $table) {
                 $table->string('unique_hash', 64)->unique()->nullable()->after('id');
-            });
+            
+		});
 
             if (!Schema::hasIndex('orders', 'idx_branch_date')) {
                 // Add indexes to frequently queried columns
                 Schema::table('orders', function (Blueprint $table) {
                     $table->index(['branch_id', 'date_time'], 'idx_branch_date');
-                });
+                
+		});
                 Schema::table('menu_items', function (Blueprint $table) {
                     $table->index(['branch_id', 'is_available'], 'idx_branch_available');
-                });
+                
+		});
                 Schema::table('users', function (Blueprint $table) {
                     $table->index(['branch_id', 'email'], 'idx_branch_email');
-                });
+                
+		});
             }
         }
 
@@ -46,7 +50,8 @@ return new class extends Migration
     {
         Schema::table('branches', function (Blueprint $table) {
             $table->dropColumn('unique_hash');
-        });
+        
+		});
     }
 
     /**

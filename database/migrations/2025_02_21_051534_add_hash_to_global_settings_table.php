@@ -42,11 +42,13 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('hash');
-        });
+        
+		});
 
         Schema::table('global_subscriptions', function (Blueprint $table) {
             $table->dropColumn('subscription_id');
             $table->dropColumn('customer_id');
-        });
+        
+		});
     }
 };

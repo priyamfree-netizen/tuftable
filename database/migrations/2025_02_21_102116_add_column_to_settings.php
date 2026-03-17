@@ -14,12 +14,14 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->string('webmanifest')->nullable();
-        });
+        
+		});
 
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('webmanifest')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -29,10 +31,12 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('webmanifest');
-        });
+        
+		});
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('webmanifest');
-        });
+        
+		});
     }
 
 };

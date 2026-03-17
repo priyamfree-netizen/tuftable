@@ -15,7 +15,8 @@ return new class extends Migration
             $table->string('wifi_name')->nullable()->after('yelp_link');
             $table->string('wifi_password')->nullable()->after('wifi_name');
             $table->boolean('show_wifi_icon')->default(false)->after('wifi_password');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['wifi_name', 'wifi_password', 'show_wifi_icon']);
-        });
+        
+		});
     }
 };

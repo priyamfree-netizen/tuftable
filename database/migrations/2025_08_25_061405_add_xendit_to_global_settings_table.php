@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->boolean('enable_xendit')->default(true);
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('enable_xendit');
-        });
+        
+		});
     }
 };

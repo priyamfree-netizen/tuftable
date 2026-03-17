@@ -16,7 +16,8 @@ return new class extends Migration
             $table->text('cancel_reason_text')->nullable()->after('cancel_reason_id');
 
              $table->foreign('cancel_reason_id')->references('id')->on('kot_cancel_reasons')->onDelete('cascade')->onUpdate('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->dropForeign(['cancel_reason_id']);
             $table->dropColumn('cancel_reason_id');
             $table->dropColumn('cancel_reason_text');
-        });
+        
+		});
     }
 };

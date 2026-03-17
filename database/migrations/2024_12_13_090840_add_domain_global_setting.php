@@ -15,7 +15,8 @@ return new class extends Migration
         if(!Schema::hasColumn('global_settings', 'installed_url')){
             Schema::table('global_settings', function (Blueprint $table) {
                 $table->tinyText('installed_url')->nullable();
-            });
+            
+		});
         }
 
         $setting = GlobalSetting::first();
@@ -34,6 +35,7 @@ return new class extends Migration
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn(['installed_url']);
 
-        });
+        
+		});
     }
 };

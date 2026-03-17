@@ -20,7 +20,8 @@ return new class extends Migration
                   ->references('id')
                   ->on('orders')
                   ->onDelete('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->foreign('order_id')
                   ->references('id')
                   ->on('orders');
-        });
+        
+		});
     }
 };

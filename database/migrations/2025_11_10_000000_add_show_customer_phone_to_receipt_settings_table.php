@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->boolean('show_customer_phone')->default(false)->after('show_customer_address');
-        });
+        
+		});
     }
 
     /**
@@ -23,7 +24,8 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->dropColumn('show_customer_phone');
-        });
+        
+		});
     }
 };
 

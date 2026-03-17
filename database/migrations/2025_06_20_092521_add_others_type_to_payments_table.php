@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //   Schema::table('payments', function (Blueprint $table) {
+        // Schema::table('payments', function (Blueprint $table) {
         //     $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'flutterwave', 'razorpay', 'paypal', 'payfast', 'paystack', 'others'])->default('cash')->change();
         // });
     }

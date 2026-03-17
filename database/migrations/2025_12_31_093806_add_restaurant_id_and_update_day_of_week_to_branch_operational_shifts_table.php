@@ -17,7 +17,8 @@ return new class extends Migration
             Schema::table('branch_operational_shifts', function (Blueprint $table) {
                 // Add restaurant_id column as nullable first
                 $table->unsignedBigInteger('restaurant_id')->nullable()->after('branch_id');
-            });
+            
+		});
         }
 
         // FIRST: Update NULL values to a temporary valid enum value (Monday) so we can modify the enum
@@ -27,11 +28,16 @@ return new class extends Migration
 
         // NOW: Update enum to include 'All' and make it NOT NULL
         if (\DB::getDriverName() === 'mysql') {
-            DB::statement("ALTER TABLE branch_operational_shifts MODIFY COLUMN day_of_week ENUM('All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL DEFAULT 'All'");
+            if (\DB::getDriverName() === 'mysql') {
+                DB::statement("ALTER TABLE branch_operational_shifts MODIFY COLUMN day_of_week ENUM('All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL DEFAULT 'All'");
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE branch_operational_shifts DROP CONSTRAINT IF EXISTS branch_operational_shifts_day_of_week_check");
+            }
         } else {
             Schema::table('branch_operational_shifts', function (Blueprint $table) {
                 $table->string('day_of_week', 20)->default('All')->change();
-            });
+            
+		});
         }
 
         // Populate restaurant_id from branch BEFORE adding foreign key
@@ -82,7 +88,8 @@ return new class extends Migration
         if (!$hasConstraint) {
             Schema::table('branch_operational_shifts', function (Blueprint $table) {
                 $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade')->onUpdate('cascade');
-            });
+            
+		});
         }
     }
 
@@ -93,7 +100,11 @@ return new class extends Migration
     {
         Schema::table('branch_operational_shifts', function (Blueprint $table) {
             // Revert day_of_week to nullable enum without 'All'
-            DB::statement("ALTER TABLE branch_operational_shifts MODIFY COLUMN day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NULL");
+            if (\DB::getDriverName() === 'mysql') {
+                DB::statement("ALTER TABLE branch_operational_shifts MODIFY COLUMN day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NULL");
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE branch_operational_shifts DROP CONSTRAINT IF EXISTS branch_operational_shifts_day_of_week_check");
+            }
             
             // Update 'All' values back to NULL
             DB::table('branch_operational_shifts')
@@ -103,6 +114,7 @@ return new class extends Migration
             // Drop restaurant_id foreign key and column
             $table->dropForeign(['restaurant_id']);
             $table->dropColumn('restaurant_id');
-        });
+        
+		});
     }
 };

@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('custom_menus', function (Blueprint $table) {
-            $table->enum('position', ['header', 'footer'])->default('header')->after('is_active');
-            $table->integer('sort_order')->default(0)->after('position');
-        });
+		});
     }
 
     /**
@@ -24,6 +22,7 @@ return new class extends Migration
     {
         Schema::table('custom_menus', function (Blueprint $table) {
             $table->dropColumn(['position', 'sort_order']);
-        });
+        
+		});
     }
 };

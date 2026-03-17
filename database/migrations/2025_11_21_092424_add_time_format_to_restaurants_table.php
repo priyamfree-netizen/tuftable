@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->string('time_format')->default('h:i A')->after('timezone');
-        });
+        
+		});
         // Set default time format for all existing restaurants
         DB::table('restaurants')->update(['time_format' => 'h:i A']);
     }
@@ -26,6 +27,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('time_format');
-        });
+        
+		});
     }
 };

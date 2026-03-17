@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        //  Schema::table('payments', function (Blueprint $table) {
+        // Schema::table('payments', function (Blueprint $table) {
         //     $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'flutterwave', 'razorpay', 'paypal', 'payfast', 'paystack'])->default('cash')->change();
         // });
     }
@@ -36,8 +36,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('paystack_payments');
+        
         Schema::table('payments', function (Blueprint $table) {
-            $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'flutterwave', 'razorpay', 'paypal', 'payfast'])->default('cash')->change();
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'flutterwave', 'razorpay', 'paypal', 'payfast'])->default('cash')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE payments DROP CONSTRAINT IF EXISTS payments_payment_method_check");
+                $table->string('payment_method')->default('cash')->change();
+            }
         });
     }
 };

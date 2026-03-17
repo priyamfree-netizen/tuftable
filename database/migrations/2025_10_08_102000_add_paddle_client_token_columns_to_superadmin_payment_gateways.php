@@ -18,7 +18,8 @@ return new class extends Migration
             if (!Schema::hasColumn('superadmin_payment_gateways', 'live_paddle_client_token')) {
                 $table->text('live_paddle_client_token')->nullable()->after('live_paddle_public_key');
             }
-        });
+        
+		});
     }
 
     /**
@@ -33,6 +34,7 @@ return new class extends Migration
             if (Schema::hasColumn('superadmin_payment_gateways', 'live_paddle_client_token')) {
                 $table->dropColumn('live_paddle_client_token');
             }
-        });
+        
+		});
     }
 };

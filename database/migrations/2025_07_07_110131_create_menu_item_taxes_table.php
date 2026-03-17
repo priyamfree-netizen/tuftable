@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->boolean('tax_inclusive')->default(false);
-        });
+        
+		});
 
         Schema::create('menu_item_tax', function (Blueprint $table) {
             $table->id();
@@ -27,12 +28,14 @@ return new class extends Migration
             $table->decimal('tax_amount', 15, 2)->nullable()->after('amount');
             $table->decimal('tax_percentage', 8, 4)->nullable()->after('tax_amount');
             $table->json('tax_breakup')->nullable()->after('tax_percentage');
-        });
+        
+		});
 
         // Add tax details to orders
         Schema::table('orders', function (Blueprint $table) {
             $table->decimal('total_tax_amount', 16, 2)->nullable()->default(0)->after('tip_amount');
-        });
+        
+		});
 
     }
 
@@ -44,12 +47,15 @@ return new class extends Migration
         Schema::dropIfExists('menu_item_tax');
         Schema::table('order_items', function (Blueprint $table) {
             $table->dropColumn(['tax_amount', 'tax_percentage', 'tax_breakup']);
-        });
+        
+		});
         Schema::table('menu_items', function (Blueprint $table) {
             $table->dropColumn('tax_inclusive');
-        });
+        
+		});
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('total_tax_amount');
-        });
+        
+		});
     }
 };

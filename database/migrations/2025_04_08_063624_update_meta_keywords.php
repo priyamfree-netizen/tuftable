@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->text('meta_keyword')->nullable()->change();
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->text('meta_keyword')->nullable()->change();
-        });
+        
+		});
     }
 
     /**
@@ -28,7 +30,8 @@ return new class extends Migration
         if (Schema::hasColumn('global_settings', 'meta_keywords')) {
             Schema::table('global_settings', function (Blueprint $table) {
                 $table->dropColumn('meta_keywords');
-            });
+            
+		});
         }
     }
 };

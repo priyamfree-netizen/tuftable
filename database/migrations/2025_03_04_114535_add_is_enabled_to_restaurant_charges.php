@@ -15,7 +15,8 @@ return new class extends Migration
         if (!Schema::hasColumn('restaurant_charges', 'is_enabled')) {
             Schema::table('restaurant_charges', function (Blueprint $table) {
                 $table->boolean('is_enabled')->default(true)->after('order_types');
-            });
+            
+		});
         }
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     {
         Schema::table('restaurant_charges', function (Blueprint $table) {
             $table->dropColumn('is_enabled');
-        });
+        
+		});
     }
 
 };

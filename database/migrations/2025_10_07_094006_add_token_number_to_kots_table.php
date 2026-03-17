@@ -15,7 +15,8 @@ return new class extends Migration
             $table->unsignedInteger('token_number')->nullable()->after('kot_number');
             $table->unsignedBigInteger('order_type_id')->nullable()->after('order_id');
             $table->foreign('order_type_id')->references('id')->on('order_types')->onDelete('set null');
-        });
+        
+		});
     }
 
     /**
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('kots', function (Blueprint $table) {
             $table->dropForeign(['order_type_id']);
             $table->dropColumn(['token_number', 'order_type_id']);
-        });
+        
+		});
     }
 };

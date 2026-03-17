@@ -18,7 +18,8 @@ return new class extends Migration
                 $table->dropColumn('payload');
             }
             $table->text('error')->nullable()->after('status');
-        });
+        
+		});
 
         LanguageSetting::where('language_code', 'gr')->update(['language_code' => 'el']);
         User::withoutGlobalScopes()->where('locale', 'gr')->update(['locale' => 'el']);
@@ -34,6 +35,7 @@ return new class extends Migration
                 $table->longText('payload')->nullable()->after('status');
             }
             $table->dropColumn('error');
-        });
+        
+		});
     }
 };

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('is_active')->after('license_type')->default(true);
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('is_active');
-        });
+        
+		});
     }
 };

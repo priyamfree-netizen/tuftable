@@ -14,17 +14,24 @@ return new class extends Migration
         if (!Schema::hasColumn('restaurants', 'default_table_reservation_status')) {
             Schema::table('restaurants', function (Blueprint $table) {
                 $table->string('default_table_reservation_status')->default('Confirmed');
-            });
+            
+		});
         }
 
         Schema::table('reservations', function (Blueprint $table) {
             if (\DB::getDriverName() === 'mysql') {
+                if (\DB::getDriverName() === 'mysql') {
                 $table->enum('reservation_status', ['Pending', 'Confirmed', 'Checked_In', 'Cancelled', 'No_Show'])->default('Confirmed')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_reservation_status_check");
+                $table->string('reservation_status')->default('Confirmed')->change();
+            }
             } else {
                 \DB::statement("ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_reservation_status_check");
                 $table->string('reservation_status')->default('Confirmed')->change();
             }
-        });
+        
+		});
     }
 
     /**
@@ -34,15 +41,22 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('default_table_reservation_status');
-        });
+        
+		});
 
         Schema::table('reservations', function (Blueprint $table) {
             if (\DB::getDriverName() === 'mysql') {
+                if (\DB::getDriverName() === 'mysql') {
                 $table->enum('reservation_status', ['Confirmed', 'Checked_In', 'Cancelled', 'No_Show'])->default('Confirmed')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_reservation_status_check");
+                $table->string('reservation_status')->default('Confirmed')->change();
+            }
             } else {
                 \DB::statement("ALTER TABLE reservations DROP CONSTRAINT IF EXISTS reservations_reservation_status_check");
                 $table->string('reservation_status')->default('Confirmed')->change();
             }
-        });
+        
+		});
     }
 };

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('kot_items', function (Blueprint $table) {
             $table->unsignedBigInteger('order_item_id')->nullable()->after('kot_id');
             $table->foreign('order_item_id')->references('id')->on('order_items')->onDelete('cascade')->onUpdate('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('kot_items', function (Blueprint $table) {
             $table->dropForeign(['order_item_id']);
             $table->dropColumn('order_item_id');
-        });
+        
+		});
     }
 };

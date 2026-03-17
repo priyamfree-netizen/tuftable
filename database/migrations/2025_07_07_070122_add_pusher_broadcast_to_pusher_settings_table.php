@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('pusher_key')->nullable();
             $table->string('pusher_secret')->nullable();
             $table->string('pusher_cluster')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('pusher_settings', function (Blueprint $table) {
             $table->dropColumn(['pusher_app_id', 'pusher_key', 'pusher_secret', 'pusher_cluster', 'pusher_broadcast']);
-        });
+        
+		});
     }
 };

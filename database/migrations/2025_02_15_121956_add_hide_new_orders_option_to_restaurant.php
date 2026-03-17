@@ -17,7 +17,8 @@ return new class extends Migration
             $table->boolean('hide_new_reservations')->default(0)->after('hide_new_orders');
             $table->boolean('hide_new_waiter_request')->default(0)->after('hide_new_reservations');
 
-        });
+        
+		});
     }
 
     /**
@@ -30,7 +31,8 @@ return new class extends Migration
             $table->dropColumn('hide_new_orders');
             $table->dropColumn('hide_new_reservations');
             $table->dropColumn('hide_new_waiter_request');
-        });
+        
+		});
     }
 
 };

@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->boolean('show_tax')->default(false)->after('show_restaurant_logo');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->dropColumn('show_tax');
-        });
+        
+		});
     }
 };

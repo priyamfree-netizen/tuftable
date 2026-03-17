@@ -14,7 +14,8 @@ return new class extends Migration
         if (!Schema::hasColumn('packages', 'ai_monthly_token_limit')) {
             Schema::table('packages', function (Blueprint $table) {
                 $table->integer('ai_monthly_token_limit')->default(-1)->after('staff_limit');
-            });
+            
+		});
         }
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             $table->dropColumn('ai_monthly_token_limit');
-        });
+        
+		});
     }
 };

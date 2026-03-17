@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('show_order_type_options')->default(true);
-        });
+        
+		});
     }
 
     /**
@@ -25,7 +26,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['allow_custom_delivery_options']);
-        });
+        
+		});
     }
 
 };

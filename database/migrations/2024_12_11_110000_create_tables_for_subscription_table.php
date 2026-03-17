@@ -149,7 +149,8 @@ return new class extends Migration
                 $table->integer('trial_notification_before_days')->nullable();
                 $table->string('trial_message')->nullable();
                 $table->longText('additional_features')->nullable();
-            });
+            
+		});
         }
 
         if (Schema::hasTable('restaurants')) {
@@ -165,14 +166,16 @@ return new class extends Migration
             $table->string('stripe_id')->nullable();
             $table->string('pm_type')->nullable();
             $table->string('pm_last_four', 4)->nullable();
-            });
+            
+		});
         }
 
         if(Schema::hasTable('restaurant_payments')) {
             Schema::table('restaurant_payments', function (Blueprint $table) {
                 $table->string('package_type')->nullable();
                 $table->string('currency_id')->nullable();
-            });
+            
+		});
         }
 
         if (!Schema::hasColumn('users', 'stripe_id')) {
@@ -181,7 +184,8 @@ return new class extends Migration
                 $table->string('pm_type')->nullable();
                 $table->string('pm_last_four', 4)->nullable();
                 $table->timestamp('trial_ends_at')->nullable();
-            });
+            
+		});
         }
 
     }
@@ -198,20 +202,23 @@ return new class extends Migration
             $table->dropForeign(['currency_id']);
             $table->dropForeign(['package_id']);
             $table->dropForeign(['restaurant_id']);
-        });
+        
+		});
 
         Schema::table('offline_plan_changes', function (Blueprint $table) {
             $table->dropForeign(['offline_method_id']);
             $table->dropForeign(['invoice_id']);
             $table->dropForeign(['package_id']);
             $table->dropForeign(['restaurant_id']);
-        });
+        
+		});
 
         Schema::table('global_subscriptions', function (Blueprint $table) {
             $table->dropForeign(['currency_id']);
             $table->dropForeign(['package_id']);
             $table->dropForeign(['restaurant_id']);
-        });
+        
+		});
 
         Schema::table('packages', function (Blueprint $table) {
 
@@ -240,7 +247,8 @@ return new class extends Migration
             $table->dropColumn('trial_notification_before_days');
             $table->dropColumn('trial_message');
             $table->dropColumn('additional_features');
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropForeign(['package_id']);
@@ -254,12 +262,14 @@ return new class extends Migration
             $table->dropColumn('stripe_id');
             $table->dropColumn('pm_type');
             $table->dropColumn('pm_last_four');
-        });
+        
+		});
 
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->dropColumn('package_type');
             $table->dropColumn('currency_id');
-        });
+        
+		});
 
         Schema::dropIfExists('package_modules');
         Schema::dropIfExists('offline_payment_methods');
@@ -275,7 +285,8 @@ return new class extends Migration
                 $table->dropColumn('pm_type');
                 $table->dropColumn('pm_last_four');
                 $table->dropColumn('trial_ends_at');
-            });
+            
+		});
         }
     }
 

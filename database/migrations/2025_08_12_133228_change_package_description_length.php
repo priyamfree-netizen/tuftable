@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             $table->text('description')->change();
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             $table->string('description')->change();
-        });
+        
+		});
     }
 };

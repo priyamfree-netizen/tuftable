@@ -15,7 +15,8 @@ return new class extends Migration
             Schema::table('restaurant_payments', function (Blueprint $table) {
                 $table->unsignedBigInteger('package_id')->nullable()->after('restaurant_id');
                 $table->foreign('package_id')->references('id')->on('packages')->onDelete('SET NULL');
-            });
+            
+		});
         }
     }
 
@@ -29,7 +30,8 @@ return new class extends Migration
                 $table->dropForeign(['package_id']);
                 $table->dropColumn('package_id');
             }
-        });
+        
+		});
     }
 };
 

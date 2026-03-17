@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->string('payment_qr_code')->nullable()->after('show_table_number');
-        });
+        
+		});
     }
 
     /**
@@ -25,7 +26,8 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->dropColumn('payment_qr_code');
-        });
+        
+		});
     }
     
 };

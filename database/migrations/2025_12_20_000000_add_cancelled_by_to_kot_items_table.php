@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('kot_items', function (Blueprint $table) {
             $table->unsignedBigInteger('cancelled_by')->nullable()->after('cancel_reason_text');
             $table->foreign('cancelled_by')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -25,7 +26,8 @@ return new class extends Migration
         Schema::table('kot_items', function (Blueprint $table) {
             $table->dropForeign(['cancelled_by']);
             $table->dropColumn('cancelled_by');
-        });
+        
+		});
     }
 };
 

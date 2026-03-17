@@ -22,14 +22,16 @@ return new class extends Migration
             if (!Schema::hasColumn('orders', 'loyalty_discount_amount')) {
                 $table->decimal('loyalty_discount_amount', 10, 2)->default(0);
             }
-        });
+        
+		});
 
         // Add stamp redemption tracking to orders
         Schema::table('orders', function (Blueprint $table) {
             if (!Schema::hasColumn('orders', 'stamp_discount_amount')) {
                 $table->decimal('stamp_discount_amount', 10, 2)->default(0)->after('loyalty_discount_amount');
             }
-        });
+        
+		});
 
         // Add stamp redemption tracking to order_items
         Schema::table('order_items', function (Blueprint $table) {
@@ -39,7 +41,8 @@ return new class extends Migration
             if (!Schema::hasColumn('order_items', 'stamp_rule_id')) {
                 $table->foreignId('stamp_rule_id')->nullable()->after('is_free_item_from_stamp')->nullOnDelete();
             }
-        });
+        
+		});
 
         Schema::table('kot_items', function (Blueprint $table) {
             // Add price and amount columns to store item pricing information (only if they don't exist)
@@ -63,7 +66,8 @@ return new class extends Migration
             if (!Schema::hasColumn('kot_items', 'is_discounted')) {
                 $table->boolean('is_discounted')->default(false)->after('discount_amount');
             }
-        });
+        
+		});
     }
 
     /**
@@ -78,13 +82,15 @@ return new class extends Migration
             if (Schema::hasColumn('orders', 'loyalty_discount_amount')) {
                 $table->dropColumn('loyalty_discount_amount');
             }
-        });
+        
+		});
 
         Schema::table('orders', function (Blueprint $table) {
             if (Schema::hasColumn('orders', 'stamp_discount_amount')) {
                 $table->dropColumn('stamp_discount_amount');
             }
-        });
+        
+		});
 
         Schema::table('order_items', function (Blueprint $table) {
             if (Schema::hasColumn('order_items', 'stamp_rule_id')) {
@@ -94,7 +100,8 @@ return new class extends Migration
             if (Schema::hasColumn('order_items', 'is_free_item_from_stamp')) {
                 $table->dropColumn('is_free_item_from_stamp');
             }
-        });
+        
+		});
 
         Schema::table('kot_items', function (Blueprint $table) {
             // Drop foreign key if it exists
@@ -128,6 +135,7 @@ return new class extends Migration
             if (!empty($columnsToDrop)) {
                 $table->dropColumn($columnsToDrop);
             }
-        });
+        
+		});
     }
 };

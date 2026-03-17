@@ -15,7 +15,8 @@ return new class extends Migration
             // Xendit webhook verification tokens
             $table->string('test_xendit_webhook_token')->nullable();
             $table->string('live_xendit_webhook_token')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -28,6 +29,7 @@ return new class extends Migration
                 'test_xendit_webhook_token',
                 'live_xendit_webhook_token'
             ]);
-        });
+        
+		});
     }
 };

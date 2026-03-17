@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('payments', function (Blueprint $table) {
             $table->decimal('balance', 16, 2)->after('amount')->nullable()->default(0);
-        });
+        
+		});
     }
 
     /**
@@ -24,7 +25,8 @@ return new class extends Migration
     {
         Schema::table('payments', function (Blueprint $table) {
             $table->dropColumn('balance');
-        });
+        
+		});
     }
 
 };

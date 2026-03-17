@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::table('branches', function (Blueprint $table) {
             $table->string('cr_number')->nullable()->after('address');
             $table->string('vat_number')->nullable()->after('cr_number');
-        });
+        
+		});
 
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->boolean('show_restaurant_name')->default(true)->after('show_restaurant_logo');
@@ -24,7 +25,8 @@ return new class extends Migration
             $table->boolean('show_branch_address')->default(false)->after('show_branch_name');
             $table->boolean('show_cr_number')->default(false)->after('show_branch_address');
             $table->boolean('show_vat_number')->default(false)->after('show_cr_number');
-        });
+        
+		});
     }
 
     /**
@@ -34,10 +36,12 @@ return new class extends Migration
     {
         Schema::table('branches', function (Blueprint $table) {
             $table->dropColumn(['cr_number', 'vat_number']);
-        });
+        
+		});
 
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->dropColumn(['show_restaurant_name', 'show_branch_name', 'show_branch_address', 'show_cr_number', 'show_vat_number']);
-        });
+        
+		});
     }
 };

@@ -16,12 +16,14 @@ return new class extends Migration
                 $table->string('meta_keyword', 255)->nullable();
                 $table->longText('meta_description')->nullable();
 
-        });
+        
+		});
 
          Schema::table('restaurants', function (Blueprint $table) {
             $table->string('meta_keyword', 255)->nullable();
             $table->longText('meta_description')->nullable();
-         });
+         
+		});
 
     }
 
@@ -33,11 +35,13 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn(['meta_keyword', 'meta_description']);
-        });
+        
+		});
 
          Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['meta_keyword', 'meta_description']);
-         });
+         
+		});
 
     }
 

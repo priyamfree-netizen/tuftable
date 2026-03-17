@@ -15,7 +15,8 @@ return new class extends Migration
         if (!Schema::hasColumn('menu_items', 'kot_place_id')) {
             Schema::table('menu_items', function (Blueprint $table) {
                 $table->unsignedBigInteger('kot_place_id')->nullable()->after('branch_id');
-            });
+            
+		});
         }
 
         // Step 2: Create kot_places table
@@ -54,7 +55,8 @@ return new class extends Migration
         if (Schema::hasColumn('menu_items', 'kot_place_id') && !Schema::hasColumn('menu_items', 'kot_place_id')) {
             Schema::table('menu_items', function (Blueprint $table) {
                 $table->foreign('kot_place_id')->references('id')->on('kot_places')->nullOnDelete();
-            });
+            
+		});
         }
 
         // Step 5: Create data using models
@@ -114,7 +116,8 @@ return new class extends Migration
             Schema::table('menu_items', function (Blueprint $table) {
                 $table->dropForeign(['kot_place_id']);
                 $table->dropColumn('kot_place_id');
-            });
+            
+		});
         }
 
         Schema::dropIfExists('kot_places');

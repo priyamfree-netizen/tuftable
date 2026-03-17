@@ -15,7 +15,8 @@ return new class extends Migration
             $table->text('html_content')->nullable()->after('payload');
             $table->string('image_path')->nullable()->after('html_content');
             $table->string('image_filename')->nullable()->after('image_path');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('print_jobs', function (Blueprint $table) {
             $table->dropColumn('html_content');
-        });
+        
+		});
     }
 };

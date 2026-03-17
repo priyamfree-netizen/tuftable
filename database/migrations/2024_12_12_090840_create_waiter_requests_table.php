@@ -24,7 +24,8 @@ return new class extends Migration
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('is_waiter_request_enabled')->default(true);
-        });
+        
+		});
 
         $checkModule = Module::count();
         $checkWaiterRequestModule = Module::where('name', 'Waiter Request')->first();

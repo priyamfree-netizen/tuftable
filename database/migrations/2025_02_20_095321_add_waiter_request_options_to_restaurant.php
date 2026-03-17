@@ -16,7 +16,8 @@ return new class extends Migration
             $table->boolean('is_waiter_request_enabled_on_desktop')->default(1);
             $table->boolean('is_waiter_request_enabled_on_mobile')->default(1);
             $table->boolean('is_waiter_request_enabled_open_by_qr')->default(0);
-        });
+        
+		});
     }
 
     /**
@@ -29,7 +30,8 @@ return new class extends Migration
             $table->dropColumn('is_waiter_request_enabled_on_desktop');
             $table->dropColumn('is_waiter_request_enabled_on_mobile');
             $table->dropColumn('is_waiter_request_enabled_open_by_qr');
-        });
+        
+		});
     }
 
 };

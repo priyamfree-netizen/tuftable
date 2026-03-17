@@ -15,10 +15,18 @@ return new class extends Migration
     {
 
         Schema::table('split_orders', function (Blueprint $table) {
-            $table->enum('payment_method', ['cash', 'upi', 'card', 'bank_transfer', 'due', 'stripe', 'razorpay'])
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('payment_method', ['cash', 'upi', 'card', 'bank_transfer', 'due', 'stripe', 'razorpay'])
                 ->default('cash')
                 ->change();
-        });
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE split_orders DROP CONSTRAINT IF EXISTS split_orders_payment_method_check");
+                $table->string('payment_method')
+                ->default('cash')
+                ->change();
+            }
+        
+		});
 
     }
 
@@ -30,7 +38,8 @@ return new class extends Migration
     {
         Schema::table('split_orders', function (Blueprint $table) {
             $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay'])->default('cash');
-        });
+        
+		});
 
     }
 

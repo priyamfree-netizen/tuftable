@@ -15,7 +15,8 @@ return new class extends Migration
             $table->boolean('is_dine_in_payment_enabled')->default(false);
             $table->boolean('is_delivery_payment_enabled')->default(false);
             $table->boolean('is_pickup_payment_enabled')->default(false);
-        });
+        
+		});
     }
 
     /**
@@ -29,6 +30,7 @@ return new class extends Migration
                 'is_delivery_payment_enabled',
                 'is_pickup_payment_enabled'
             ]);
-        });
+        
+		});
     }
 };

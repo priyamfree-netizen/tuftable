@@ -17,7 +17,8 @@ return new class extends Migration
         if ($indexExists) {
             Schema::table('customers', function (Blueprint $table) {
                 $table->dropUnique(['phone']);
-            });
+            
+		});
         }
     }
 
@@ -32,7 +33,8 @@ return new class extends Migration
         if (!$indexExists) {
             Schema::table('customers', function (Blueprint $table) {
                 $table->unique('phone');
-            });
+            
+		});
         }
     }
 

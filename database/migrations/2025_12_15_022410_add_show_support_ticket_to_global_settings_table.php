@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->boolean('show_support_ticket')->default(true)->after('show_privacy_consent_checkbox');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('show_support_ticket');
-        });
+        
+		});
     }
 };

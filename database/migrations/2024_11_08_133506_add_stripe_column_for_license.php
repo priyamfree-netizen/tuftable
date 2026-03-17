@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->string('stripe_payment_intent')->nullable();
             $table->text('stripe_session_id')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -26,7 +27,8 @@ return new class extends Migration
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->dropColumn('stripe_payment_intent');
             $table->dropColumn('stripe_session_id');
-        });
+        
+		});
     }
 
 };

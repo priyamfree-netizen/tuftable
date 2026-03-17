@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->integer('disable_slot_minutes')->default(30)->after('default_table_reservation_status');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('disable_slot_minutes');
-        });
+        
+		});
     }
 };

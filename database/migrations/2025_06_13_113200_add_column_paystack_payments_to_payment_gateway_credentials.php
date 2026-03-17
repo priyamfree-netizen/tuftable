@@ -22,7 +22,8 @@ return new class extends Migration
                 $table->string('test_paystack_merchant_email')->nullable();
                 $table->string('paystack_payment_url')->nullable()->default('https://api.paystack.co');
 
-        });
+        
+		});
     }
 
     /**
@@ -42,6 +43,7 @@ return new class extends Migration
                 'test_paystack_merchant_email',
                 'paystack_payment_url',
             ]);
-        });
+        
+		});
     }
 };

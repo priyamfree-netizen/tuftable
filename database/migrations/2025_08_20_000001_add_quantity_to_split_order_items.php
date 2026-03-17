@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('split_order_items', function (Blueprint $table) {
             $table->integer('quantity')->nullable()->after('order_item_id');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('split_order_items', function (Blueprint $table) {
             $table->dropColumn('quantity');
-        });
+        
+		});
     }
 };

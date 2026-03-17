@@ -14,7 +14,8 @@ return new class extends Migration
         if (!Schema::hasColumn('restaurants', 'table_required')) {
             Schema::table('restaurants', function (Blueprint $table) {
                 $table->boolean('table_required')->default(0);
-            });
+            
+		});
         }
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('table_required');
-        });
+        
+		});
     }
 };

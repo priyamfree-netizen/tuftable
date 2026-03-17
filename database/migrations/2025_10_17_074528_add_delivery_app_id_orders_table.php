@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->unsignedBigInteger('delivery_app_id')->nullable()->after('order_type_id');
             $table->foreign('delivery_app_id')->references('id')->on('delivery_platforms')->onDelete('set null');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['delivery_app_id']);
             $table->dropColumn('delivery_app_id');
-        });
+        
+		});
     }
 };

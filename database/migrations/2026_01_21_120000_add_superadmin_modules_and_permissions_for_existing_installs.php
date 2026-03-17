@@ -23,7 +23,8 @@ return new class extends Migration
         if (!Schema::hasColumn('modules', 'is_superadmin')) {
             Schema::table('modules', function (Blueprint $table) {
                 $table->boolean('is_superadmin')->default(0)->after('name');
-            });
+            
+		});
         }
 
         $checkModule = Module::count();

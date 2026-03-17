@@ -24,7 +24,8 @@ return new class extends Migration
                 $table->renameColumn('showWaiter', 'show_waiter');
                 $table->renameColumn('showTotalGuest', 'show_total_guest');
                 $table->renameColumn('showRestaurantLogo', 'show_restaurant_logo');
-            });
+            
+		});
         }
     }
 

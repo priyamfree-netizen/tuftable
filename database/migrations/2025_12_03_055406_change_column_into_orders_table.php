@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->string('order_number')->nullable()->change();
             $table->string('formatted_order_number')->nullable()->change();
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->string('order_number')->nullable(false)->change();
             $table->string('formatted_order_number')->nullable()->change();
-        });
+        
+		});
     }
 };

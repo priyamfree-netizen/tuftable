@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->boolean('in_stock')->default(true);
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->dropColumn('in_stock');
-        });
+        
+		});
     }
 };

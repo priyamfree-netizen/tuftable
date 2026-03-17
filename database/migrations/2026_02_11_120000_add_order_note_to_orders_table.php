@@ -14,7 +14,8 @@ return new class extends Migration
         if (!Schema::hasColumn('orders', 'order_note')) {           // Check if column exists before adding it to avoid duplicates
         Schema::table('orders', function (Blueprint $table) {
                 $table->text('order_note')->nullable()->after('number_of_pax');
-            });
+            
+		});
         }
     }
 
@@ -25,7 +26,8 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('order_note');
-        });
+        
+		});
     }
 };
 

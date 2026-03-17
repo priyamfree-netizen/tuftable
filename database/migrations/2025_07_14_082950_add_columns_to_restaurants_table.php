@@ -14,7 +14,8 @@ return new class extends Migration
     {
        Schema::table('restaurants', function (Blueprint $table) {
             $table->string('customer_site_language')->nullable();
-        });
+        
+		});
         // Set default language 'en' for all existing restaurants
         DB::table('restaurants')->update(['customer_site_language' => 'en']);
     }
@@ -26,6 +27,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('customer_site_language');
-        });
+        
+		});
     }
 };

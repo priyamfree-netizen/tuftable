@@ -24,13 +24,15 @@ return new class extends Migration
             if (!Schema::hasColumn('superadmin_payment_gateways', 'live_mollie_key')) {
                 $table->text('live_mollie_key')->nullable();
             }
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
           if (!Schema::hasColumn('restaurants', 'mollie_customer_id')) {
             $table->string('mollie_customer_id')->nullable();
           }
-        });
+        
+		});
 
         Schema::table('restaurant_payments', function (Blueprint $table) {
 
@@ -43,7 +45,8 @@ return new class extends Migration
            if (!Schema::hasColumn('restaurant_payments', 'mollie_subscription_id')) {
             $table->string('mollie_subscription_id')->nullable();
            }
-        });
+        
+		});
     }
 
     /**
@@ -64,16 +67,19 @@ return new class extends Migration
             if (Schema::hasColumn('superadmin_payment_gateways', 'live_mollie_key')) {
                 $table->dropColumn('live_mollie_key');
             }
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('mollie_customer_id');
-        });
+        
+		});
 
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->dropColumn('mollie_payment_id');
             $table->dropColumn('mollie_customer_id');
             $table->dropColumn('mollie_subscription_id');
-        });
+        
+		});
     }
 };

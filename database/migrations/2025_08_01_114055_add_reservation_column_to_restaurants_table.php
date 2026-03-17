@@ -15,7 +15,8 @@ return new class extends Migration
             $table->boolean('enable_admin_reservation')->default(true);
             $table->boolean('enable_customer_reservation')->default(true);
             $table->integer('minimum_party_size')->default(1);
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['enable_admin_reservation', 'enable_customer_reservation', 'minimum_party_size']);
-        });
+        
+		});
     }
 };

@@ -16,7 +16,8 @@ return new class extends Migration {
         Schema::table('email_settings', function (Blueprint $table) {
             $table->boolean('email_verified')->default(0);
             $table->boolean('verified')->default(0);
-        });
+        
+		});
     }
 
     /**

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('upload_favicon_16')->nullable();
             $table->string('upload_favicon_32')->nullable();
             $table->string('favicon')->nullable();
-        });
+        
+		});
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('upload_fav_icon_android_chrome_192')->nullable();
@@ -28,7 +29,8 @@ return new class extends Migration
             $table->string('upload_favicon_16')->nullable();
             $table->string('upload_favicon_32')->nullable();
             $table->string('favicon')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -44,7 +46,8 @@ return new class extends Migration
             $table->dropColumn('upload_favicon_16');
             $table->dropColumn('upload_favicon_32');
             $table->dropColumn('favicon');
-        });
+        
+		});
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('upload_fav_icon_android_chrome_192');
@@ -53,7 +56,8 @@ return new class extends Migration
             $table->dropColumn('upload_favicon_16');
             $table->dropColumn('upload_favicon_32');
             $table->dropColumn('favicon');
-        });
+        
+		});
     }
 
 };

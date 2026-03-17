@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('terms_and_privacy_accepted')->default(false)->after('phone_code');
             $table->boolean('marketing_emails_accepted')->default(false)->after('terms_and_privacy_accepted');
-        });
+        
+		});
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->boolean('show_privacy_consent_checkbox')->default(false)->after('privacy_policy_link');
-        });
+        
+		});
     }
 
     /**
@@ -28,10 +30,12 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['terms_and_privacy_accepted', 'marketing_emails_accepted']);
-        });
+        
+		});
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('show_privacy_consent_checkbox');
-        });
+        
+		});
     }
 };

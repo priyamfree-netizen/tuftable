@@ -12,14 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('kots', function (Blueprint $table) {
-            $table->enum('status', ['pending_confirmation', 'in_kitchen', 'food_ready', 'served'])
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['pending_confirmation', 'in_kitchen', 'food_ready', 'served'])
                 ->default('in_kitchen')
                 ->change();
-        });
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE kots DROP CONSTRAINT IF EXISTS kots_status_check");
+                $table->string('status')
+                ->default('in_kitchen')
+                ->change();
+            }
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('auto_confirm_orders')->default(false);
-        });
+        
+		});
     }
 
     /**
@@ -28,13 +37,22 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('kots', function (Blueprint $table) {
-            $table->enum('status', ['in_kitchen', 'food_ready', 'served'])
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['in_kitchen', 'food_ready', 'served'])
                 ->default('in_kitchen')
                 ->change();
-        });
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE kots DROP CONSTRAINT IF EXISTS kots_status_check");
+                $table->string('status')
+                ->default('in_kitchen')
+                ->change();
+            }
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('auto_confirm_orders');
-        });
+        
+		});
     }
 };

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->boolean('allow_customer_delivery_orders')->default(true);
             $table->boolean('allow_customer_pickup_orders')->default(true);
             $table->boolean('allow_customer_orders')->default(true);
-        });
+        
+		});
     }
 
     /**
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->dropColumn('allow_customer_delivery_orders');
             $table->dropColumn('allow_customer_pickup_orders');
             $table->dropColumn('allow_customer_orders');
-        });
+        
+		});
     }
 };

@@ -15,15 +15,18 @@ return new class extends Migration
         // Add sort_order column
         Schema::table('menus', function (Blueprint $table) {
             $table->unsignedInteger('sort_order')->default(0)->after('menu_name');
-        });
+        
+		});
 
         Schema::table('item_categories', function (Blueprint $table) {
             $table->unsignedInteger('sort_order')->default(0)->after('category_name');
-        });
+        
+		});
 
         Schema::table('menu_items', function (Blueprint $table) {
             $table->unsignedInteger('sort_order')->default(0);
-        });
+        
+		});
 
         // Initialize existing records with sort_order = id
         DB::table('menus')->update(['sort_order' => DB::raw('id')]);
@@ -38,14 +41,17 @@ return new class extends Migration
     {
         Schema::table('menus', function (Blueprint $table) {
             $table->dropColumn('sort_order');
-        });
+        
+		});
 
         Schema::table('item_categories', function (Blueprint $table) {
             $table->dropColumn('sort_order');
-        });
+        
+		});
 
         Schema::table('menu_items', function (Blueprint $table) {
             $table->dropColumn('sort_order');
-        });
+        
+		});
     }
 };

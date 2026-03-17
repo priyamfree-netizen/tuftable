@@ -14,7 +14,8 @@ return new class extends Migration
                     ->default(true)
                     ->after('enable_token_number');
             }
-        });
+        
+		});
     }
 
     /**
@@ -26,7 +27,8 @@ return new class extends Migration
             if (Schema::hasColumn('order_types', 'enable_from_customer_site')) {
                 $table->dropColumn('enable_from_customer_site');
             }
-        });
+        
+		});
     }
 
 };

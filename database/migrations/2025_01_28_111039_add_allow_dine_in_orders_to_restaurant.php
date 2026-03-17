@@ -11,7 +11,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('allow_dine_in_orders')->default(1)->after('allow_customer_orders');
-        });
+        
+		});
     }
 
     /**
@@ -22,6 +23,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('allow_dine_in_orders');
-        });
+        
+		});
     }
 };

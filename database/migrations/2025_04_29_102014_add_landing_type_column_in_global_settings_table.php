@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('landing_type')->default('dynamic')->after('disable_landing_site');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             //
-        });
+        
+		});
     }
 };

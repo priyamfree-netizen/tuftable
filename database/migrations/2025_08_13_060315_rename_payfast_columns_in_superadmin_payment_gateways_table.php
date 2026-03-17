@@ -16,7 +16,8 @@ return new class extends Migration
             $table->renameColumn('payfast_merchant_id', 'live_payfast_merchant_id');
             $table->renameColumn('payfast_merchant_key', 'live_payfast_merchant_key');
             $table->renameColumn('payfast_passphrase', 'live_payfast_passphrase');
-        });
+        
+		});
     }
 
     /**
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->renameColumn('live_payfast_merchant_id', 'payfast_merchant_id');
             $table->renameColumn('live_payfast_merchant_key', 'payfast_merchant_key');
             $table->renameColumn('live_payfast_passphrase', 'payfast_passphrase');
-        });
+        
+		});
     }
 };

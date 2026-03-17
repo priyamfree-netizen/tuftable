@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('cart_header_settings', function (Blueprint $table) {
             $table->boolean('is_header_disabled')->default(false)->after('header_text');
-        });
+        
+		});
     }
 
     /**
@@ -23,7 +24,8 @@ return new class extends Migration
     {
         Schema::table('cart_header_settings', function (Blueprint $table) {
             $table->dropColumn('is_header_disabled');
-        });
+        
+		});
     }
 };
 

@@ -35,7 +35,8 @@ return new class extends Migration
         // Add a column to set the table lock timeout (in minutes) for each restaurant
         Schema::table('restaurants', function (Blueprint $table) {
             $table->integer('table_lock_timeout_minutes')->default(10);
-        });
+        
+		});
 
 
     }
@@ -49,6 +50,7 @@ return new class extends Migration
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('table_lock_timeout_minutes');
-        });
+        
+		});
     }
 };

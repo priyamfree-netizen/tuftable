@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('test_tap_public_key')->nullable();
             $table->boolean('tap_status')->default(false);
             $table->enum('tap_mode', ['sandbox', 'live'])->default('sandbox');
-        });
+        
+		});
 
     }
 
@@ -38,6 +39,7 @@ return new class extends Migration
                 'tap_status',
                 'tap_mode',
             ]);
-        });
+        
+		});
     }
 };

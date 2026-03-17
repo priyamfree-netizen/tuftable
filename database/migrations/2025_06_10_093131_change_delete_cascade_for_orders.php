@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['waiter_id']);
             $table->foreign('waiter_id')->references('id')->on('users')->onDelete('set null');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['waiter_id']);
             $table->foreign('waiter_id')->references('id')->on('users')->onDelete('cascade');
-        });
+        
+		});
     }
 };

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('packages', function (Blueprint $table) {
             $table->decimal('annual_price', 16, 2)->nullable()->change();
             $table->decimal('monthly_price', 16, 2)->nullable()->change();
-        });
+        
+		});
     }
 
     /**

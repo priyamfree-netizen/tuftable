@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->string('date_format')->default('d/m/Y')->after('time_format');
-        });
+        
+		});
         // Set default date format for all existing restaurants
         DB::table('restaurants')->update(['date_format' => 'd/m/Y']);
     }
@@ -26,6 +27,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('date_format');
-        });
+        
+		});
     }
 };

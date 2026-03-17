@@ -15,7 +15,8 @@ return new class extends Migration
             $table->boolean('disable_order_type_popup')->default(false)->after('show_order_type_options');
             $table->unsignedBigInteger('default_order_type_id')->nullable()->after('disable_order_type_popup');
             $table->foreign('default_order_type_id')->references('id')->on('order_types')->onDelete('set null')->onUpdate('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropForeign(['default_order_type_id']);
             $table->dropColumn(['disable_order_type_popup', 'default_order_type_id']);
-        });
+        
+		});
     }
 };

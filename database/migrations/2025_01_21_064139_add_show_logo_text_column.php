@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->boolean('show_logo_text')->default(true);
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('show_logo_text')->default(true);
-        });
+        
+		});
     }
 
     /**
@@ -27,10 +29,12 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('show_logo_text');
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('show_logo_text');
-        });
+        
+		});
     }
 };

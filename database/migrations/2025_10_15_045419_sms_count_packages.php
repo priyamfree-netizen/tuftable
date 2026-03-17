@@ -15,7 +15,8 @@ return new class extends Migration
             Schema::table('packages', function (Blueprint $table) {
                 $table->integer('sms_count')->default(0);
                 $table->boolean('carry_forward_sms')->default(false);
-            });
+            
+		});
         }
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
         Schema::table('packages', function (Blueprint $table) {
             $table->dropColumn('sms_count');
             $table->dropColumn('carry_forward_sms');
-        });
+        
+		});
     }
 };

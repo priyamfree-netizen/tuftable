@@ -23,7 +23,8 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->unsignedBigInteger('customer_id')->nullable()->after('table_id');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('SET NULL')->onUpdate('cascade');
-        });
+        
+		});
 
 
     }
@@ -36,7 +37,8 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['customer_id']);
             $table->dropColumn(['customer_id']);
-        });
+        
+		});
 
         Schema::dropIfExists('customers');
     }

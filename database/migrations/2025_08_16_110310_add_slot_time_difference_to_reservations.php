@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::table('reservations', function (Blueprint $table) {
             $table->integer('slot_time_difference')->nullable();
-        });
+        
+		});
 
         Schema::table('orders', function (Blueprint $table) {
             $table->foreignId('reservation_id')->nullable()->constrained()->onDelete('set null');
-        });
+        
+		});
     }
 
     /**
@@ -27,11 +29,13 @@ return new class extends Migration
     {
         Schema::table('reservations', function (Blueprint $table) {
             $table->dropColumn('slot_time_difference');
-        });
+        
+		});
 
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['reservation_id']);
             $table->dropColumn(['reservation_id']);
-        });
+        
+		});
     }
 };

@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('time_format')->default('h:i A')->after('timezone');
             $table->string('date_format')->default('d/m/Y')->after('time_format');
-        });
+        
+		});
         // Set default time and date format for all existing global settings
         DB::table('global_settings')->update([
             'time_format' => 'h:i A',
@@ -30,7 +31,8 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn(['time_format', 'date_format']);
-        });
+        
+		});
     }
 };
 

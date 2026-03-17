@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::table('kot_items', function (Blueprint $table) {
             $table->text('note')->nullable()->after('menu_item_variation_id');
-        });
+        
+		});
 
         Schema::table('order_items', function (Blueprint $table) {
             $table->text('note')->nullable()->after('menu_item_variation_id');
-        });
+        
+		});
     }
 
     /**
@@ -27,10 +29,12 @@ return new class extends Migration
     {
         Schema::table('kot_items', function (Blueprint $table) {
             $table->dropColumn('note');
-        });
+        
+		});
 
         Schema::table('order_items', function (Blueprint $table) {
             $table->dropColumn('note');
-        });
+        
+		});
     }
 };

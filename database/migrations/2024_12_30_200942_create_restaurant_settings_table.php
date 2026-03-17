@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->boolean('requires_approval_after_signup')->default(false);
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->enum('approval_status', ['Pending', 'Approved', 'Rejected'])->default('Approved');
             $table->text('rejection_reason')->nullable();
-        });
+        
+		});
 
         cache()->forget('global_setting');
     }
@@ -30,9 +32,11 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('requires_approval_after_signup');
-        });
+        
+		});
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['approval_status', 'rejection_reason']);
-        });
+        
+		});
     }
 };

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->boolean('show_payment_details')->default(true)->after('show_tax');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->dropColumn('show_payment_details');
-        });
+        
+		});
     }
 };

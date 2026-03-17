@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->longText('about_us')->nullable();
-        });
+        
+		});
 
         Restaurant::query()->update(['about_us' => Restaurant::ABOUT_US_DEFAULT_TEXT]);
     }
@@ -26,6 +27,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('about_us');
-        });
+        
+		});
     }
 };

@@ -18,12 +18,19 @@ return new class extends Migration
 
             // Add foreign key constraint for cancel reason
             $table->foreign('cancel_reason_id')->references('id')->on('kot_cancel_reasons')->onDelete('cascade')->onUpdate('cascade');
-        });
+        
+		});
 
         // Modify the status enum to include 'cancelled' option
         Schema::table('kot_items', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'cooking', 'ready', 'cancelled'])->nullable()->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['pending', 'cooking', 'ready', 'cancelled'])->nullable()->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE kot_items DROP CONSTRAINT IF EXISTS kot_items_status_check");
+                $table->string('status')->nullable()->change();
+            }
+        
+		});
     }
 
     /**
@@ -36,11 +43,18 @@ return new class extends Migration
             $table->dropForeign(['cancel_reason_id']);
             $table->dropColumn('cancel_reason_id');
             $table->dropColumn('cancel_reason_text');
-        });
+        
+		});
 
         // Revert status enum to original values
         Schema::table('kot_items', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'cooking', 'ready'])->nullable()->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['pending', 'cooking', 'ready'])->nullable()->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE kot_items DROP CONSTRAINT IF EXISTS kot_items_status_check");
+                $table->string('status')->nullable()->change();
+            }
+        
+		});
     }
 };

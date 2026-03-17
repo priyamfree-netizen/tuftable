@@ -17,16 +17,19 @@ return new class extends Migration
             $table->timestamp('delivered_at')->nullable();
             $table->integer('estimated_eta_min')->nullable();
             $table->integer('estimated_eta_max')->nullable();
-        });
+        
+		});
 
         Schema::table('branches', function (Blueprint $table) {
             $table->decimal('lat', 10, 7)->nullable();
             $table->decimal('lng', 10, 7)->nullable();
-        });
+        
+		});
 
         Schema::table('restaurants', function (Blueprint $table) {
             $table->string('map_api_key')->nullable();
-        });
+        
+		});
     }
 
     public function down()
@@ -42,13 +45,16 @@ return new class extends Migration
                 'estimated_eta_min',
                 'estimated_eta_max'
             ]);
-        });
+        
+		});
 
         Schema::table('branches', function (Blueprint $table) {
             $table->dropColumn(['lat', 'lng']);
-        });
+        
+		});
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('map_api_key');
-        });
+        
+		});
     }
 };

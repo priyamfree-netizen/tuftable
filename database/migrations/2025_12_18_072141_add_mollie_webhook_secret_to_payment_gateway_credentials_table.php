@@ -15,7 +15,8 @@ return new class extends Migration
             if (!Schema::hasColumn('payment_gateway_credentials', 'mollie_webhook_secret')) {
                 $table->string('mollie_webhook_secret')->nullable()->after('live_mollie_key');
             }
-        });
+        
+		});
     }
 
     /**
@@ -27,6 +28,7 @@ return new class extends Migration
             if (Schema::hasColumn('payment_gateway_credentials', 'mollie_webhook_secret')) {
                 $table->dropColumn('mollie_webhook_secret');
             }
-        });
+        
+		});
     }
 };

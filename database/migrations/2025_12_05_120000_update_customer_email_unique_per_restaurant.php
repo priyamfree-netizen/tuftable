@@ -18,14 +18,16 @@ return new class extends Migration
         if ($this->indexExists('customers', 'customers_email_unique')) {
             Schema::table('customers', function (Blueprint $table) {
                 $table->dropUnique(['email']);
-            });
+            
+		});
         }
 
         // Add composite unique index for email + restaurant_id
         if (!$this->indexExists('customers', 'customers_email_restaurant_unique')) {
             Schema::table('customers', function (Blueprint $table) {
                 $table->unique(['email', 'restaurant_id'], 'customers_email_restaurant_unique');
-            });
+            
+		});
         }
     }
 
@@ -38,14 +40,16 @@ return new class extends Migration
         if ($this->indexExists('customers', 'customers_email_restaurant_unique')) {
             Schema::table('customers', function (Blueprint $table) {
                 $table->dropUnique('customers_email_restaurant_unique');
-            });
+            
+		});
         }
 
         // Restore global unique constraint on email
         if (!$this->indexExists('customers', 'customers_email_unique')) {
             Schema::table('customers', function (Blueprint $table) {
                 $table->unique('email');
-            });
+            
+		});
         }
     }
 

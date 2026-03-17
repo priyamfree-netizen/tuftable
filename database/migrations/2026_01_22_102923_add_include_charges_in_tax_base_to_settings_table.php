@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('include_charges_in_tax_base')->default(false)->after('tax_inclusive');
-        });
+        
+		});
 
         Schema::table('orders', function (Blueprint $table) {
             $table->decimal('tax_base', 16, 2)->nullable()->after('total_tax_amount');
-        });
+        
+		});
     }
 
     /**
@@ -27,10 +29,12 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('include_charges_in_tax_base');
-        });
+        
+		});
 
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('tax_base');
-        });
+        
+		});
     }
 };

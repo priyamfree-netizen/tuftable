@@ -18,7 +18,8 @@ return new class extends Migration
             $table->boolean('enable_payfast')->default(true);
             $table->boolean('enable_paypal')->default(true);
             $table->boolean('enable_paystack')->default(true);
-        });
+        
+		});
     }
 
     /**
@@ -35,6 +36,7 @@ return new class extends Migration
                 'enable_paypal',
                 'enable_paystack',
             ]);
-        });
+        
+		});
     }
 };

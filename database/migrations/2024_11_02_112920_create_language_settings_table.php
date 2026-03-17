@@ -26,11 +26,13 @@ return new class extends Migration
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('locale')->default('en');
-        });
+        
+		});
 
         Schema::table('users', function (Blueprint $table) {
             $table->string('locale')->default('en');
-        });
+        
+		});
 
         $restaurant = Restaurant::withoutGlobalScopes()->count();
 
@@ -47,11 +49,13 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['locale']);
-        });
+        
+		});
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn(['locale']);
-        });
+        
+		});
 
         Schema::dropIfExists('language_settings');
     }

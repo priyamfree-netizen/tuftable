@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->unsignedBigInteger('added_by')->nullable()->after('waiter_id');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['added_by']);
             $table->dropColumn('added_by');
-        });
+        
+		});
     }
 };

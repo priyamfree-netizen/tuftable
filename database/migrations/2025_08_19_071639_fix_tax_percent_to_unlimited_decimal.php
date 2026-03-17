@@ -10,7 +10,8 @@ return new class extends Migration {
         Schema::table('taxes', function (Blueprint $table) {
             // Change column to decimal without precision/scale
             $table->string('tax_percent')->change();
-        });
+        
+		});
     }
 
     public function down(): void
@@ -18,6 +19,7 @@ return new class extends Migration {
         Schema::table('taxes', function (Blueprint $table) {
             // Rollback to old definition
             $table->decimal('tax_percent', 16, 2)->change();
-        });
+        
+		});
     }
 };

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('privacy_policy_link')->nullable()->after('email');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('privacy_policy_link');
-        });
+        
+		});
     }
 };

@@ -24,7 +24,8 @@ return new class extends Migration
             $table->boolean('is_clone_reservation_settings')->default(false)->after('is_item_modifiers_clone');
             $table->boolean('is_clone_delivery_settings')->default(false)->after('is_clone_reservation_settings');
             $table->boolean('is_clone_kot_setting')->default(false)->after('is_clone_delivery_settings');
-        });
+        
+		});
 
     }
 
@@ -47,7 +48,8 @@ return new class extends Migration
                 'is_clone_delivery_settings',
                 'is_clone_kot_setting'
             ]);
-        });
+        
+		});
     }
 
 };

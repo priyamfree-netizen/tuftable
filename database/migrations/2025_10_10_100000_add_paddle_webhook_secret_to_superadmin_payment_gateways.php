@@ -14,7 +14,8 @@ return new class extends Migration
         if (!Schema::hasColumn('superadmin_payment_gateways', 'paddle_webhook_secret')) {
             Schema::table('superadmin_payment_gateways', function (Blueprint $table) {
                 $table->text('paddle_webhook_secret')->nullable()->after('live_paddle_client_token');
-            });
+            
+		});
         }
     }
 
@@ -27,7 +28,8 @@ return new class extends Migration
             if (Schema::hasColumn('superadmin_payment_gateways', 'paddle_webhook_secret')) {
                 $table->dropColumn('paddle_webhook_secret');
             }
-        });
+        
+		});
     }
 };
 

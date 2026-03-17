@@ -20,14 +20,16 @@ return new class extends Migration
             if (Schema::hasColumn('menu_table', 'isactive') && !Schema::hasColumn('menu_table', 'is_active')) {
                 Schema::table('menu_table', function (Blueprint $table) {
                     $table->renameColumn('isactive', 'is_active');
-                });
+                
+		});
             }
 
             // Case 2: neither exists → create new
             if (!Schema::hasColumn('menu_table', 'is_active')) {
                 Schema::table('menu_table', function (Blueprint $table) {
                     $table->boolean('is_active')->default(true)->after('menu_id');
-                });
+                
+		});
             }
         }
 
@@ -41,7 +43,8 @@ return new class extends Migration
             if (Schema::hasColumn('menu_table', 'is_active')) {
                 Schema::table('menu_table', function (Blueprint $table) {
                     $table->dropColumn('is_active');
-                });
+                
+		});
             }
         }
 };

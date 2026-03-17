@@ -15,10 +15,12 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone_number')->nullable()->after('email');
             $table->string('phone_code')->nullable()->after('phone_number');
-        });
+        
+		});
         Schema::table('restaurants', function (Blueprint $table) {
             $table->string('phone_code')->nullable()->after('phone_number');
-        });
+        
+		});
     }
 
     /**
@@ -28,10 +30,12 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['phone_number', 'phone_code']);
-        });
+        
+		});
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('phone_code');
-        });
+        
+		});
     }
 
 };

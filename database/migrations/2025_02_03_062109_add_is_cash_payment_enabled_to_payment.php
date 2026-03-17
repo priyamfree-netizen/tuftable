@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('payment_gateway_credentials', function (Blueprint $table) {
             $table->boolean('is_cash_payment_enabled')->default(false)->after('is_pickup_payment_enabled');
-        });
+        
+		});
     }
 
     /**
@@ -25,7 +26,8 @@ return new class extends Migration
         Schema::table('payment_gateway_credentials', function (Blueprint $table) {
              $table->dropColumn('is_cash_payment_enabled');
 
-        });
+        
+		});
     }
 
 };

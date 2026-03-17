@@ -17,7 +17,8 @@ return new class extends Migration
             // Drop existing foreign key
             Schema::table('order_item_modifier_options', function (Blueprint $table) {
                 $table->dropForeign(['modifier_option_id']);
-            });
+            
+		});
 
             Schema::table('order_item_modifier_options', function (Blueprint $table) {
                 // Make modifier_option_id nullable
@@ -27,7 +28,8 @@ return new class extends Migration
                 $table->decimal('modifier_option_price', 10, 2)->nullable()->after('modifier_option_name');
 
                 $table->foreign('modifier_option_id')->references('id')->on('modifier_options')->onUpdate('cascade')->onDelete('SET NULL');
-            });
+            
+		});
         } catch (\Exception $e) {
             Log::error('Error migrating modifier option prices: ' . $e->getMessage());
         }
@@ -124,7 +126,8 @@ return new class extends Migration
         // Drop foreign key first
         Schema::table('order_item_modifier_options', function (Blueprint $table) {
             $table->dropForeign(['modifier_option_id']);
-        });
+        
+		});
 
         // Revert changes
         Schema::table('order_item_modifier_options', function (Blueprint $table) {
@@ -134,6 +137,7 @@ return new class extends Migration
 
             // Restore original foreign key with cascade
             $table->foreign('modifier_option_id')->references('id')->on('modifier_options')->onUpdate('cascade')->onDelete('cascade');
-        });
+        
+		});
     }
 };

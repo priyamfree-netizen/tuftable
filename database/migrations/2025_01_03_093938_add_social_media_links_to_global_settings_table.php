@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('facebook_link', 255)->nullable();
             $table->string('instagram_link', 255)->nullable();
             $table->string('twitter_link', 255)->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -26,7 +27,8 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn(['facebook_link', 'instagram_link', 'twitter_link']);
-        });
+        
+		});
     }
 
 };

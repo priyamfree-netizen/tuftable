@@ -14,7 +14,8 @@ return new class extends Migration
         if (!Schema::hasColumn('menu_items', 'is_available')) {
             Schema::table('menu_items', function (Blueprint $table) {
                 $table->boolean('is_available')->default(true);
-            });
+            
+		});
         }
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->dropColumn('is_available');
-        });
+        
+		});
     }
 };

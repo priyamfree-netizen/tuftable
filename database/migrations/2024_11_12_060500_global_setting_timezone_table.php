@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('timezone')->nullable()->default('Asia/Kolkata');
-        });
+        
+		});
     }
 
     /**
@@ -24,6 +25,7 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('timezone');
-        });
+        
+		});
     }
 };

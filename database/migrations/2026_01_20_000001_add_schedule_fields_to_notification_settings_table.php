@@ -18,7 +18,8 @@ return new class extends Migration
                 // Track last time we sent (to avoid duplicate sends)
                 $table->timestamp('last_sent_at')->nullable()->after('send_time');
             }
-        });
+        
+		});
     }
 
     public function down(): void
@@ -31,7 +32,8 @@ return new class extends Migration
             if (Schema::hasColumn('notification_settings', 'send_time')) {
                 $table->dropColumn('send_time');
             }
-        });
+        
+		});
     }
 };
 

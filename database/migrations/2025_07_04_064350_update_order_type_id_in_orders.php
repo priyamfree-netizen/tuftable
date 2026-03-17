@@ -21,14 +21,16 @@ return new class extends Migration
                 $table->unsignedBigInteger('order_type_id')->nullable()->after('updated_at');
                 $table->foreign('order_type_id')->references('id')->on('order_types')->onDelete('set null');
                 $table->string('custom_order_type_name')->nullable()->after('order_type_id');
-            });
+            
+		});
         }
 
         // Make order_type column nullable and string if it exists and not already nullable
         if (Schema::hasColumn('orders', 'order_type')) {
             Schema::table('orders', function (Blueprint $table) {
                 $table->string('order_type')->nullable()->change();
-            });
+            
+		});
         }
 
         // Optimized: Bulk update order_type_id for existing orders using a single query per type
@@ -53,7 +55,8 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['order_type_id']);
             $table->dropColumn(['order_type_id', 'custom_order_type_name']);
-        });
+        
+		});
     }
 
 };

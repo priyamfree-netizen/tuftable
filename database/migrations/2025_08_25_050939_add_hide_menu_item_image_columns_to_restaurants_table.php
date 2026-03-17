@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('hide_menu_item_image_on_pos')->default(false)->after('show_order_type_options');
             $table->boolean('hide_menu_item_image_on_customer_site')->default(false)->after('hide_menu_item_image_on_pos');
-        });
+        
+		});
     }
 
     /**
@@ -24,6 +25,7 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['hide_menu_item_image_on_pos', 'hide_menu_item_image_on_customer_site']);
-        });
+        
+		});
     }
 };

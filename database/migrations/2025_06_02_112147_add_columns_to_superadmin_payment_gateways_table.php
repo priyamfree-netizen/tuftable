@@ -18,15 +18,18 @@ return new class extends Migration
             $table->string('test_paypal_secret')->nullable();
             $table->boolean('paypal_status')->default(false);
             $table->enum('paypal_mode', ['sandbox', 'live'])->default('sandbox');
-        });
+        
+		});
 
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->string('paypal_payment_id')->nullable();
-        });
+        
+		});
 
         Schema::table('global_invoices', function (Blueprint $table) {
             $table->string('event_id')->nullable()->after('transaction_id');
-        });
+        
+		});
     }
 
     /**
@@ -43,16 +46,19 @@ return new class extends Migration
                 'paypal_status',
                 'paypal_mode',
             ]);
-        });
+        
+		});
 
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->dropColumn([
                 'paypal_payment_id',
             ]);
-        });
+        
+		});
         
         Schema::table('global_invoices', function (Blueprint $table) {
             $table->dropColumn('event_id');
-        });
+        
+		});
     }
 };

@@ -14,7 +14,8 @@ return new class extends Migration
        Schema::table('packages', function (Blueprint $table) {
                 $table->string('xendit_annual_plan_id')->nullable()->after('paystack_monthly_plan_id');
                 $table->string('xendit_monthly_plan_id')->nullable()->after('xendit_annual_plan_id');
-            });
+            
+		});
     }
 
     /**
@@ -24,6 +25,7 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             //
-        });
+        
+		});
     }
 };

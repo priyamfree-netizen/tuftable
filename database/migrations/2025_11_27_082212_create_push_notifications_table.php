@@ -26,7 +26,8 @@ return new class extends Migration
             $table->string('vapid_public_key')->nullable();
             $table->string('vapid_private_key')->nullable();
             $table->string('vapid_subject')->default('mailto:admin@example.com');
-        });
+        
+		});
 
         Schema::create('notifications', function (Blueprint $table) {
             $table->char('id', 36)->primary();
@@ -52,7 +53,8 @@ return new class extends Migration
             $table->dropColumn('vapid_public_key');
             $table->dropColumn('vapid_private_key');
             $table->dropColumn('vapid_subject');
-        });
+        
+		});
         Schema::dropIfExists('notifications');
     }
 };

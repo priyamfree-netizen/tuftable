@@ -16,7 +16,8 @@ return new class extends Migration
                 $table->string('paddle_annual_price_id')->nullable()->after('xendit_monthly_plan_id');
                 $table->string('paddle_monthly_price_id')->nullable()->after('paddle_annual_price_id');
                 $table->string('paddle_lifetime_price_id')->nullable()->after('paddle_monthly_price_id');
-            });
+            
+		});
         }
     }
 
@@ -29,7 +30,8 @@ return new class extends Migration
             if (Schema::hasColumn('packages', 'paddle_annual_price_id')) {
                 $table->dropColumn(['paddle_annual_price_id', 'paddle_monthly_price_id', 'paddle_lifetime_price_id']);
             }
-        });
+        
+		});
     }
 };
 

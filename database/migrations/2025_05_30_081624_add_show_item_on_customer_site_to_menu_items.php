@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->boolean('show_on_customer_site')->default(true)->after('is_available');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->dropColumn('show_on_customer_site');
-        });
+        
+		});
     }
 };

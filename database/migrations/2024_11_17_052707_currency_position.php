@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedInteger('no_of_decimal')->default(2);
             $table->string('thousand_separator')->nullable()->default(',');
             $table->string('decimal_separator')->nullable()->default('.');
-        });
+        
+		});
     }
 
     /**

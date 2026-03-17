@@ -89,7 +89,8 @@ return new class extends Migration
         try {
             Schema::table('branch_operational_shifts', function (Blueprint $table) {
                 $table->dropIndex('branch_operational_shifts_branch_id_day_of_week_index');
-            });
+            
+		});
         } catch (\Exception $e) {
             // Index might not exist, continue
         }
@@ -97,7 +98,8 @@ return new class extends Migration
         // Change column to JSON
         Schema::table('branch_operational_shifts', function (Blueprint $table) {
             $table->json('day_of_week')->change();
-        });
+        
+		});
     }
 
     /**
@@ -117,11 +119,13 @@ return new class extends Migration
         // Change back to VARCHAR
         Schema::table('branch_operational_shifts', function (Blueprint $table) {
             $table->string('day_of_week', 20)->default('All')->change();
-        });
+        
+		});
         
         // Re-add the composite index
         Schema::table('branch_operational_shifts', function (Blueprint $table) {
             $table->index(['branch_id', 'day_of_week']);
-        });
+        
+		});
     }
 };

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('sandbox_paypal_client_id')->nullable();
             $table->string('sandbox_paypal_secret')->nullable();
 
-        });
+        
+		});
     }
 
     /**
@@ -29,6 +30,7 @@ return new class extends Migration
     {
         Schema::table('payment_gateway_credentials', function (Blueprint $table) {
             //
-        });
+        
+		});
     }
 };

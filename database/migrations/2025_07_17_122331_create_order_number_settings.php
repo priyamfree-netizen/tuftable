@@ -30,7 +30,8 @@ return new class extends Migration
 
         Schema::table('orders', function (Blueprint $table) {
             $table->string('formatted_order_number')->nullable()->after('order_number');
-        });
+        
+		});
     }
 
     /**
@@ -41,6 +42,7 @@ return new class extends Migration
         Schema::dropIfExists('order_number_settings');
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('formatted_order_number');
-        });
+        
+		});
     }
 };

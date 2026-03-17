@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('paystack_payment_url')->nullable()->default('https://api.paystack.co');
             $table->boolean('paystack_status')->default(false);
             $table->enum('paystack_mode', ['sandbox', 'live'])->default('sandbox');
-        });
+        
+		});
     }
 
     /**
@@ -39,6 +40,7 @@ return new class extends Migration
             $table->dropColumn('paystack_payment_url');
             $table->dropColumn('paystack_status');
             $table->dropColumn('paystack_mode');
-        });
+        
+		});
     }
 };

@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('customer_login_required')->default(0);
-        });
+        
+		});
     }
 
     /**
@@ -24,7 +25,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['customer_login_required']);
-        });
+        
+		});
     }
 
 };

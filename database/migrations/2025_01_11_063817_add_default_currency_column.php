@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::table('global_settings', function (Blueprint $table) {
             $table->unsignedBigInteger('default_currency_id')->nullable();
             $table->foreign('default_currency_id')->references('id')->on('global_currencies')->onDelete('cascade')->onUpdate('cascade');
-        });
+        
+		});
 
         $globalSetting = GlobalSetting::first();
 
@@ -34,6 +35,7 @@ return new class extends Migration
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropForeign(['default_currency_id']);
             $table->dropColumn('default_currency_id');
-        });
+        
+		});
     }
 };

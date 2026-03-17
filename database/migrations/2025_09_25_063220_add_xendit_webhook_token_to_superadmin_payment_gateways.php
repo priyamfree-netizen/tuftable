@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('superadmin_payment_gateways', function (Blueprint $table) {
              $table->string('test_xendit_webhook_token')->nullable();
             $table->string('live_xendit_webhook_token')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -27,6 +28,7 @@ return new class extends Migration
                 'test_xendit_webhook_token',
                 'live_xendit_webhook_token'
             ]);
-        });
+        
+		});
     }
 };

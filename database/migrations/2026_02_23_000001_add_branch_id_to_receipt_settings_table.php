@@ -13,7 +13,8 @@ return new class extends Migration
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->unsignedBigInteger('branch_id')->nullable()->after('restaurant_id');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade')->onUpdate('cascade');
-        });
+        
+		});
 
         // Create receipt settings for existing branches that don't have one yet
         Branch::withoutGlobalScopes()->each(function (Branch $branch) {
@@ -48,6 +49,7 @@ return new class extends Migration
         Schema::table('receipt_settings', function (Blueprint $table) {
             $table->dropForeign(['branch_id']);
             $table->dropColumn('branch_id');
-        });
+        
+		});
     }
 };

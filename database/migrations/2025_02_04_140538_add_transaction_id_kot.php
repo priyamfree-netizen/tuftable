@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::table('kots', function (Blueprint $table) {
             $table->string('transaction_id')->nullable()->after('order_id');
-        });
+        
+		});
 
         Schema::table('kot_items', function (Blueprint $table) {
             $table->string('transaction_id')->nullable()->after('kot_id');
-        });
+        
+		});
 
         Schema::table('order_items', function (Blueprint $table) {
             $table->string('transaction_id')->nullable()->after('order_id');
-        });
+        
+		});
 
     }
 
@@ -32,15 +35,18 @@ return new class extends Migration
     {
         Schema::table('kots', function (Blueprint $table) {
             $table->dropColumn('transaction_id');
-        });
+        
+		});
 
         Schema::table('kot_items', function (Blueprint $table) {
             $table->dropColumn('transaction_id');
-        });
+        
+		});
 
         Schema::table('order_items', function (Blueprint $table) {
             $table->dropColumn('transaction_id');
-        });
+        
+		});
 
     }
 };

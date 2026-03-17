@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('kot_items', function (Blueprint $table) {
             $table->enum('status', ['cooking', 'ready'])->nullable()->after('quantity');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('kot_items', function (Blueprint $table) {
             $table->dropColumn('status');
-        });
+        
+		});
     }
 };

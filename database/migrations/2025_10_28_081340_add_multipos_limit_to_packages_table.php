@@ -14,7 +14,8 @@ return new class extends Migration
         if (!Schema::hasColumn('packages', 'multipos_limit')) {
             Schema::table('packages', function (Blueprint $table) {
                 $table->integer('multipos_limit')->nullable()->after('branch_limit')->default(-1);
-            });
+            
+		});
         }
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             $table->dropColumn('multipos_limit');
-        });
+        
+		});
     }
 };

@@ -21,18 +21,21 @@ return new class extends Migration
             $table->enum('payfast_mode', ['sandbox', 'live'])->default('sandbox');
             $table->boolean('payfast_status')->default(false);
 
-        });
+        
+		});
 
         Schema::table('global_subscriptions', function (Blueprint $table) {
             $table->string('payfast_plan')->nullable();
             $table->string('payfast_status')->nullable();
-        });
+        
+		});
         
         Schema::table('global_invoices', function (Blueprint $table) {
             $table->string('m_payment_id')->nullable();
             $table->string('pf_payment_id')->nullable();
             $table->string('payfast_plan')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -49,17 +52,20 @@ return new class extends Migration
             $table->dropColumn('test_payfast_passphrase');
             $table->dropColumn('payfast_mode');
             $table->dropColumn('payfast_status');
-        });
+        
+		});
 
         Schema::table('global_subscriptions', function (Blueprint $table) {
             $table->dropColumn('payfast_plan');
             $table->dropColumn('payfast_status');
-        });
+        
+		});
 
         Schema::table('global_invoices', function (Blueprint $table) {
             $table->dropColumn('m_payment_id');
             $table->dropColumn('pf_payment_id');
             $table->dropColumn('payfast_plan');
-        });
+        
+		});
     }
 };

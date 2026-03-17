@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('delivery_executives', function (Blueprint $table) {
             $table->string('phone_code')->nullable()->after('phone');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('delivery_executives', function (Blueprint $table) {
             $table->dropColumn('phone_code');
-        });
+        
+		});
     }
 };

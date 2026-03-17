@@ -55,7 +55,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('customers', function (Blueprint $table) {});
+        Schema::table('customers', function (Blueprint $table) {
+		});
         $module = Module::where('name', 'Customers')->first();
 
         if ($module) {

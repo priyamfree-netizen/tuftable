@@ -40,7 +40,8 @@ class CreateGlobalCurrenciesTable extends Migration
                 $table->decimal('exchange_rate', 16, 2)->nullable();
                 $table->decimal('usd_price', 16, 2)->nullable();
                 $table->enum('is_cryptocurrency', ['yes', 'no'])->default('no');
-            });
+            
+		});
         }
 
         Artisan::call('db:seed', [
@@ -60,6 +61,7 @@ class CreateGlobalCurrenciesTable extends Migration
             $table->dropColumn('exchange_rate');
             $table->dropColumn('usd_price');
             $table->dropColumn('is_cryptocurrency');
-        });
+        
+		});
     }
 } 

@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('branch_operational_shifts', function (Blueprint $table) {
             $table->string('day_of_week', 20)->default('All')->change();
-        });
+        
+		});
     }
 
     /**
@@ -27,10 +28,15 @@ return new class extends Migration
             // but for safety we use string instead since going backwards in migration isn't common.
             // Using standard enum change on down migration.
             if (\DB::getDriverName() === 'mysql') {
+                if (\DB::getDriverName() === 'mysql') {
                 DB::statement("ALTER TABLE branch_operational_shifts MODIFY COLUMN day_of_week ENUM('All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL DEFAULT 'All'");
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE branch_operational_shifts DROP CONSTRAINT IF EXISTS branch_operational_shifts_day_of_week_check");
+            }
             } else {
                 $table->string('day_of_week', 20)->default('All')->change();
             }
-        });
+        
+		});
     }
 };

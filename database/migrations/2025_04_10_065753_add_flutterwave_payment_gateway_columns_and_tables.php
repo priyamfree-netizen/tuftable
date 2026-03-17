@@ -22,7 +22,8 @@ return new class extends Migration
                 $table->string('live_flutterwave_secret')->nullable();
                 $table->string('live_flutterwave_hash')->nullable();
                 $table->string('flutterwave_webhook_secret_hash')->nullable();
-            });
+            
+		});
         }
 
         if (!Schema::hasColumn('global_subscriptions', 'flutterwave_id')) {
@@ -31,7 +32,8 @@ return new class extends Migration
                 $table->string('flutterwave_payment_ref')->nullable();
                 $table->string('flutterwave_status')->nullable();
                 $table->string('flutterwave_customer_id')->nullable();
-            });
+            
+		});
         }
 
         if (!Schema::hasColumn('superadmin_payment_gateways', 'flutterwave_status')) {
@@ -46,7 +48,8 @@ return new class extends Migration
                 $table->text('live_flutterwave_secret')->nullable();
                 $table->text('live_flutterwave_hash')->nullable();
                 $table->text('flutterwave_live_webhook_key')->nullable();
-            });
+            
+		});
         }
 
         if (!Schema::hasTable('flutterwave_payments')) {
@@ -65,21 +68,29 @@ return new class extends Migration
 
 
         Schema::table('payments', function (Blueprint $table) {
-            $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay', 'flutterwave', 'others'])->default('cash')->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay', 'flutterwave', 'others'])->default('cash')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE payments DROP CONSTRAINT IF EXISTS payments_payment_method_check");
+                $table->string('payment_method')->default('cash')->change();
+            }
+        
+		});
 
         if (!Schema::hasColumn('packages', 'flutterwave_annual_plan_id')) {
             Schema::table('packages', function (Blueprint $table) {
                 $table->string('flutterwave_annual_plan_id')->nullable()->after('razorpay_monthly_plan_id');
                 $table->string('flutterwave_monthly_plan_id')->nullable()->after('flutterwave_annual_plan_id');
-            });
+            
+		});
         }
 
         if (!Schema::hasColumn('restaurant_payments', 'flutterwave_transaction_id')) {
             Schema::table('restaurant_payments', function (Blueprint $table) {
                 $table->string('flutterwave_transaction_id')->nullable();
                 $table->string('flutterwave_payment_ref')->nullable();
-            });
+            
+		});
         }
     }
 

@@ -15,7 +15,8 @@ return new class extends Migration
             if (!Schema::hasColumn('global_settings', 'enable_paddle')) {
                 $table->boolean('enable_paddle')->default(true);
             }
-        });
+        
+		});
     }
 
     /**
@@ -27,6 +28,7 @@ return new class extends Migration
             if (Schema::hasColumn('global_settings', 'enable_paddle')) {
                 $table->dropColumn('enable_paddle');
             }
-        });
+        
+		});
     }
 };

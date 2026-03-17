@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('test_payfast_merchant_id')->nullable();
             $table->string('test_payfast_merchant_key')->nullable();
             $table->string('test_payfast_passphrase')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -30,6 +31,7 @@ return new class extends Migration
     {
         Schema::table('payment_gateway_credentials', function (Blueprint $table) {
             
-        });
+        
+		});
     }
 };

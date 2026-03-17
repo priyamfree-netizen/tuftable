@@ -22,7 +22,8 @@ return new class extends Migration
             $table->text('live_paddle_api_key')->nullable();
             $table->string('live_paddle_public_key')->nullable();
             $table->text('live_paddle_client_token')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -43,7 +44,8 @@ return new class extends Migration
                 'live_paddle_public_key',
                 'live_paddle_client_token'
             ]);
-        });
+        
+		});
     }
 
 };

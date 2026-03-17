@@ -16,7 +16,8 @@ return new class extends Migration
         if (!Schema::hasColumn('orders', 'tax_mode')) {
             Schema::table('orders', function (Blueprint $table) {
             $table->string('tax_mode')->nullable()->after('total_tax_amount');
-            });
+            
+		});
         }
 
         // Step 2: Update tax_mode efficiently
@@ -72,6 +73,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('tax_mode');
-        });
+        
+		});
     }
 };

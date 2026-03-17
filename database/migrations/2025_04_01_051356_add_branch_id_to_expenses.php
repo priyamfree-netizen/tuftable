@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('expense_title')->nullable()->after('expense_category_id');
             $table->unsignedBigInteger('branch_id')->after('expense_category_id');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade')->onUpdate('cascade');
-        });
+        
+		});
     }
 
     /**
@@ -29,7 +30,8 @@ return new class extends Migration
             $table->dropForeign(['branch_id']);
             $table->dropColumn(['expense_title', 'branch_id']);
             $table->string('payment_method')->nullable(false)->change();
-        });
+        
+		});
     }
 
 };

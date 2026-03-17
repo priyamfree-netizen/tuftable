@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->enum('split_type', ['even', 'custom', 'items'])->nullable();
-        });
+        
+		});
 
         Schema::create('split_orders', function (Blueprint $table) {
             $table->id();
@@ -42,6 +43,7 @@ return new class extends Migration
 
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('split_type');
-        });
+        
+		});
     }
 };

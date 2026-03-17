@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('payments', function (Blueprint $table) {
             $table->boolean('is_due')->default(false)->after('amount');
             $table->decimal('due_amount_received', 16, 2)->nullable()->after('is_due');
-        });
+        
+		});
     }
 
     /**
@@ -24,6 +25,7 @@ return new class extends Migration
     {
         Schema::table('payments', function (Blueprint $table) {
             $table->dropColumn(['is_due', 'due_amount_received']);
-        });
+        
+		});
     }
 };

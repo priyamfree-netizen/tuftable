@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('order_types', function (Blueprint $table) {
             $table->boolean('enable_token_number')->default(false)->after('is_default');
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('order_types', function (Blueprint $table) {
             $table->dropColumn('enable_token_number');
-        });
+        
+		});
     }
 };

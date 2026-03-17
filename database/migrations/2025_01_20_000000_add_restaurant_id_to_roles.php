@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('roles', function (Blueprint $table) {
             $table->foreignId('restaurant_id')->nullable()->constrained('restaurants')->onDelete('cascade')->after('id');
             $table->string('display_name')->nullable()->after('name');
-        });
+        
+		});
 
         $restaurant = Restaurant::all();
 
@@ -47,7 +48,8 @@ return new class extends Migration
         Schema::table('roles', function (Blueprint $table) {
             $table->dropForeign(['restaurant_id']);
             $table->dropColumn('restaurant_id');
-        });
+        
+		});
 
     }
 };

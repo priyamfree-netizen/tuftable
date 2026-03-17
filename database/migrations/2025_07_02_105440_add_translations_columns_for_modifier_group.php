@@ -19,20 +19,27 @@ return new class extends Migration
         ) {
             Schema::table('modifier_options', function (Blueprint $table) {
                 $table->text('name_json')->nullable()->after('name');
-            });
+            
+		});
 
             // Step 2: Copy existing values into JSON format with current locale
             $locale = app()->getLocale() ?: 'en'; // Default to 'en' if locale is not set
-            DB::statement("UPDATE modifier_options SET name_json = JSON_OBJECT('$locale', name)");
+            if (\DB::getDriverName() === 'mysql') {
+                DB::statement("UPDATE modifier_options SET name_json = JSON_OBJECT('$locale', name)");
+            } else {
+                DB::statement("UPDATE modifier_options SET name_json = json_build_object('$locale', name)");
+            }
 
             // Step 3: Drop the old column and rename the new one
             Schema::table('modifier_options', function (Blueprint $table) {
                 $table->dropColumn('name');
-            });
+            
+		});
 
             Schema::table('modifier_options', function (Blueprint $table) {
                 $table->renameColumn('name_json', 'name');
-            });
+            
+		});
         }
 
         Schema::create('modifier_group_translations', function (Blueprint $table) {

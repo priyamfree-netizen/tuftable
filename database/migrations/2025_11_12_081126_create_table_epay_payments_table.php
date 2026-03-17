@@ -21,7 +21,8 @@ return new class extends Migration
                 $table->string('test_epay_client_id')->nullable();
                 $table->string('test_epay_client_secret')->nullable();
                 $table->string('test_epay_terminal_id')->nullable();
-            });
+            
+		});
         }
 
         if (!Schema::hasTable('epay_payments')) {
@@ -43,12 +44,14 @@ return new class extends Migration
 
         Schema::table('payments', function (Blueprint $table) {
             $table->string('payment_method')->default('cash')->change();
-        });
+        
+		});
 
         if (!Schema::hasColumn('global_settings', 'enable_epay')) {
             Schema::table('global_settings', function (Blueprint $table) {
                 $table->boolean('enable_epay')->default(true);
-            });
+            
+		});
         }
     }
 
@@ -68,16 +71,24 @@ return new class extends Migration
                 'test_epay_client_secret',
                 'test_epay_terminal_id',
             ]);
-        });
+        
+		});
 
         Schema::dropIfExists('epay_payments');
 
         Schema::table('payments', function (Blueprint $table) {
-            $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'flutterwave', 'razorpay', 'paypal', 'payfast', 'paystack'])->default('cash')->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'flutterwave', 'razorpay', 'paypal', 'payfast', 'paystack'])->default('cash')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE payments DROP CONSTRAINT IF EXISTS payments_payment_method_check");
+                $table->string('payment_method')->default('cash')->change();
+            }
+        
+		});
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('enable_epay');
-        });
+        
+		});
     }
 };

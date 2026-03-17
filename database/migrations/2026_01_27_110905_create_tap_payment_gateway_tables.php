@@ -21,7 +21,8 @@ return new class extends Migration
                 $table->text('live_tap_public_key')->nullable();
                 $table->text('test_tap_secret_key')->nullable();
                 $table->text('test_tap_public_key')->nullable();
-            });
+            
+		});
         }
 
         // Create tap_payments table (same style as paypal_payments / epay_payments)
@@ -43,7 +44,8 @@ return new class extends Migration
         if (!Schema::hasColumn('global_settings', 'enable_tap')) {
             Schema::table('global_settings', function (Blueprint $table) {
                 $table->boolean('enable_tap')->default(true);
-            });
+            
+		});
         }
     }
 
@@ -68,7 +70,8 @@ return new class extends Migration
                     $table->dropColumn($col);
                 }
             }
-        });
+        
+		});
 
         Schema::dropIfExists('tap_payments');
 
@@ -76,6 +79,7 @@ return new class extends Migration
             if (Schema::hasColumn('global_settings', 'enable_tap')) {
                 $table->dropColumn('enable_tap');
             }
-        });
+        
+		});
     }
 };

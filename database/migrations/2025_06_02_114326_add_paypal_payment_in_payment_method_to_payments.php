@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::table('payments', function (Blueprint $table) {
             // ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay', 'paypal']
             $table->string('payment_method')->default('cash')->nullable()->change();
-        });
+        
+		});
     }
 
     /**
@@ -24,7 +25,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay', 'paypal'])->default('cash')->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay', 'paypal'])->default('cash')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE payments DROP CONSTRAINT IF EXISTS payments_payment_method_check");
+                $table->string('payment_method')->default('cash')->change();
+            }
+        
+		});
     }
 };

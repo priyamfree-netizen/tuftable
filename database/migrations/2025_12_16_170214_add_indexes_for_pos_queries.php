@@ -45,7 +45,8 @@ return new class extends Migration
             if (!$this->hasIndex('orders', 'idx_orders_delivery_app')) {
                 $table->index('delivery_app_id', 'idx_orders_delivery_app');
             }
-        });
+        
+		});
 
         // Indexes for menu_item_prices table
         Schema::table('menu_item_prices', function (Blueprint $table) {
@@ -77,7 +78,8 @@ return new class extends Migration
             if (!$this->hasIndex('menu_item_prices', 'idx_prices_menu_item_id')) {
                 $table->index('menu_item_id', 'idx_prices_menu_item_id');
             }
-        });
+        
+		});
 
         // Indexes for menu_items table
         Schema::table('menu_items', function (Blueprint $table) {
@@ -98,7 +100,8 @@ return new class extends Migration
             if (!$this->hasIndex('menu_items', 'idx_menu_items_menu_category')) {
                 $table->index(['menu_id', 'item_category_id'], 'idx_menu_items_menu_category');
             }
-        });
+        
+		});
 
         // Indexes for kot_items table
         Schema::table('kot_items', function (Blueprint $table) {
@@ -119,7 +122,8 @@ return new class extends Migration
             if (!$this->hasIndex('kot_items', 'idx_kot_items_order_item')) {
                 $table->index('order_item_id', 'idx_kot_items_order_item');
             }
-        });
+        
+		});
 
         // Indexes for order_items table
         Schema::table('order_items', function (Blueprint $table) {
@@ -134,7 +138,8 @@ return new class extends Migration
             if (!$this->hasIndex('order_items', 'idx_order_items_order_id')) {
                 $table->index('order_id', 'idx_order_items_order_id');
             }
-        });
+        
+		});
 
         // Indexes for tables table
         Schema::table('tables', function (Blueprint $table) {
@@ -149,7 +154,8 @@ return new class extends Migration
             if (!$this->hasIndex('tables', 'idx_tables_branch_status')) {
                 $table->index(['branch_id', 'available_status'], 'idx_tables_branch_status');
             }
-        });
+        
+		});
 
         // Indexes for kots table
         Schema::table('kots', function (Blueprint $table) {
@@ -164,7 +170,8 @@ return new class extends Migration
             if (!$this->hasIndex('kots', 'idx_kots_branch')) {
                 $table->index('branch_id', 'idx_kots_branch');
             }
-        });
+        
+		});
     }
 
     /**
@@ -175,36 +182,42 @@ return new class extends Migration
         Schema::table('kots', function (Blueprint $table) {
             $table->dropIndex('idx_kots_branch');
             $table->dropIndex('idx_kots_order_status');
-        });
+        
+		});
 
         Schema::table('tables', function (Blueprint $table) {
             $table->dropIndex('idx_tables_branch_status');
             $table->dropIndex('idx_tables_branch_code');
-        });
+        
+		});
 
         Schema::table('order_items', function (Blueprint $table) {
             $table->dropIndex('idx_order_items_order_id');
             $table->dropIndex('idx_order_items_order_menu_variation');
-        });
+        
+		});
 
         Schema::table('kot_items', function (Blueprint $table) {
             $table->dropIndex('idx_kot_items_order_item');
             $table->dropIndex('idx_kot_items_menu_variation_qty');
             $table->dropIndex('idx_kot_items_kot_status');
-        });
+        
+		});
 
         Schema::table('menu_items', function (Blueprint $table) {
             $table->dropIndex('idx_menu_items_menu_category');
             $table->dropIndex('idx_menu_items_menu');
             $table->dropIndex('idx_menu_items_category');
-        });
+        
+		});
 
         Schema::table('menu_item_prices', function (Blueprint $table) {
             $table->dropIndex('idx_prices_menu_item_id');
             $table->dropIndex('idx_prices_type_app_status');
             $table->dropIndex('idx_prices_item_status_type_app');
             $table->dropIndex('idx_prices_item_status_variation_type_app');
-        });
+        
+		});
 
         Schema::table('orders', function (Blueprint $table) {
             $table->dropIndex('idx_orders_delivery_app');
@@ -212,7 +225,8 @@ return new class extends Migration
             $table->dropIndex('idx_orders_status_branch');
             $table->dropIndex('idx_orders_table_branch_status');
             $table->dropIndex('idx_orders_branch_table_status');
-        });
+        
+		});
     }
 
     /**

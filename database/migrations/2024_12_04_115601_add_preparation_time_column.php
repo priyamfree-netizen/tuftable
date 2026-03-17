@@ -14,7 +14,8 @@ return new class extends Migration
         if(!Schema::hasColumn('menu_items', 'preparation_time')){
             Schema::table('menu_items', function (Blueprint $table) {
                 $table->integer('preparation_time')->nullable();
-            });
+            
+		});
         }
 
     }
@@ -26,6 +27,7 @@ return new class extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->dropColumn('preparation_time');
-        });
+        
+		});
     }
 };

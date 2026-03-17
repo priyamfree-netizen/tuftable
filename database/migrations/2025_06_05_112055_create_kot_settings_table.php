@@ -22,8 +22,14 @@ return new class extends Migration
         });
 
         Schema::table('kot_items', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'cooking', 'ready'])->nullable()->after('quantity')->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['pending', 'cooking', 'ready'])->nullable()->after('quantity')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE kot_items DROP CONSTRAINT IF EXISTS kot_items_status_check");
+                $table->string('status')->nullable()->after('quantity')->change();
+            }
+        
+		});
 
         $checkBranch = Branch::select('id')->get();
 
@@ -45,8 +51,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('kot_items', function (Blueprint $table) {
-            $table->enum('status', ['cooking', 'ready'])->nullable()->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['cooking', 'ready'])->nullable()->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE kot_items DROP CONSTRAINT IF EXISTS kot_items_status_check");
+                $table->string('status')->nullable()->change();
+            }
+        
+		});
     
         Schema::dropIfExists('kot_settings');
     

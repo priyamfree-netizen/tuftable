@@ -16,8 +16,7 @@ return new class extends Migration
 
         if (!Schema::hasColumn('printers', 'print_type')) {
             Schema::table('printers', function (Blueprint $table) {
-                $table->enum('print_type', ['image', 'pdf'])->default('image')->after('printing_choice');
-            });
+		});
         }
     }
 };

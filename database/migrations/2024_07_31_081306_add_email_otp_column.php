@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::table('customers', function (Blueprint $table) {
             $table->string('email_otp')->nullable()->after('email');
-        });
+        
+		});
     }
 
     /**
@@ -24,7 +25,8 @@ return new class extends Migration
     {
         Schema::table('customers', function (Blueprint $table) {
             $table->dropColumn('email_otp');
-        });
+        
+		});
     }
 
 };

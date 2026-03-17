@@ -17,7 +17,8 @@ return new class extends Migration
         Schema::table('taxes', function (Blueprint $table) {
             $table->unsignedBigInteger('branch_id')->nullable()->after('restaurant_id');
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-        });
+        
+		});
 
         // Migrate existing taxes: for each existing tax (which has restaurant_id but no branch_id),
         // find all branches of that restaurant and create a copy per branch.
@@ -83,6 +84,7 @@ return new class extends Migration
         Schema::table('taxes', function (Blueprint $table) {
             $table->dropForeign(['branch_id']);
             $table->dropColumn('branch_id');
-        });
+        
+		});
     }
 };

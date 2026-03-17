@@ -16,20 +16,24 @@ return new class extends Migration
         // Drop existing foreign keys
         Schema::table('kot_places', function (Blueprint $table) {
             $table->dropForeign(['printer_id']);
-        });
+        
+		});
 
         Schema::table('order_places', function (Blueprint $table) {
             $table->dropForeign(['printer_id']);
-        });
+        
+		});
 
         // Add new foreign keys with 'set null'
         Schema::table('kot_places', function (Blueprint $table) {
             $table->foreign('printer_id')->references('id')->on('printers')->onDelete('set null');
-        });
+        
+		});
 
         Schema::table('order_places', function (Blueprint $table) {
             $table->foreign('printer_id')->references('id')->on('printers')->onDelete('set null');
-        });
+        
+		});
     }
 
     public function down(): void
@@ -38,12 +42,14 @@ return new class extends Migration
         Schema::table('kot_places', function (Blueprint $table) {
             $table->dropForeign(['printer_id']);
             $table->foreign('printer_id')->references('id')->on('printers')->onDelete('cascade');
-        });
+        
+		});
 
         Schema::table('order_places', function (Blueprint $table) {
             $table->dropForeign(['printer_id']);
             $table->foreign('printer_id')->references('id')->on('printers')->onDelete('cascade');
-        });
+        
+		});
     }
 
 };

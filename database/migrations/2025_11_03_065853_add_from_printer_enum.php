@@ -14,8 +14,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('print_jobs', function (Blueprint $table) {
-            $table->enum('status', ['done', 'failed', 'printing', 'pending'])->default('pending')->nullable()->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('status', ['done', 'failed', 'printing', 'pending'])->default('pending')->nullable()->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE print_jobs DROP CONSTRAINT IF EXISTS print_jobs_status_check");
+                $table->string('status')->default('pending')->nullable()->change();
+            }
+        
+		});
 
 
         if (Schema::hasColumn('printers', 'ipv4_address')) {
@@ -27,7 +33,8 @@ return new class extends Migration
                 $table->dropColumn('ip_address');
                 $table->dropColumn('port');
                 $table->dropColumn('path');
-            });
+            
+		});
         }
     }
 };

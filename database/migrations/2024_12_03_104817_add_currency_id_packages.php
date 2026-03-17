@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             $table->foreignId('currency_id')->nullable()->constrained('global_currencies')->onDelete('cascade');
-        });
+        
+		});
 
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->foreignId('package_id')->nullable()->constrained('packages')->onDelete('cascade');
-        });
+        
+		});
 
         $defaultCurrency = GlobalCurrency::first();
         $defaultPackage = Package::first();
@@ -42,11 +44,13 @@ return new class extends Migration
         Schema::table('packages', function (Blueprint $table) {
             $table->dropForeign(['currency_id']);
             $table->dropColumn('currency_id');
-        });
+        
+		});
 
         Schema::table('restaurant_payments', function (Blueprint $table) {
             $table->dropForeign(['package_id']);
             $table->dropColumn('package_id');
-        });
+        
+		});
     }
 };

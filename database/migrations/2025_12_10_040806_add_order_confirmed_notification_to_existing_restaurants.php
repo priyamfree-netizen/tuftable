@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('existing_restaurants', function (Blueprint $table) {
             //
-        });
+        
+		});
     }
 
     /**
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('existing_restaurants', function (Blueprint $table) {
             //
-        });
+        
+		});
     }
 };

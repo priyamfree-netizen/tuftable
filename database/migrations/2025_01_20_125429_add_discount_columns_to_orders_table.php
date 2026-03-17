@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('discount_type')->nullable();
             $table->decimal('discount_value', 16, 2)->nullable();
             $table->decimal('discount_amount', 16, 2)->nullable();
-            });
+            
+		});
         }
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn(['discount_type', 'discount_value', 'discount_amount']);
-        });
+        
+		});
     }
 };

@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->boolean('show_veg')->default(true)->after('allow_dine_in_orders');
             $table->boolean('show_halal')->default(false)->after('show_veg');
-        });
+        
+		});
     }
 
     /**
@@ -27,7 +28,8 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('show_veg');
             $table->dropColumn('show_halal');
-        });
+        
+		});
     }
 
 };

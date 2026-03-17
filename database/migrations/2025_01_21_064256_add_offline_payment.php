@@ -17,7 +17,8 @@ return new class extends Migration
             $table->boolean('is_offline_payment_enabled')->default(false);
             $table->string('offline_payment_detail')->nullable();
             $table->string('qr_code_image')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -30,7 +31,8 @@ return new class extends Migration
             $table->dropColumn('is_offline_payment_enabled');
             $table->dropColumn('offline_payment_detail');
             $table->dropColumn('qr_code_image');
-        });
+        
+		});
     }
 
 };

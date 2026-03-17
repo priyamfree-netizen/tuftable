@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->enum('tax_mode', ['order', 'item'])->default('order');
             $table->boolean('tax_inclusive')->default(false);
-        });
+        
+		});
     }
 
     /**
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn('tax_mode');
             $table->dropColumn('tax_inclusive');
-        });
+        
+		});
     }
 };

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->unsignedBigInteger('cancel_reason_id')->nullable();
             $table->foreign('cancel_reason_id')->references('id')->on('kot_cancel_reasons')->onDelete('cascade')->onUpdate('cascade');
             $table->string('cancel_reason_text')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['cancellation_reason_id']);
             $table->dropColumn('cancellation_reason_id');
-        });
+        
+		});
     }
 };

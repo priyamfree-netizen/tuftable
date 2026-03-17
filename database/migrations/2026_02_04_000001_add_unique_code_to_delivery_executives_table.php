@@ -16,7 +16,8 @@ return new class extends Migration
         if (!Schema::hasColumn('delivery_executives', 'unique_code')) {
             Schema::table('delivery_executives', function (Blueprint $table) {
                 $table->string('unique_code')->nullable()->after('phone');
-            });
+            
+		});
         }
 
         // UNIQUE CODE FOR EXISTING DELIVERY EXECUTIVES with uppercase
@@ -38,7 +39,8 @@ return new class extends Migration
         if (Schema::hasColumn('delivery_executives', 'unique_code')) {
             Schema::table('delivery_executives', function (Blueprint $table) {
                 $table->dropColumn('unique_code');
-            });
+            
+		});
         }
     }
 };

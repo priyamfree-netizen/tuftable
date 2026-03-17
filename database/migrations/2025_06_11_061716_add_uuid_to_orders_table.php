@@ -12,12 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay', 'flutterwave', 'paypal', 'payfast', 'others'])->default('cash')->change();
-        });
+            if (\DB::getDriverName() === 'mysql') {
+                $table->enum('payment_method', ['cash', 'upi', 'card', 'due', 'stripe', 'razorpay', 'flutterwave', 'paypal', 'payfast', 'others'])->default('cash')->change();
+            } else {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE payments DROP CONSTRAINT IF EXISTS payments_payment_method_check");
+                $table->string('payment_method')->default('cash')->change();
+            }
+        
+		});
 
         Schema::table('orders', function (Blueprint $table) {
         $table->uuid('uuid')->unique()->nullable()->after('id');
-        });
+        
+		});
 
         // Update existing records with UUIDs
         \App\Models\Order::query()->each(function ($order) {
@@ -34,6 +41,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('uuid');
-        });
+        
+		});
     }
 };

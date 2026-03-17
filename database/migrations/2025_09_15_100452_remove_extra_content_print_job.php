@@ -15,13 +15,15 @@ return new class extends Migration
         if (Schema::hasColumn('print_jobs', 'image_path')) {
             Schema::table('print_jobs', function (Blueprint $table) {
                 $table->dropColumn('image_path');
-            });
+            
+		});
         }
 
         if (Schema::hasColumn('print_jobs', 'html_content')) {
             Schema::table('print_jobs', function (Blueprint $table) {
                 $table->dropColumn('html_content');
-            });
+            
+		});
         }
     }
 
@@ -32,6 +34,7 @@ return new class extends Migration
     {
         Schema::table('print_jobs', function (Blueprint $table) {
             $table->dropColumn('html_content');
-        });
+        
+		});
     }
 };

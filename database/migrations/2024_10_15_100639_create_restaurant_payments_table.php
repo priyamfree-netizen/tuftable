@@ -27,13 +27,13 @@ return new class extends Migration
         });
 
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->enum('license_type', ['free', 'paid'])->default('free')->after('currency_id');
-        });
+		});
 
         Schema::table('global_settings', function (Blueprint $table) {
             $table->string('theme_hex')->nullable();
             $table->string('theme_rgb')->nullable();
-        });
+        
+		});
 
     }
 
@@ -44,7 +44,8 @@ return new class extends Migration
     {
         Schema::table('restaurants', function (Blueprint $table) {
             $table->dropColumn(['license_type']);
-        });
+        
+		});
 
         Schema::dropIfExists('restaurant_payments');
     }

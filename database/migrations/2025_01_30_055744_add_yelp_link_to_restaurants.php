@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
             $table->string('yelp_link', 255)->nullable()->after('twitter_link');
 
-        });
+        
+		});
     }
 
     /**
@@ -27,7 +28,8 @@ return new class extends Migration
         Schema::table('restaurants', function (Blueprint $table) {
               $table->dropColumn(['yelp_link']);
 
-        });
+        
+		});
     }
 
 };

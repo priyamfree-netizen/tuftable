@@ -24,7 +24,8 @@ return new class extends Migration
             if (!Schema::hasColumn('payment_gateway_credentials', 'live_mollie_key')) {
                 $table->string('live_mollie_key')->nullable();
             }
-        });
+        
+		});
     }
 
     /**
@@ -45,6 +46,7 @@ return new class extends Migration
             if (Schema::hasColumn('payment_gateway_credentials', 'live_mollie_key')) {
                 $table->dropColumn('live_mollie_key');
             }
-        });
+        
+		});
     }
 };

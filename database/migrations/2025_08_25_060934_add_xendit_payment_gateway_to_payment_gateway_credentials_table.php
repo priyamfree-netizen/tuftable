@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('test_xendit_secret_key')->nullable();
             $table->string('live_xendit_public_key')->nullable();
             $table->string('live_xendit_secret_key')->nullable();
-        });
+        
+		});
     }
 
     /**
@@ -36,6 +37,7 @@ return new class extends Migration
                 'live_xendit_public_key',
                 'live_xendit_secret_key'
             ]);
-        });
+        
+		});
     }
 };

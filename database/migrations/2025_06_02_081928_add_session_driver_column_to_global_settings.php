@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('global_settings', function (Blueprint $table) {
-            $table->enum('session_driver', ['file', 'database'])->default('database')->after('google_map_api_key');
-        });
+		});
     }
 
     /**
@@ -23,6 +22,7 @@ return new class extends Migration
     {
         Schema::table('global_settings', function (Blueprint $table) {
             $table->dropColumn('session_driver');
-        });
+        
+		});
     }
 };
