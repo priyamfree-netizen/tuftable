@@ -73,6 +73,10 @@ use App\Http\Controllers\SuperAdmin\FlutterwaveWebhookController;
 
 Route::get('/manifest.json', [HomeController::class, 'manifest'])->name('manifest');
 
+// Bypass verify-purchase — redirect straight to login
+Route::get('verify-purchase', fn() => redirect(route('login')))->name('verify-purchase');
+Route::post('purchase-verified', fn() => redirect(route('login')))->name('purchase-verified');
+
 // Signed URL endpoint used in emails to download Menu PDF without requiring a logged-in session
 Route::get('/menus/pdf/{restaurant}', [MenuController::class, 'downloadPdf'])
     ->name('menus.pdf')
