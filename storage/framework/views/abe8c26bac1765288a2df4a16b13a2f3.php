@@ -55,8 +55,7 @@
                         <img src="<?php echo e(global_setting()->logoUrl); ?>" class="ltr:mr-3 rtl:ml-3 h-6 sm:h-9"
                             alt="App Logo" />
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(global_setting()->show_logo_text): ?>
-                            <span
-                                class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white">Table</span></span>
+                            <span class="self-center text-xl font-semibold whitespace-nowrap"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white"> Table</span></span>
                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </a>
                     <div class="flex items-center">
@@ -142,8 +141,7 @@
                         <img src="<?php echo e(global_setting()->logoUrl); ?>" class="ltr:mr-3 rtl:ml-3 h-6 sm:h-9"
                             alt="App Logo" />
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(global_setting()->show_logo_text): ?>
-                            <span
-                                class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white">Table</span></span>
+                            <span class="self-center text-xl font-semibold whitespace-nowrap"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white"> Table</span></span>
                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </a>
                     <div class="flex items-center lg:order-2">

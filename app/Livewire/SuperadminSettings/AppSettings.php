@@ -105,10 +105,10 @@ class AppSettings extends Component
         $validationRules = [
             'appName' => 'required',
             'phoneNumber' => [
-                'required',
+                'nullable',
                 'regex:/^[0-9\s]{5,20}$/',
             ],
-            'phoneCode' => 'required',
+            'phoneCode' => 'nullable',
             'timezone' => 'required',
         ];
 

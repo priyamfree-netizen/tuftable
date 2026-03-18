@@ -1,0 +1,3 @@
+<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M5.248 20.246H9.05m0 0h3.696m-3.696 0 5.893-16.502m0 0h-3.697m3.697 0h3.803"/>
+</svg><?php /**PATH C:\Users\denji\Documents\tuftable\tuftable\storage\framework\views/2de8d0ba788f2348a2498b161c372ea3.blade.php ENDPATH**/ ?>

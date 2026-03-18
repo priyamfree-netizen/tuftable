@@ -236,8 +236,6 @@
             </div>
 
             <div>
-
-            <div>
                 <x-button>@lang('app.save')</x-button>
             </div>
         </div>

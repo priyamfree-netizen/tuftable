@@ -47,6 +47,10 @@
         }
     </script>
 
+    @if (File::exists(public_path() . '/css/app-custom.css'))
+        <link href="{{ asset('css/app-custom.css') }}" rel="stylesheet">
+    @endif
+
     {{-- Include file for widgets if exist --}}
     @includeIf('sections.custom_script_admin')
 </head>
