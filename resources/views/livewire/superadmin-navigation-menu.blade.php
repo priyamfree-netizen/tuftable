@@ -21,7 +21,7 @@
           <a href="{{ route('superadmin.dashboard') }}" class="flex ltr:ml-2 rtl:mr-24 items-center app-logo">
             <img src="{{ restaurantOrGlobalSetting()->logoUrl }}" class="h-8 ltr:mr-3 rtl:ml-3" alt="App Logo" />
             @if (restaurantOrGlobalSetting()->show_logo_text)
-              <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white hidden lg:block"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white">{{ Str::limit(restaurantOrGlobalSetting()->name, 10) }}</span></span>
+              <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap hidden lg:block"><span style="color:#C8F135;">Tuf</span><span style="color:#0D0D0D;" class="dark:text-white"> Table</span></span>
             @endif
           </a>
 

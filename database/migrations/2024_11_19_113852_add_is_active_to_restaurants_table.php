@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->boolean('is_active')->after('license_type')->default(true);
+            $table->boolean('is_active')->default(true);
         
 		});
     }

@@ -1,1 +1,0 @@
-<?php /**PATH C:\Users\denji\Downloads\TableTrack v1.2.70 Nulled\script\script\resources\views\components\select-translations.blade.php ENDPATH**/ ?>

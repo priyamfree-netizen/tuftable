@@ -16,7 +16,7 @@
 
         Swal.fire({
             title: "Support Expired",
-            html: supportText + "<br>Please renew your support for one-click updates.<br><br> You can still update the application manually by following the documentation <a href='https://froiden.freshdesk.com/support/solutions/articles/43000554421-update-application-manually' target='_blank' class='underline underline-offset-1 ml-2 text-skin-base'>Update Application Manually</a>",
+            html: supportText + "<br>Please renew your support for one-click updates.<br><br> You can still update the application manually.",
             showCancelButton: true,
             confirmButtonText: "Renew Now",
             denyButtonText: `Free Support Guidelines`,
@@ -37,12 +37,7 @@
             },
             buttonsStyling: false,
         }).then((result) => {
-            if (result.isConfirmed) {
-                window.open(
-                    "{{ config('froiden_envato.envato_product_url') }}",
-                    '_blank'
-                );
-            }
+            // Support expired - no action needed
         });
 
 

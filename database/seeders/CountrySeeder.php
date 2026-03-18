@@ -15,7 +15,7 @@ class CountrySeeder extends Seeder
     public function run(): void
     {
         
-        DB::statement("INSERT INTO \"countries\" (\"id\", \"countries_code\", \"countries_name\", \"phonecode\") VALUES
+        DB::statement("INSERT INTO `countries` (`id`, `countries_code`, `countries_name`, `phonecode`) VALUES
 	(1,'AF','Afghanistan','93'),
 	(2,'AX','Åland Islands','358'),
 	(3,'AL','Albania','355'),

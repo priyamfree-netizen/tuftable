@@ -41,11 +41,8 @@
                             <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
                         </svg>
                         <div>
-                            <h3 class="font-medium text-blue-900">Product Link</h3>
-                            <a href="{{config('froiden_envato.envato_product_url')}}" target="_blank"
-                               class="text-blue-600 hover:text-blue-800 underline break-all">
-                                {{ config('froiden_envato.envato_product_url') }}
-                            </a>
+                            <h3 class="font-medium text-blue-900">Product</h3>
+                            <span class="text-blue-700">TufTable</span>
                         </div>
                     </div>
                 </div>
@@ -55,15 +52,7 @@
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                     </svg>
                     <div>
-                        <p class="text-amber-700">
-                            <span class="font-medium">Need help finding your purchase code?</span>
-                            <a href="https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-"
-                               class="underline ml-1" target="_blank">Click here</a>
-                        </p>
                         <p class="text-amber-600 mt-1 text-xs">
-                            <svg class="w-3 h-3 inline mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
-                            </svg>
                             Contact your admin if you're not authorized to verify the purchase
                         </p>
                     </div>
@@ -132,7 +121,6 @@
     {{-- @include('vendor.froiden-envato.plugins') --}}
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="//envato.froid.works/plugins/froiden-helper/helper.js"></script>
 
     <script>
         function validateCode() {

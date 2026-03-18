@@ -7,8 +7,7 @@
 
         <p>
             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Note:</span>
-            <a href="https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-"
-               class="font-medium text-sm hover:underline text-skin-base underline underline-offset-1" target="_blank">@lang('app.findPurchaseCode')</a>
+            Enter your purchase code to verify the module.
         </p>
         <div id="response-message"></div>
 

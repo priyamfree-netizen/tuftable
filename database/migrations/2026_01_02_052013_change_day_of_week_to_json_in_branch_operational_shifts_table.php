@@ -89,16 +89,13 @@ return new class extends Migration
         try {
             Schema::table('branch_operational_shifts', function (Blueprint $table) {
                 $table->dropIndex('branch_operational_shifts_branch_id_day_of_week_index');
-            
-		});
+            });
         } catch (\Exception $e) {
             // Index might not exist, continue
         }
-        
-        // Change column to JSON using USING cast for PostgreSQL
-        // Must drop default first, then alter type, then set new default
-        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week DROP DEFAULT");
-        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week TYPE json USING day_of_week::json");
+
+        // Change column to JSON (MySQL syntax)
+        DB::statement("ALTER TABLE branch_operational_shifts MODIFY COLUMN day_of_week JSON NULL");
     }
 
     /**
@@ -106,20 +103,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Convert JSON back to single string (take first day or 'All') - PostgreSQL syntax
-        DB::statement("
-            UPDATE branch_operational_shifts 
-            SET day_of_week = CASE 
-                WHEN day_of_week::jsonb @> '\"All\"'::jsonb THEN 'All'
-                ELSE day_of_week::jsonb->0 #>> '{}'
-            END
-        ");
-        
-        // Change back to VARCHAR using USING cast
-        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week TYPE varchar(20) USING day_of_week::text");
-        DB::statement("ALTER TABLE branch_operational_shifts ALTER COLUMN day_of_week SET DEFAULT 'All'");
-        
-        // Re-add the composite index
+        DB::statement("ALTER TABLE branch_operational_shifts MODIFY COLUMN day_of_week VARCHAR(20) DEFAULT 'All'");
+
         Schema::table('branch_operational_shifts', function (Blueprint $table) {
             $table->index(['branch_id', 'day_of_week']);
         });

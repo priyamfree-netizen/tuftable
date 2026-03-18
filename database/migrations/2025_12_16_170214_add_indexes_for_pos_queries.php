@@ -235,9 +235,10 @@ return new class extends Migration
     private function hasIndex(string $table, string $index): bool
     {
         try {
+            $database = \Illuminate\Support\Facades\DB::getDatabaseName();
             $result = \Illuminate\Support\Facades\DB::select(
-                "SELECT COUNT(*) as count FROM pg_indexes WHERE tablename = ? AND indexname = ?",
-                [$table, $index]
+                "SELECT COUNT(*) as count FROM information_schema.STATISTICS WHERE table_schema = ? AND table_name = ? AND index_name = ?",
+                [$database, $table, $index]
             );
 
             return isset($result[0]) && $result[0]->count > 0;

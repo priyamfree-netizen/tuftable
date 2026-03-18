@@ -1,0 +1,7 @@
+<style>
+    :root {
+        --color-base: <?php echo e($baseColor); ?>;
+        --livewire-progress-bar-color: <?php echo e($baseColorHex); ?>;
+    }
+</style>
+<?php /**PATH C:\Users\denji\Documents\tuftable\tuftable\resources\views/sections/theme_style.blade.php ENDPATH**/ ?>
