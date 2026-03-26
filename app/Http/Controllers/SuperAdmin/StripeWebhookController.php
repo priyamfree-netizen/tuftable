@@ -14,6 +14,7 @@ use App\Models\GlobalSubscription;
 use Illuminate\Routing\Controller;
 use App\Models\SuperadminPaymentGateway;
 use App\Notifications\RestaurantUpdatedPlan;
+use App\Notifications\PlanActivated;
 use Illuminate\Support\Facades\Notification;
 use Stripe\Exception\SignatureVerificationException;
 
@@ -167,6 +168,9 @@ class StripeWebhookController extends Controller
             } catch (\Exception $e) {
                 \Log::error('Error sending notification: ' . $e->getMessage());
             }
+
+            // Send activation email to restaurant admin
+            $restaurant->sendPlanActivatedEmail($package);
         }
 
         return response('Webhook Handled', 200);

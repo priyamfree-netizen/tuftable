@@ -28,9 +28,11 @@ class UpdatePackage extends Component
     public $currentPackage;
     public $packageMonthlyStatus;
     public $packageAnnualStatus;
+    public $packageHalfYearlyStatus;
     public $monthlyPrice;
     public $billingCycle;
     public $annualPrice;
+    public $halfYearlyPrice;
     public $selectedPackage;
     public $lifetimePrice;
 
@@ -67,8 +69,10 @@ class UpdatePackage extends Component
         $this->packageType = $this->selectedPackage->package_type;
         $this->packageMonthlyStatus = $this->selectedPackage->monthly_status;
         $this->packageAnnualStatus = $this->selectedPackage->annual_status;
+        $this->packageHalfYearlyStatus = $this->selectedPackage->half_yearly_status ?? false;
         $this->monthlyPrice = $this->selectedPackage->monthly_price;
         $this->annualPrice = $this->selectedPackage->annual_price;
+        $this->halfYearlyPrice = $this->selectedPackage->half_yearly_price;
         $this->lifetimePrice = $this->selectedPackage->price;
     }
 
@@ -102,6 +106,7 @@ class UpdatePackage extends Component
         return match ($cycle) {
             'monthly' => $this->monthlyPrice,
             'annual' => $this->annualPrice,
+            'half_yearly' => $this->halfYearlyPrice,
             'free' => 0,
             'lifetime' => $this->lifetimePrice,
             default => $this->monthlyPrice,
@@ -115,6 +120,7 @@ class UpdatePackage extends Component
         $this->nextPayDate = match ($cycle) {
             'monthly' => now()->addMonth()->format('Y-m-d'),
             'annual' => now()->addYear()->format('Y-m-d'),
+            'half_yearly' => now()->addMonths(6)->format('Y-m-d'),
             'trial' => null,
             'free' => null,
             'lifetime' => null,
@@ -158,6 +164,7 @@ class UpdatePackage extends Component
                 $restaurant->license_expire_on = match ($billingCycle) {
                     'monthly' => $payDate->copy()->addMonth(),
                     'annual' => $payDate->copy()->addYear(),
+                    'half_yearly' => $payDate->copy()->addMonths(6),
                     'free' => null,
                     default => $payDate->copy()->addMonth(),
                 };
@@ -200,7 +207,7 @@ class UpdatePackage extends Component
                 'currency_id' => $currencyId,
                 'package_id' => $restaurant->package_id,
                 'package_type' => $subscription->package_type,
-                'total' => $this->amount ?? 0,
+                'total' => (int) round($this->amount ?? 0),
                 'gateway_name' => 'offline',
                 'transaction_id' => $subscription->transaction_id,
                 'pay_date' => $subscription->subscribed_on_date,
@@ -238,7 +245,7 @@ class UpdatePackage extends Component
     {
         $rules = [
             'packageId' => 'required|exists:packages,id',
-            'billingCycle' => 'required|in:monthly,annual,lifetime,free,trial',
+            'billingCycle' => 'required|in:monthly,annual,half_yearly,lifetime,free,trial',
         ];
 
         if ($this->billingCycle === 'trial') {

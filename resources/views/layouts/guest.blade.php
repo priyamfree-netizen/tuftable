@@ -280,6 +280,20 @@
 </script>
 
     <x-livewire-alert::flash />
+
+    <script>
+        // Suppress Livewire 404/500 errors that flash briefly during wire:navigate page transitions
+        document.addEventListener('livewire:init', () => {
+            Livewire.hook('request', ({ fail }) => {
+                fail(({ status, preventDefault }) => {
+                    if (status === 404 || status === 500) {
+                        preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+
     @include('sections.pusher-script')
 
      <!-- Print Image Handler -->

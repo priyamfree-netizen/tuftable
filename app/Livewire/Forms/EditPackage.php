@@ -24,8 +24,10 @@ class EditPackage extends Component
     public $price;
     public bool $monthlyStatus;
     public bool $annualStatus;
+    public bool $halfYearlyStatus = false;
     public $annualPrice;
     public $monthlyPrice;
+    public $halfYearlyPrice;
     public $sortOrder;
     public bool $isPrivate;
     public bool $isFree;
@@ -50,8 +52,10 @@ class EditPackage extends Component
     public $paymentKey;
     public $stripeAnnualPlanId;
     public $stripeMonthlyPlanId;
+    public $stripeHalfYearlyPlanId;
     public $razorpayAnnualPlanId;
     public $razorpayMonthlyPlanId;
+    public $razorpayHalfYearlyPlanId;
     public $stripeLifetimePlanId;
     public $razorpayLifetimePlanId;
     public $packageCurrency;
@@ -59,14 +63,17 @@ class EditPackage extends Component
     public $multiposLimit;
     public $flutterwaveAnnualPlanId;
     public $flutterwaveMonthlyPlanId;
+    public $flutterwaveHalfYearlyPlanId;
     public $paystackAnnualPlanId;
     public $paystackMonthlyPlanId;
+    public $paystackHalfYearlyPlanId;
     public $paystackLifetimePlanId;
     public $menuItemsLimit;
     public $orderLimit;
     public $staffLimit;
     public $paddleAnnualPriceId;
     public $paddleMonthlyPriceId;
+    public $paddleHalfYearlyPriceId;
     public $paddleLifetimePriceId;
     public $smsCount; // Add SMS count field
     public bool $carryForwardSms = false; // Add carry forward SMS field
@@ -87,8 +94,10 @@ class EditPackage extends Component
         $this->packagePrice = $this->package->price;
         $this->monthlyStatus = $this->package->monthly_status;
         $this->annualStatus = $this->package->annual_status;
+        $this->halfYearlyStatus = $this->package->half_yearly_status ?? false;
         $this->annualPrice = $this->package->annual_price;
         $this->monthlyPrice = $this->package->monthly_price;
+        $this->halfYearlyPrice = $this->package->half_yearly_price;
         $this->price = $this->package->price;
         $this->sortOrder = $this->package->sort_order;
         $this->isPrivate = $this->package->is_private;
@@ -104,14 +113,19 @@ class EditPackage extends Component
         $this->description = $this->package->description;
         $this->stripeAnnualPlanId = $this->package->stripe_annual_plan_id;
         $this->stripeMonthlyPlanId = $this->package->stripe_monthly_plan_id;
+        $this->stripeHalfYearlyPlanId = $this->package->stripe_half_yearly_plan_id;
         $this->razorpayAnnualPlanId = $this->package->razorpay_annual_plan_id;
         $this->razorpayMonthlyPlanId = $this->package->razorpay_monthly_plan_id;
+        $this->razorpayHalfYearlyPlanId = $this->package->razorpay_half_yearly_plan_id;
         $this->flutterwaveAnnualPlanId = $this->package->flutterwave_annual_plan_id;
         $this->flutterwaveMonthlyPlanId = $this->package->flutterwave_monthly_plan_id;
+        $this->flutterwaveHalfYearlyPlanId = $this->package->flutterwave_half_yearly_plan_id;
         $this->paystackAnnualPlanId = $this->package->paystack_annual_plan_id;
         $this->paystackMonthlyPlanId = $this->package->paystack_monthly_plan_id;
+        $this->paystackHalfYearlyPlanId = $this->package->paystack_half_yearly_plan_id;
         $this->paddleAnnualPriceId = $this->package->paddle_annual_price_id;
         $this->paddleMonthlyPriceId = $this->package->paddle_monthly_price_id;
+        $this->paddleHalfYearlyPriceId = $this->package->paddle_half_yearly_price_id;
         $this->paddleLifetimePriceId = $this->package->paddle_lifetime_price_id;
         $this->selectedFeatures = $this->package->additional_features ? json_decode($this->package->additional_features, true) : [];
         $this->branchLimit = $this->package->branch_limit;
@@ -166,8 +180,10 @@ class EditPackage extends Component
         if ($value == PackageType::LIFETIME) {
             $this->annualStatus = false;
             $this->monthlyStatus = false;
+            $this->halfYearlyStatus = false;
             $this->annualPrice = null;
             $this->monthlyPrice = null;
+            $this->halfYearlyPrice = null;
         }
     }
 
@@ -178,8 +194,10 @@ class EditPackage extends Component
         if ($value) {
             $this->annualStatus = false;
             $this->monthlyStatus = false;
+            $this->halfYearlyStatus = false;
             $this->annualPrice = null;
             $this->monthlyPrice = null;
+            $this->halfYearlyPrice = null;
         }
     }
 
@@ -217,6 +235,7 @@ class EditPackage extends Component
             ],
             'annualStatus' => 'required_if:packageType,standard|boolean',
             'monthlyStatus' => 'required_if:packageType,standard|boolean',
+            'halfYearlyStatus' => 'required_if:packageType,standard|boolean',
             'price' => 'required_if:packageType,lifetime|numeric|nullable',
             'annualPrice' => [
                 'nullable',
@@ -227,6 +246,11 @@ class EditPackage extends Component
                 'nullable',
                 'numeric',
                 'required_if:monthlyStatus,true',
+            ],
+            'halfYearlyPrice' => [
+                'nullable',
+                'numeric',
+                'required_if:halfYearlyStatus,true',
             ],
             'trialStatus' => 'required_if:packageType,trial|boolean|nullable',
             'trialNotificationBeforeDays' => 'required_if:packageType,trial|integer|nullable',
@@ -282,26 +306,31 @@ class EditPackage extends Component
         if ($this->paymentKey->razorpay_status == 1) {
             $validateRules['razorpayMonthlyPlanId'] = $this->monthlyStatus ? 'required' : 'nullable';
             $validateRules['razorpayAnnualPlanId'] = $this->annualStatus ? 'required' : 'nullable';
+            $validateRules['razorpayHalfYearlyPlanId'] = $this->halfYearlyStatus ? 'required' : 'nullable';
         }
 
         if ($this->paymentKey->stripe_status == 1) {
             $validateRules['stripeMonthlyPlanId'] = $this->monthlyStatus ? 'required' : 'nullable';
             $validateRules['stripeAnnualPlanId'] = $this->annualStatus ? 'required' : 'nullable';
+            $validateRules['stripeHalfYearlyPlanId'] = $this->halfYearlyStatus ? 'required' : 'nullable';
         }
 
         if ($this->paymentKey->flutterwave_status == 1) {
             $validateRules['flutterwaveMonthlyPlanId'] = $this->monthlyPrice ? 'required' : 'nullable';
             $validateRules['flutterwaveAnnualPlanId'] = $this->annualPrice ? 'required' : 'nullable';
+            $validateRules['flutterwaveHalfYearlyPlanId'] = $this->halfYearlyPrice ? 'required' : 'nullable';
         }
 
         if ($this->paymentKey->paystack_status == 1) {
             $validateRules['paystackMonthlyPlanId'] = $this->monthlyPrice ? 'required' : 'nullable';
             $validateRules['paystackAnnualPlanId'] = $this->annualPrice ? 'required' : 'nullable';
+            $validateRules['paystackHalfYearlyPlanId'] = $this->halfYearlyPrice ? 'required' : 'nullable';
         }
 
         if ($this->paymentKey->paddle_status == 1) {
             $validateRules['paddleMonthlyPriceId'] = $this->monthlyPrice ? 'required' : 'nullable';
             $validateRules['paddleAnnualPriceId'] = $this->annualPrice ? 'required' : 'nullable';
+            $validateRules['paddleHalfYearlyPriceId'] = $this->halfYearlyPrice ? 'required' : 'nullable';
             $validateRules['paddleLifetimePriceId'] = ($this->packageType === 'lifetime') ? 'required' : 'nullable';
         }
 
@@ -344,9 +373,11 @@ class EditPackage extends Component
             'currency_id' => $this->currencyID,
             'annual_price' => $this->annualPrice ?: null,
             'monthly_price' => $this->monthlyPrice ?: null,
+            'half_yearly_price' => $this->halfYearlyPrice ?: null,
             'is_free' => $this->isFree,
             'monthly_status' => $this->monthlyStatus,
             'annual_status' => $this->annualStatus,
+            'half_yearly_status' => $this->halfYearlyStatus,
             'sort_order' => $this->sortOrder,
             'is_private' => $this->isPrivate,
             'is_recommended' => $this->isRecommended,
@@ -356,17 +387,22 @@ class EditPackage extends Component
             'trial_days' => $this->trialDays,
             'stripe_annual_plan_id' => $this->stripeAnnualPlanId,
             'stripe_monthly_plan_id' => $this->stripeMonthlyPlanId,
+            'stripe_half_yearly_plan_id' => $this->stripeHalfYearlyPlanId,
             'razorpay_annual_plan_id' => $this->razorpayAnnualPlanId,
             'razorpay_monthly_plan_id' => $this->razorpayMonthlyPlanId,
+            'razorpay_half_yearly_plan_id' => $this->razorpayHalfYearlyPlanId,
             'stripe_lifetime_plan_id' => $this->packageType === PackageType::LIFETIME ? $this->stripeLifetimePlanId : null,
             'razorpay_lifetime_plan_id' => $this->packageType === PackageType::LIFETIME ? $this->razorpayLifetimePlanId : null,
             'flutterwave_annual_plan_id' => $this->flutterwaveAnnualPlanId,
             'flutterwave_monthly_plan_id' => $this->flutterwaveMonthlyPlanId,
+            'flutterwave_half_yearly_plan_id' => $this->flutterwaveHalfYearlyPlanId,
             'paystack_annual_plan_id' => $this->paystackAnnualPlanId,
             'paystack_monthly_plan_id' => $this->paystackMonthlyPlanId,
+            'paystack_half_yearly_plan_id' => $this->paystackHalfYearlyPlanId,
             'paystack_lifetime_plan_id' => $this->packageType === PackageType::LIFETIME ? $this->paystackLifetimePlanId : null,
             'paddle_annual_price_id' => $this->paddleAnnualPriceId,
             'paddle_monthly_price_id' => $this->paddleMonthlyPriceId,
+            'paddle_half_yearly_price_id' => $this->paddleHalfYearlyPriceId,
             'paddle_lifetime_price_id' => $this->packageType === PackageType::LIFETIME ? $this->paddleLifetimePriceId : null,
             'additional_features' => json_encode($this->selectedFeatures),
             'branch_limit' => $this->branchLimit,

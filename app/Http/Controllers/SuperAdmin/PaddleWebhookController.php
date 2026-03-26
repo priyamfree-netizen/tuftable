@@ -219,6 +219,12 @@ class PaddleWebhookController extends Controller
                 $restaurant->license_expire_on = null;
                 $restaurant->save();
 
+                // Notify restaurant admin of plan activation
+                $activatedPackage = \App\Models\Package::find($subscription->package_id);
+                if ($activatedPackage) {
+                    $restaurant->sendPlanActivatedEmail($activatedPackage);
+                }
+
                 // Send notifications
                 $this->sendNotifications($restaurant, $subscription->package_id);
             }

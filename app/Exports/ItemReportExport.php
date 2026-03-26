@@ -115,11 +115,11 @@ class ItemReportExport implements WithMapping, FromCollection, WithHeadings, Wit
                 ->where('orders.status', 'paid')
                 ->where(function ($q) {
                     if ($this->startTime < $this->endTime) {
-                        $q->whereRaw("TIME(orders.date_time) BETWEEN ? AND ?", [$this->startTime, $this->endTime]);
+                        $q->whereRaw("orders.date_time::time BETWEEN ?::time AND ?::time", [$this->startTime, $this->endTime]);
                     } else {
                         $q->where(function ($sub) {
-                            $sub->whereRaw("TIME(orders.date_time) >= ?", [$this->startTime])
-                                ->orWhereRaw("TIME(orders.date_time) <= ?", [$this->endTime]);
+                            $sub->whereRaw("orders.date_time::time >= ?::time", [$this->startTime])
+                                ->orwhereRaw("orders.date_time::time <= ?::time", [$this->endTime]);
                         });
                     }
                 })
@@ -141,3 +141,4 @@ class ItemReportExport implements WithMapping, FromCollection, WithHeadings, Wit
             })->get();
     }
 }
+

@@ -150,11 +150,11 @@ class RefundReport extends Component
             ->whereBetween('processed_at', [$dateTimeData['startDateTime'], $dateTimeData['endDateTime']])
             ->where(function ($q) use ($dateTimeData) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw("TIME(processed_at) BETWEEN ? AND ?", [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw("processed_at::time BETWEEN ?::time AND ?::time", [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                 } else {
                     $q->where(function ($sub) use ($dateTimeData) {
-                        $sub->whereRaw("TIME(processed_at) >= ?", [$dateTimeData['startTime']])
-                            ->orWhereRaw("TIME(processed_at) <= ?", [$dateTimeData['endTime']]);
+                        $sub->whereRaw("processed_at::time >= ?::time", [$dateTimeData['startTime']])
+                            ->orwhereRaw("processed_at::time <= ?::time", [$dateTimeData['endTime']]);
                     });
                 }
             });
@@ -240,3 +240,4 @@ class RefundReport extends Component
         return view('livewire.reports.refund-report');
     }
 }
+

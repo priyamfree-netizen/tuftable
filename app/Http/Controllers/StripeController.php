@@ -227,6 +227,12 @@ class StripeController extends Controller
             // Ensure feature/module cache reflects new plan immediately
             clearRestaurantModulesCache($restaurant->id);
 
+            // Notify restaurant admin of plan activation
+            $activatedPackage = Package::find($payment->package_id);
+            if ($activatedPackage) {
+                $restaurant->sendPlanActivatedEmail($activatedPackage);
+            }
+
             GlobalSubscription::where('restaurant_id', $restaurant->id)
                 ->where('subscription_status', 'active')
                 ->update(['subscription_status' => 'inactive']);

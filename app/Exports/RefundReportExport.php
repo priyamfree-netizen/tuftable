@@ -143,11 +143,11 @@ class RefundReportExport implements WithMapping, FromCollection, WithHeadings, W
             ->whereBetween('processed_at', [$this->startDateTime, $this->endDateTime])
             ->where(function ($q) {
                 if ($this->startTime < $this->endTime) {
-                    $q->whereRaw("TIME(processed_at) BETWEEN ? AND ?", [$this->startTime, $this->endTime]);
+                    $q->whereRaw("processed_at::time BETWEEN ?::time AND ?::time", [$this->startTime, $this->endTime]);
                 } else {
                     $q->where(function ($sub) {
-                        $sub->whereRaw("TIME(processed_at) >= ?", [$this->startTime])
-                            ->orWhereRaw("TIME(processed_at) <= ?", [$this->endTime]);
+                        $sub->whereRaw("processed_at::time >= ?::time", [$this->startTime])
+                            ->orwhereRaw("processed_at::time <= ?::time", [$this->endTime]);
                     });
                 }
             });
@@ -174,4 +174,5 @@ class RefundReportExport implements WithMapping, FromCollection, WithHeadings, W
         return $query->get();
     }
 }
+
 

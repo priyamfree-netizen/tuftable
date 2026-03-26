@@ -196,7 +196,7 @@
                     'group flex items-center border shadow-sm rounded-lg hover:shadow-md transition dark:bg-gray-700 dark:border-gray-600',
                     'bg-skin-base dark:bg-skin-base' => is_null($menuId),
                     'bg-white' => !is_null($menuId),
-                ]) wire:key='menu-{{ 'all-' . microtime() }}'
+                ]) wire:key='menu-all'
                     wire:click='filterMenuItems(null)' href="javascript:;">
                     <div class="p-2 sm:p-3">
                         <div class="flex items-center gap-3">
@@ -227,7 +227,7 @@
                             'group flex flex-col border shadow-sm rounded-lg hover:shadow-md transition dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600',
                             'bg-skin-base dark:bg-skin-base' => $menuId == $item->id,
                             'bg-white' => $menuId != $item->id,
-                        ]) wire:key='menu-{{ $item->id . microtime() }}'
+                        ]) wire:key='menu-{{ $item->id }}'
                             wire:click='filterMenuItems({{ $item->id }})' href="javascript:;">
                             <div class="p-2 sm:p-3">
                                 <div class="flex items-center gap-3">
@@ -440,7 +440,7 @@
                             'flex items-center justify-between gap-6 border shadow-sm rounded-lg hover:shadow-md transition dark:border-gray-600 dark:lg:bg-gray-900 dark:shadow-sm lg:rounded-md',
                             'bg-gray-100 dark:bg-gray-800' => !$item->in_stock,
                             'bg-white dark:bg-gray-900' => $item->in_stock,
-                        ]) wire:key='menu-item-{{ $item->id . microtime() }}'>
+                        ]) wire:key='menu-item-{{ $item->id }}'>
                             <div class="flex w-full p-3 space-x-4">
                                 @if ($restaurant && !$restaurant->hide_menu_item_image_on_customer_site)
                                     <img class="object-cover w-16 h-16 rounded-md cursor-pointer lg:w-24 lg:h-24"
@@ -526,7 +526,7 @@
                                                     @if(($orderStats['unlimited'] || $orderStats['current_count'] < $orderStats['order_limit']))
                                                         <x-cart-button
                                                                 wire:click='addCartItems({{ $item->id }}, {{ $item->variations_count }} , {{ $item->modifier_groups_count }})'
-                                                                wire:key='item-input-{{ $item->id . microtime() }}'>@lang('app.add')</x-cart-button>
+                                                                wire:key='item-input-{{ $item->id }}'>Order</x-cart-button>
                                                     @endif
                                                 @endif
                                             @elseif ($item->variations_count > 0 && $restaurant->allow_customer_orders)
@@ -615,7 +615,7 @@
         <div class="px-4 mt-4 space-y-4">
             @foreach ($orderItemList as $key => $item)
                 <div class="flex items-center justify-between gap-6 transition bg-white border rounded-lg shadow-sm hover:shadow-md dark:border-gray-600 dark:lg:bg-gray-900 dark:shadow-sm"
-                    wire:key='menu-item-{{ $item->id . microtime() }}'>
+                    wire:key='menu-item-{{ $item->id }}'>
                     <div class="flex w-full p-4 space-x-4 dark:bg-gray-800 dark:text-gray-200">
                         <!-- Item Image -->
                         @if ($restaurant && !$restaurant->hide_menu_item_image_on_customer_site)
@@ -1046,7 +1046,7 @@
                     @endif
 
                     <div class="w-full h-auto pt-3 pb-4 text-center select-none"
-                        wire:key='order-{{ microtime() }}'>
+                        wire:key='order-summary'>
                         <div class="flex gap-2">
 
                             @if (is_null($customer) && ($restaurant->customer_login_required || $orderTypeSlug == 'delivery'))
@@ -1881,11 +1881,11 @@
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700"
-                                            wire:key='menu-item-list-{{ microtime() }}'>
+                                            wire:key='menu-item-list'>
 
                                             @foreach ($menuItem->variations as $item)
                                                 <tr class="hover:bg-gray-100 dark:hover:bg-gray-700"
-                                                    wire:key='menu-item-{{ $item->id . microtime() }}'>
+                                                    wire:key='menu-item-{{ $item->id }}'>
                                                     <td
                                                         class="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
                                                         <div

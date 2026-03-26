@@ -270,6 +270,9 @@ class MollieController extends Controller
 
                 DB::commit();
 
+                // Notify restaurant admin of plan activation
+                $restaurant->sendPlanActivatedEmail($package);
+
                 // Send notifications
                 $emailSetting = EmailSetting::first();
                 if ($emailSetting && $emailSetting->mail_driver === 'smtp' && $emailSetting->verified) {

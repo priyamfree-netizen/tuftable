@@ -63,7 +63,34 @@ class Restaurant extends BaseModel
         'ai_enabled' => 'boolean',
         'ai_allowed_roles' => 'array',
         'ai_monthly_reset_at' => 'date',
+        'access_expires_at' => 'datetime',
     ];
+
+    public function isAccessExpired(): bool
+    {
+        return $this->access_expires_at !== null && $this->access_expires_at->isPast();
+    }
+
+    public function isLicenseExpired(): bool
+    {
+        // Lifetime packages never expire
+        if ($this->package && $this->package->package_type->value === 'lifetime') {
+            return false;
+        }
+
+        // Default/free packages don't expire via this check
+        if ($this->package && in_array($this->package->package_type->value, ['default', 'free'])) {
+            return false;
+        }
+
+        // license_expired status means it's expired
+        if ($this->status === 'license_expired') {
+            return true;
+        }
+
+        // Check actual date
+        return $this->license_expire_on !== null && $this->license_expire_on->isPast();
+    }
 
     public function logoUrl(): Attribute
     {
@@ -120,6 +147,22 @@ class Restaurant extends BaseModel
     public static function restaurantAdmin($restaurant)
     {
         return $restaurant->users()->orderBy('id')->first();
+    }
+
+    /**
+     * Activate a plan for this restaurant and send notification email to admin.
+     * Call this after any successful payment.
+     */
+    public function sendPlanActivatedEmail(\App\Models\Package $package): void
+    {
+        try {
+            $admin = self::restaurantAdmin($this);
+            if ($admin) {
+                $admin->notify(new \App\Notifications\PlanActivated($this, $package, $this->license_expire_on));
+            }
+        } catch (\Exception $e) {
+            \Log::error('PlanActivated email failed for restaurant ' . $this->id . ': ' . $e->getMessage());
+        }
     }
 
     public function receiptSetting(): HasOne

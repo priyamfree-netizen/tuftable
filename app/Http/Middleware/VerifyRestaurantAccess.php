@@ -41,6 +41,22 @@ class VerifyRestaurantAccess
             return redirect()->route('login')->withErrors(['email' => __('Restaurant is inactive. Contact admin.')]);
         }
 
+        if ($user->restaurant && $user->restaurant->isAccessExpired()) {
+            Auth::logout();
+            session()->flush();
+            return redirect()->route('login')->withErrors(['email' => __('Your access has expired. Please contact admin.')]);
+        }
+
+        // Check license expiry (subscription-based)
+        if ($user->restaurant && $user->restaurant->isLicenseExpired()) {
+            // Allow billing/pricing routes so they can renew
+            $allowedRoutes = ['pricing.plan', 'settings.index', 'logout'];
+            if (!$request->routeIs($allowedRoutes)) {
+                return redirect()->route('pricing.plan')
+                    ->withErrors(['plan' => __('Your subscription has expired. Please renew your plan to continue.')]);
+            }
+        }
+
         return $next($request);
     }
 }

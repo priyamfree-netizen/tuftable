@@ -294,17 +294,17 @@ class SalesReport extends Component
         $baseQuery = DB::table('order_items')
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->join('menu_items', 'order_items.menu_item_id', '=', 'menu_items.id')
-            ->whereRaw('DATE(CONVERT_TZ(orders.date_time, "+00:00", ?)) = ?', [$offset, $date])
+            ->whereRaw('(orders.date_time AT TIME ZONE INTERVAL ?)::date = ?::date', [$offset, $date])
             ->whereBetween('orders.date_time', [$startDateTime, $endDateTime])
             ->whereIn('orders.status', ['paid', 'payment_due'])
             ->where('orders.branch_id', branch()->id)
             ->where(function ($q) use ($startTime, $endTime) {
                 if ($startTime < $endTime) {
-                    $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$startTime, $endTime]);
+                    $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$startTime, $endTime]);
                 } else {
                     $q->where(function ($sub) use ($startTime, $endTime) {
-                        $sub->whereRaw('TIME(orders.date_time) >= ?', [$startTime])
-                            ->orWhereRaw('TIME(orders.date_time) <= ?', [$endTime]);
+                        $sub->whereRaw('orders.date_time::time >= ?::time', [$startTime])
+                            ->orwhereRaw('orders.date_time::time <= ?::time', [$endTime]);
                     });
                 }
             });
@@ -323,11 +323,11 @@ class SalesReport extends Component
             ->where('orders.branch_id', branch()->id)
             ->where(function ($q) use ($startTime, $endTime) {
                 if ($startTime < $endTime) {
-                    $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$startTime, $endTime]);
+                    $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$startTime, $endTime]);
                 } else {
                     $q->where(function ($sub) use ($startTime, $endTime) {
-                        $sub->whereRaw('TIME(orders.date_time) >= ?', [$startTime])
-                            ->orWhereRaw('TIME(orders.date_time) <= ?', [$endTime]);
+                        $sub->whereRaw('orders.date_time::time >= ?::time', [$startTime])
+                            ->orwhereRaw('orders.date_time::time <= ?::time', [$endTime]);
                     });
                 }
             })
@@ -486,13 +486,13 @@ class SalesReport extends Component
         if (empty($this->filterShift)) {
             $query->where(function ($q) use ($dateTimeData) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                 }
                 else
                  {
                     $q->where(function ($sub) use ($dateTimeData) {
-                        $sub->whereRaw('TIME(orders.date_time) >= ?', [$dateTimeData['startTime']])
-                            ->orWhereRaw('TIME(orders.date_time) <= ?', [$dateTimeData['endTime']]);
+                        $sub->whereRaw('orders.date_time::time >= ?::time', [$dateTimeData['startTime']])
+                            ->orwhereRaw('orders.date_time::time <= ?::time', [$dateTimeData['endTime']]);
                     });
                 }
             });
@@ -509,13 +509,13 @@ class SalesReport extends Component
         if (empty($this->filterShift)) {
             $outstandingQuery->where(function ($q) use ($dateTimeData) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw('TIME(date_time) BETWEEN ? AND ?', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw('date_time::time BETWEEN ?::time AND ?::time', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                 }
                 else
                  {
                     $q->where(function ($sub) use ($dateTimeData) {
-                        $sub->whereRaw('TIME(date_time) >= ?', [$dateTimeData['startTime']])
-                            ->orWhereRaw('TIME(date_time) <= ?', [$dateTimeData['endTime']]);
+                        $sub->whereRaw('date_time::time >= ?::time', [$dateTimeData['startTime']])
+                            ->orwhereRaw('date_time::time <= ?::time', [$dateTimeData['endTime']]);
                     });
                 }
             });
@@ -531,16 +531,16 @@ class SalesReport extends Component
         }
 
         $query = $query->select(
-            DB::raw('DATE(CONVERT_TZ(orders.date_time, "+00:00", "' . $dateTimeData['offset'] . '")) as date'),
+            DB::raw('(orders.date_time AT TIME ZONE INTERVAL '' . $dateTimeData['offset'] . '')::date as date'),
             DB::raw('COUNT(DISTINCT orders.id) as total_orders'),
             DB::raw('SUM(payments.amount) as total_amount'),
-            DB::raw('SUM(CASE WHEN payments.payment_method = "cash" THEN payments.amount ELSE 0 END) as cash_amount'),
-            DB::raw('SUM(CASE WHEN payments.payment_method = "card" THEN payments.amount ELSE 0 END) as card_amount'),
-            DB::raw('SUM(CASE WHEN payments.payment_method = "upi" THEN payments.amount ELSE 0 END) as upi_amount'),
-            DB::raw('SUM(CASE WHEN payments.payment_method = "bank_transfer" THEN payments.amount ELSE 0 END) as bank_transfer_amount'),
-            DB::raw('SUM(CASE WHEN payments.payment_method = "razorpay" THEN payments.amount ELSE 0 END) as razorpay_amount'),
-            DB::raw('SUM(CASE WHEN payments.payment_method = "stripe" THEN payments.amount ELSE 0 END) as stripe_amount'),
-            DB::raw('SUM(CASE WHEN payments.payment_method = "flutterwave" THEN payments.amount ELSE 0 END) as flutterwave_amount'),
+            DB::raw('SUM(CASE WHEN payments.payment_method = 'cash' THEN payments.amount ELSE 0 END) as cash_amount'),
+            DB::raw('SUM(CASE WHEN payments.payment_method = 'card' THEN payments.amount ELSE 0 END) as card_amount'),
+            DB::raw('SUM(CASE WHEN payments.payment_method = 'upi' THEN payments.amount ELSE 0 END) as upi_amount'),
+            DB::raw('SUM(CASE WHEN payments.payment_method = 'bank_transfer' THEN payments.amount ELSE 0 END) as bank_transfer_amount'),
+            DB::raw('SUM(CASE WHEN payments.payment_method = 'razorpay' THEN payments.amount ELSE 0 END) as razorpay_amount'),
+            DB::raw('SUM(CASE WHEN payments.payment_method = 'stripe' THEN payments.amount ELSE 0 END) as stripe_amount'),
+            DB::raw('SUM(CASE WHEN payments.payment_method = 'flutterwave' THEN payments.amount ELSE 0 END) as flutterwave_amount'),
         )
         ->groupBy('date')
         ->orderBy('date')
@@ -548,23 +548,23 @@ class SalesReport extends Component
 
         // Get outstanding payments data - calculate remaining amount after payments
         $outstandingData = $outstandingQuery->select(
-            DB::raw('DATE(CONVERT_TZ(orders.date_time, "+00:00", "' . $dateTimeData['offset'] . '")) as date'),
+            DB::raw('(orders.date_time AT TIME ZONE INTERVAL '' . $dateTimeData['offset'] . '')::date as date'),
             DB::raw('COUNT(DISTINCT orders.id) as outstanding_orders'),
             DB::raw('SUM(
                 CASE
-                    WHEN orders.split_type = "items" THEN
+                    WHEN orders.split_type = 'items' THEN
                         orders.total - COALESCE((
                             SELECT SUM(so.amount)
                             FROM split_orders so
                             WHERE so.order_id = orders.id
-                            AND so.status = "paid"
+                            AND so.status = 'paid'
                         ), 0)
                     ELSE
                         orders.total - COALESCE((
                             SELECT SUM(p.amount)
                             FROM payments p
                             WHERE p.order_id = orders.id
-                            AND p.payment_method != "due"
+                            AND p.payment_method != 'due'
                         ), 0)
                 END
             ) as outstanding_amount')
@@ -585,11 +585,11 @@ class SalesReport extends Component
         if (empty($this->filterShift)) {
             $dueReceivedQuery->where(function ($q) use ($dateTimeData) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                 } else {
                     $q->where(function ($sub) use ($dateTimeData) {
-                        $sub->whereRaw('TIME(orders.date_time) >= ?', [$dateTimeData['startTime']])
-                            ->orWhereRaw('TIME(orders.date_time) <= ?', [$dateTimeData['endTime']]);
+                        $sub->whereRaw('orders.date_time::time >= ?::time', [$dateTimeData['startTime']])
+                            ->orwhereRaw('orders.date_time::time <= ?::time', [$dateTimeData['endTime']]);
                     });
                 }
             });
@@ -604,7 +604,7 @@ class SalesReport extends Component
         }
 
         $dueReceivedData = $dueReceivedQuery->select(
-            DB::raw('DATE(CONVERT_TZ(orders.date_time, "+00:00", "' . $dateTimeData['offset'] . '")) as date'),
+            DB::raw('(orders.date_time AT TIME ZONE INTERVAL '' . $dateTimeData['offset'] . '')::date as date'),
             DB::raw('SUM(payments.due_amount_received) as due_received_amount')
         )
         ->groupBy('date')
@@ -620,13 +620,13 @@ class SalesReport extends Component
         if (empty($this->filterShift)) {
             $orderData->where(function ($q) use ($dateTimeData) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw('TIME(date_time) BETWEEN ? AND ?', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw('date_time::time BETWEEN ?::time AND ?::time', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                 }
                 else
                  {
                     $q->where(function ($sub) use ($dateTimeData) {
-                        $sub->whereRaw('TIME(date_time) >= ?', [$dateTimeData['startTime']])
-                            ->orWhereRaw('TIME(date_time) <= ?', [$dateTimeData['endTime']]);
+                        $sub->whereRaw('date_time::time >= ?::time', [$dateTimeData['startTime']])
+                            ->orwhereRaw('date_time::time <= ?::time', [$dateTimeData['endTime']]);
                     });
                 }
             });
@@ -641,7 +641,7 @@ class SalesReport extends Component
         }
 
         $orderData = $orderData->select(
-            DB::raw('DATE(CONVERT_TZ(date_time, "+00:00", "' . $dateTimeData['offset'] . '")) as date'),
+            DB::raw('(date_time AT TIME ZONE INTERVAL '' . $dateTimeData['offset'] . '')::date as date'),
             DB::raw('SUM(discount_amount) as discount_amount'),
             DB::raw('SUM(tip_amount) as tip_amount'),
             DB::raw('SUM(delivery_fee) as delivery_fee'),
@@ -683,11 +683,11 @@ class SalesReport extends Component
                     ->whereBetween('orders.date_time', [$startDateTime, $endDateTime])
                     ->where(function ($q) use ($startTime, $endTime) {
                         if ($startTime < $endTime) {
-                            $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$startTime, $endTime]);
+                            $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$startTime, $endTime]);
                         } else {
                             $q->where(function ($sub) use ($startTime, $endTime) {
-                                $sub->whereRaw('TIME(orders.date_time) >= ?', [$startTime])
-                                    ->orWhereRaw('TIME(orders.date_time) <= ?', [$endTime]);
+                                $sub->whereRaw('orders.date_time::time >= ?::time', [$startTime])
+                                    ->orwhereRaw('orders.date_time::time <= ?::time', [$endTime]);
                             });
                         }
                     })
@@ -727,11 +727,11 @@ class SalesReport extends Component
                 ->whereBetween('orders.date_time', [$startDateTime, $endDateTime])
                 ->where(function ($q) use ($startTime, $endTime) {
                     if ($startTime < $endTime) {
-                        $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$startTime, $endTime]);
+                        $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$startTime, $endTime]);
                     } else {
                         $q->where(function ($sub) use ($startTime, $endTime) {
-                            $sub->whereRaw('TIME(orders.date_time) >= ?', [$startTime])
-                                ->orWhereRaw('TIME(orders.date_time) <= ?', [$endTime]);
+                            $sub->whereRaw('orders.date_time::time >= ?::time', [$startTime])
+                                ->orwhereRaw('orders.date_time::time <= ?::time', [$endTime]);
                         });
                     }
                 })
@@ -783,11 +783,11 @@ class SalesReport extends Component
                 ->whereBetween('orders.date_time', [$startDateTime, $endDateTime])
                 ->where(function ($q) use ($startTime, $endTime) {
                     if ($startTime < $endTime) {
-                        $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$startTime, $endTime]);
+                        $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$startTime, $endTime]);
                     } else {
                         $q->where(function ($sub) use ($startTime, $endTime) {
-                            $sub->whereRaw('TIME(orders.date_time) >= ?', [$startTime])
-                                ->orWhereRaw('TIME(orders.date_time) <= ?', [$endTime]);
+                            $sub->whereRaw('orders.date_time::time >= ?::time', [$startTime])
+                                ->orwhereRaw('orders.date_time::time <= ?::time', [$endTime]);
                         });
                     }
                 })
@@ -831,11 +831,11 @@ class SalesReport extends Component
                         ->whereBetween('orders.date_time', [$startDateTime, $endDateTime])
                         ->where(function ($q) use ($startTime, $endTime) {
                             if ($startTime < $endTime) {
-                                $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$startTime, $endTime]);
+                                $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$startTime, $endTime]);
                             } else {
                                 $q->where(function ($sub) use ($startTime, $endTime) {
-                                    $sub->whereRaw('TIME(orders.date_time) >= ?', [$startTime])
-                                        ->orWhereRaw('TIME(orders.date_time) <= ?', [$endTime]);
+                                    $sub->whereRaw('orders.date_time::time >= ?::time', [$startTime])
+                                        ->orwhereRaw('orders.date_time::time <= ?::time', [$endTime]);
                                 });
                             }
                         })
@@ -1015,4 +1015,7 @@ class SalesReport extends Component
     }
 
 }
+
+
+
 

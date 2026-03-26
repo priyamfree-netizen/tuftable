@@ -133,11 +133,11 @@ class CancelledOrderReport extends Component
             ->whereBetween('cancel_time', [$dateTimeData['startDateTime'], $dateTimeData['endDateTime']])
             ->where(function ($q) use ($dateTimeData) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw('TIME(cancel_time) BETWEEN ? AND ?', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw('cancel_time::time BETWEEN ?::time AND ?::time', [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                 } else {
                     $q->where(function ($sub) use ($dateTimeData) {
-                        $sub->whereRaw('TIME(cancel_time) >= ?', [$dateTimeData['startTime']])
-                            ->orWhereRaw('TIME(cancel_time) <= ?', [$dateTimeData['endTime']]);
+                        $sub->whereRaw('cancel_time::time >= ?::time', [$dateTimeData['startTime']])
+                            ->orwhereRaw('cancel_time::time <= ?::time', [$dateTimeData['endTime']]);
                     });
                 }
             });
@@ -204,4 +204,5 @@ class CancelledOrderReport extends Component
     }
 
 }
+
 

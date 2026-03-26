@@ -183,9 +183,15 @@
                                         <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">@lang('modules.package.annualPlan')</span>
                                     </label>
                                 </div>
+                                <div>
+                                    <label class="inline-flex items-center">
+                                        <x-checkbox wire:model.live="halfYearlyStatus"/>
+                                        <span class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">@lang('modules.package.halfYearlyPlan')</span>
+                                    </label>
+                                </div>
                             </div>
 
-                            @if($monthlyStatus || $annualStatus)
+                            @if($monthlyStatus || $annualStatus || $halfYearlyStatus)
                                 <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     @if($monthlyStatus)
                                         <div class="space-y-4">
@@ -272,6 +278,51 @@
                                                     <x-label for="paddleAnnualPriceId" value="Paddle Annual Price ID" required="true"/>
                                                     <x-input id="paddleAnnualPriceId" type="text" wire:model.defer="paddleAnnualPriceId" class="mt-1 block w-full"/>
                                                     <x-input-error for="paddleAnnualPriceId" class="mt-2"/>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if($halfYearlyStatus)
+                                        <div class="space-y-4">
+                                            <div>
+                                                <x-label for="halfYearlyPrice" value="{{ __('modules.package.halfYearlyPrice') . ' (' . $currencySymbol . ') ' }}" required="true"/>
+                                                <x-input id="halfYearlyPrice" type="number" step="0.001" min="0" wire:model.defer="halfYearlyPrice" class="mt-1 block w-full"/>
+                                                <x-input-error for="halfYearlyPrice" class="mt-2"/>
+                                            </div>
+                                            @if($paymentKey->stripe_status == 1)
+                                                <div>
+                                                    <x-label for="stripeHalfYearlyPlanId" value="{{ __('modules.package.halfYearlyStripeId') }}" required="true"/>
+                                                    <x-input id="stripeHalfYearlyPlanId" type="text" wire:model.defer="stripeHalfYearlyPlanId" class="mt-1 block w-full"/>
+                                                    <x-input-error for="stripeHalfYearlyPlanId" class="mt-2"/>
+                                                </div>
+                                            @endif
+                                            @if($paymentKey->razorpay_status == 1)
+                                                <div>
+                                                    <x-label for="razorpayHalfYearlyPlanId" value="{{ __('modules.package.halfYearlyRazorpayId') }}" required="true"/>
+                                                    <x-input id="razorpayHalfYearlyPlanId" type="text" wire:model.defer="razorpayHalfYearlyPlanId" class="mt-1 block w-full"/>
+                                                    <x-input-error for="razorpayHalfYearlyPlanId" class="mt-2"/>
+                                                </div>
+                                            @endif
+                                            @if($paymentKey->flutterwave_status == 1)
+                                                <div>
+                                                    <x-label for="flutterwaveHalfYearlyPlanId" value="{{ __('modules.package.halfYearlyFlutterwaveId') }}" required="true"/>
+                                                    <x-input id="flutterwaveHalfYearlyPlanId" type="text" wire:model.defer="flutterwaveHalfYearlyPlanId" class="mt-1 block w-full"/>
+                                                    <x-input-error for="flutterwaveHalfYearlyPlanId" class="mt-2"/>
+                                                </div>
+                                            @endif
+                                            @if($paymentKey->paystack_status == 1)
+                                                <div>
+                                                    <x-label for="paystackHalfYearlyPlanId" value="{{ __('modules.package.halfYearlyPaystackId') }}" required="true"/>
+                                                    <x-input id="paystackHalfYearlyPlanId" type="text" wire:model.defer="paystackHalfYearlyPlanId" class="mt-1 block w-full"/>
+                                                    <x-input-error for="paystackHalfYearlyPlanId" class="mt-2"/>
+                                                </div>
+                                            @endif
+                                            @if($paymentKey->paddle_status == 1)
+                                                <div>
+                                                    <x-label for="paddleHalfYearlyPriceId" value="Paddle Half Yearly Price ID" required="true"/>
+                                                    <x-input id="paddleHalfYearlyPriceId" type="text" wire:model.defer="paddleHalfYearlyPriceId" class="mt-1 block w-full"/>
+                                                    <x-input-error for="paddleHalfYearlyPriceId" class="mt-2"/>
                                                 </div>
                                             @endif
                                         </div>

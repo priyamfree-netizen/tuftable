@@ -130,7 +130,7 @@ class CustomerTable extends Component
                 // Add loyalty points subquery directly without using trait
                 $baseQuery->addSelect([
                     'loyalty_points' => DB::table('loyalty_accounts')
-                        ->selectRaw('CAST(COALESCE(points_balance, 0) AS UNSIGNED)')
+                        ->selectRaw(config('database.default') === 'pgsql' ? 'CAST(COALESCE(points_balance, 0) AS BIGINT)' : 'CAST(COALESCE(points_balance, 0) AS UNSIGNED)')
                         ->whereColumn('customer_id', 'customers.id')
                         ->where('restaurant_id', $restaurantId)
                         ->limit(1)

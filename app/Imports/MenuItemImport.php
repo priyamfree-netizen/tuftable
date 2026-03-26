@@ -75,7 +75,14 @@ class MenuItemImport implements ToModel, WithHeadingRow, WithChunkReading, WithV
 
             // Find category by name (using JSON query for translatable field)
             $category = ItemCategory::where('branch_id', $this->branchId)
-                ->whereRaw("JSON_EXTRACT(category_name, '$.en') = ?", [$mappedRow['category_name'] ?? ''])
+                ->where(function ($q) use ($mappedRow) {
+                    $name = $mappedRow['category_name'] ?? '';
+                    if (config('database.default') === 'pgsql') {
+                        $q->whereRaw("category_name::jsonb->>'en' = ?", [$name]);
+                    } else {
+                        $q->whereRaw("JSON_EXTRACT(category_name, '$.en') = ?", [$name]);
+                    }
+                })
                 ->first();
 
 
@@ -91,7 +98,14 @@ class MenuItemImport implements ToModel, WithHeadingRow, WithChunkReading, WithV
 
             // Find menu by name (using JSON query for translatable field)
             $menu = Menu::where('branch_id', $this->branchId)
-                ->whereRaw("JSON_EXTRACT(menu_name, '$.en') = ?", [$mappedRow['menu_name'] ?? ''])
+                ->where(function ($q) use ($mappedRow) {
+                    $name = $mappedRow['menu_name'] ?? '';
+                    if (config('database.default') === 'pgsql') {
+                        $q->whereRaw("menu_name::jsonb->>'en' = ?", [$name]);
+                    } else {
+                        $q->whereRaw("JSON_EXTRACT(menu_name, '$.en') = ?", [$name]);
+                    }
+                })
                 ->first();
 
 

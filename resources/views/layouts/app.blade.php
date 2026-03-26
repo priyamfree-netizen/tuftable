@@ -106,20 +106,24 @@
 
 <body class="font-sans antialiased dark:bg-gray-900" id="main-body">
 
+    @persist('nav')
     @if (user()->restaurant_id)
         @livewire('navigation-menu')
     @else
         @livewire('superadmin-navigation-menu')
     @endif
+    @endpersist
 
     <div class="flex rtl:flex-row-reverse pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900 h-screen">
 
         @if (!request()->routeIs('pos.*'))
+            @persist('sidebar')
             @if (user()->restaurant_id)
                 @livewire('sidebar')
             @else
                 @livewire('superadmin-sidebar')
             @endif
+            @endpersist
         @endif
 
 
@@ -151,6 +155,19 @@
 
     <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}" defer data-navigate-track></script>
     <x-livewire-alert::flash />
+
+    <script>
+        // Suppress Livewire 404/500 errors that flash briefly during wire:navigate page transitions
+        document.addEventListener('livewire:init', () => {
+            Livewire.hook('request', ({ fail }) => {
+                fail(({ status, preventDefault }) => {
+                    if (status === 404 || status === 500) {
+                        preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
 
     @if (superadminPaymentGateway()->razorpay_status)
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

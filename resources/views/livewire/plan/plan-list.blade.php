@@ -56,8 +56,17 @@
                             @if ($package->is_free)
                                 <span class="text-3xl font-bold text-skin-base">@lang('modules.billing.free')</span>
                             @else
+                                @php
+                                    $displayPrice = match(true) {
+                                        $package->package_type === App\Enums\PackageType::LIFETIME => $package->price,
+                                        $package->half_yearly_status && !$package->monthly_status && !$package->annual_status => $package->half_yearly_price,
+                                        $package->annual_status && !$package->monthly_status => $package->annual_price,
+                                        $isAnnual && $package->annual_status => $package->annual_price,
+                                        default => $package->monthly_price,
+                                    };
+                                @endphp
                                 <span class="text-3xl font-bold text-skin-base">
-                                    {{ global_currency_format($package->package_type === App\Enums\packageType::LIFETIME ? $package->price : ($isAnnual ? $package->annual_price : $package->monthly_price), $package->currency_id) }}
+                                    {{ global_currency_format($displayPrice, $package->currency_id) }}
                                 </span>
                             @endif
                         </div>
@@ -78,6 +87,10 @@
                             </div>
                         @elseif ($package->package_type === App\Enums\packageType::LIFETIME)
                             <span class="text-sm text-gray-600 dark:text-gray-400">@lang('modules.billing.lifetimeAccess')</span>
+                        @elseif ($package->half_yearly_status && !$package->monthly_status && !$package->annual_status)
+                            <span class="text-sm text-gray-600 dark:text-gray-400">@lang('modules.billing.billed') @lang('modules.package.halfYearlyPlan')</span>
+                        @elseif ($package->annual_status && !$package->monthly_status)
+                            <span class="text-sm text-gray-600 dark:text-gray-400">@lang('modules.billing.billed') @lang('modules.billing.annually')</span>
                         @elseif (!$package->is_free)
                             <span class="text-sm text-gray-600 dark:text-gray-400">@lang('modules.billing.billed') {{ $isAnnual ? __('modules.billing.annually') : __('modules.billing.monthly') }}</span>
                         @endif
@@ -160,7 +173,7 @@
                             ($package->id == $restaurant->package_id && $restaurant->package_type == ($isAnnual ? 'annual' : 'monthly')) ||
                             $package->package_type == App\Enums\PackageType::DEFAULT)
                             <div class="w-full">
-                                @if($package->id == $restaurant->package_id && ($restaurant->package_type == ($isAnnual ? 'annual' : 'monthly') || !in_array($restaurant->package_type, ['annual', 'monthly'])))
+                                @if($package->id == $restaurant->package_id)
                                     <button class="w-full px-4 py-3 font-medium text-gray-600 transition-all duration-300 bg-gray-300 rounded-lg cursor-not-allowed dark:bg-gray-600 dark:text-gray-400 opacity-60">
                                         @lang('modules.package.currentPlan')
                                     </button>

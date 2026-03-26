@@ -142,11 +142,11 @@ class CategoryReport extends Component
                 ->whereBetween('orders.date_time', [$dateTimeData['startDateTime'], $dateTimeData['endDateTime']])
                 ->where(function ($q) use ($dateTimeData) {
                     if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                        $q->whereRaw("TIME(orders.date_time) BETWEEN ? AND ?", [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                        $q->whereRaw("orders.date_time::time BETWEEN ?::time AND ?::time", [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                     } else {
                         $q->where(function ($sub) use ($dateTimeData) {
-                            $sub->whereRaw("TIME(orders.date_time) >= ?", [$dateTimeData['startTime']])
-                                ->orWhereRaw("TIME(orders.date_time) <= ?", [$dateTimeData['endTime']]);
+                            $sub->whereRaw("orders.date_time::time >= ?::time", [$dateTimeData['startTime']])
+                                ->orwhereRaw("orders.date_time::time <= ?::time", [$dateTimeData['endTime']]);
                         });
                     }
                 });
@@ -158,3 +158,4 @@ class CategoryReport extends Component
     }
 
 }
+

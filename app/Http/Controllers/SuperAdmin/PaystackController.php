@@ -183,6 +183,12 @@ class PaystackController extends Controller
             // Ensure feature/module cache reflects new plan immediately
             clearRestaurantModulesCache($restaurant->id);
 
+            // Notify restaurant admin of plan activation
+            $package = \App\Models\Package::find($globalSubscription->package_id);
+            if ($package) {
+                $restaurant->sendPlanActivatedEmail($package);
+            }
+
             $emailSetting = EmailSetting::first();
 
             if ($emailSetting->mail_driver === 'smtp' && $emailSetting->verified) {

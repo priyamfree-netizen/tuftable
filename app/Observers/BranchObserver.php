@@ -110,8 +110,8 @@ class BranchObserver
             'is_active' => true,
             'is_default' => true,
             'printing_choice' => 'browserPopupPrint',
-            'kots' => [$kotPlace->id],
-            'orders' => [$orderPlace->id],
+            'kots' => true,
+            'orders' => true,
         ]);
 
         // Ensure default order types are not duplicated for this branch

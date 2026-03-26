@@ -44,14 +44,17 @@
 @endif
 
 {{-- Subcopy --}}
-@isset($actionText)
 <x-slot:subcopy>
+@isset($actionText)
 @lang(
     'messages.troubleClickingButton',
     [
         'actionText' => $actionText,
     ]
 ) <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
-</x-slot:subcopy>
 @endisset
+<div style="text-align:center; color:#aaa; font-size:11px; margin-top:12px; padding-top:8px; border-top:1px solid #eee;">
+    Powered by <strong style="color:#888;">DNInfo</strong> &mdash; <a href="https://dninfo.in" style="color:#aaa; text-decoration:none;">dninfo.in</a>
+</div>
+</x-slot:subcopy>
 </x-mail::message>

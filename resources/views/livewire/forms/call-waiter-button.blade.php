@@ -10,8 +10,8 @@
     </x-button>
 
     @if ($showTableSelection)
-    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 !m-0">
-        <div class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-6 text-center relative flex flex-col mx-2 md:m-0 max-h-[40rem] w-full max-w-lg">
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 !m-0 pointer-events-none">
+        <div class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-6 text-center relative flex flex-col mx-2 md:m-0 max-h-[40rem] w-full max-w-lg pointer-events-auto">
             <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">@lang('modules.table.selectTable')</h2>
 
             <div class="overflow-y-auto flex-grow">
@@ -36,8 +36,8 @@
     @endif
     <!-- Confirmation Popup -->
     @if ($showConfirmation)
-    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 !m-0">
-        <div class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-6 text-center space-y-4">
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 !m-0 pointer-events-none">
+        <div class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-6 text-center space-y-4 pointer-events-auto">
             <p class="text-gray-700 dark:text-gray-300 text-sm font-semibold">@lang('app.callWaiterConfirmation') (@lang('modules.table.table') {{ $table->table_code ?? ''  }})</p>
             <div class="flex space-x-4 justify-center">
                 <button

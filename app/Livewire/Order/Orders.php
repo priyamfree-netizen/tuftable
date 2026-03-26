@@ -125,7 +125,7 @@ class Orders extends Component
         $recentOrder = Order::with('table', 'customer')
             ->where('status', '<>', 'draft')
             ->whereNotNull('order_number')
-            ->orderBy(DB::raw('CAST(order_number AS UNSIGNED)'), 'desc')
+            ->orderBy(DB::raw(config('database.default') === 'pgsql' ? 'CAST(order_number AS BIGINT)' : 'CAST(order_number AS UNSIGNED)'), 'desc')
             ->first();
 
         if ($recentOrder) {

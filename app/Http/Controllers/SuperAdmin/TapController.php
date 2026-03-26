@@ -507,6 +507,9 @@ class TapController extends Controller
             // Clear restaurant modules cache
             clearRestaurantModulesCache($restaurant->id);
 
+            // Notify restaurant admin of plan activation
+            $restaurant->sendPlanActivatedEmail($package);
+
             // Deactivate existing subscriptions
             GlobalSubscription::where('restaurant_id', $restaurant->id)
                 ->where('subscription_status', 'active')

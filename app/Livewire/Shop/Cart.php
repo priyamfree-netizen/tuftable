@@ -3283,8 +3283,22 @@ class Cart extends Component
                     $query->where('menu_items.type', 'halal');
                 }
             }])
+            ->whereHas('items', function ($query) {
+                $query->where('menu_items.is_available', 1);
+
+                if (!empty($this->menuId)) {
+                    $query->where('menu_items.menu_id', $this->menuId);
+                }
+
+                if ($this->showVeg == 1) {
+                    $query->where('menu_items.type', 'veg');
+                }
+
+                if ($this->showHalal == 1) {
+                    $query->where('menu_items.type', 'halal');
+                }
+            })
             ->where('branch_id', $this->shopBranch->id)
-            ->having('items_count', '>', 0)
             ->orderBy('sort_order')
             ->get();
     }

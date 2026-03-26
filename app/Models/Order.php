@@ -148,7 +148,8 @@ class Order extends BaseModel
             return self::generateFormattedOrderNumber($branch->id, $settings);
         }
 
-        $maxOrderNumber = Order::where('branch_id', $branch->id)->whereNotNull('order_number')->where('status', '!=', 'draft')->max(DB::raw('CAST(order_number AS UNSIGNED)'));
+        $castExpr = config('database.default') === 'pgsql' ? 'CAST(order_number AS BIGINT)' : 'CAST(order_number AS UNSIGNED)';
+        $maxOrderNumber = Order::where('branch_id', $branch->id)->whereNotNull('order_number')->where('status', '!=', 'draft')->max(DB::raw($castExpr));
         $orderNumber = $maxOrderNumber ? ((int)$maxOrderNumber + 1) : 1;
 
         return [
@@ -178,7 +179,8 @@ class Order extends BaseModel
                 ->where('created_at', '<=', $endUTC);
         }
 
-        $maxOrderNumber = $orderQuery->max(DB::raw('CAST(order_number AS UNSIGNED)'));
+        $castExpr = config('database.default') === 'pgsql' ? 'CAST(order_number AS BIGINT)' : 'CAST(order_number AS UNSIGNED)';
+        $maxOrderNumber = $orderQuery->max(DB::raw($castExpr));
         $nextNumber = $maxOrderNumber ? ((int)$maxOrderNumber + 1) : 1;
 
         // Check if the order number already exists (to avoid duplicates)

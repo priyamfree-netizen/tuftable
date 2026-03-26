@@ -9,6 +9,7 @@ use App\Models\GlobalInvoice;
 use Illuminate\Console\Command;
 use App\Models\GlobalSubscription;
 use App\Notifications\SubscriptionExpire;
+use App\Notifications\LicenseExpirePre;
 
 class LicenseExpire extends Command
 {
@@ -71,18 +72,21 @@ class LicenseExpire extends Command
 
         // Sent notification to restaurants before license expire.
         foreach ($otherPackages as $package) {
-            if (!is_null($package->trial_notification_before_days)) {
-                $restaurantsNotify = Restaurant::with('package')
-                    ->where('status', 'active')
-                    ->whereNotNull('license_expire_on')
-                    ->whereDate('license_expire_on', now()->addDays($package->trial_notification_before_days))
-                    ->whereHas('package', function ($query) use ($package) {
-                        $query->where('package_type', '!=', PackageType::DEFAULT)->where('is_free', 0)->where('id', $package->id);
-                    })->get();
+            // Use package's trial_notification_before_days, fallback to 7 days
+            $notifyDays = $package->trial_notification_before_days ?? 7;
 
-                foreach ($restaurantsNotify as $rst) {
-                    $restaurantUser = Restaurant::restaurantAdmin($rst);
-                    // $restaurantUser->notify(new LicenseExpirePre($rst));
+            $restaurantsNotify = Restaurant::with('package')
+                ->where('status', 'active')
+                ->whereNotNull('license_expire_on')
+                ->whereDate('license_expire_on', now()->addDays($notifyDays))
+                ->whereHas('package', function ($query) use ($package) {
+                    $query->where('package_type', '!=', PackageType::DEFAULT)->where('is_free', 0)->where('id', $package->id);
+                })->get();
+
+            foreach ($restaurantsNotify as $rst) {
+                $restaurantUser = Restaurant::restaurantAdmin($rst);
+                if ($restaurantUser) {
+                    $restaurantUser->notify(new LicenseExpirePre($rst));
                 }
             }
         }

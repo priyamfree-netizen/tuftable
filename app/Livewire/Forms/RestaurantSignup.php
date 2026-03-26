@@ -30,6 +30,8 @@ class RestaurantSignup extends Component
     public $address;
     public $country;
     public $countries;
+    // Steps: 'user' | 'otp' | 'branch'
+    public $step = 'user';
     public $showUserForm = true;
     public $showBranchForm = false;
     public $phone;
@@ -52,6 +54,10 @@ class RestaurantSignup extends Component
     public $verificationAttempts = 0;
     public $maxVerificationAttempts = 3;
     public $isSubmitting = false;
+    // Email OTP step
+    public $emailOtp = '';
+    public $emailOtpSent = false;
+    public $emailVerified = false;
 
     public function mount()
     {
@@ -242,11 +248,96 @@ class RestaurantSignup extends Component
                 }
             }
 
-            // Show branch form
+            // Send email OTP and go to OTP step
+            $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+            session(['signup_email_otp' => $otp, 'signup_email_otp_expires' => now()->addMinutes(15)]);
+
+            try {
+                \Illuminate\Support\Facades\Mail::send(
+                    [],
+                    [],
+                    function ($message) use ($otp) {
+                        $smtpSetting = \App\Models\EmailSetting::first();
+                        $appName = config('app.name');
+                        $message->to($this->email, $this->fullName)
+                            ->from($smtpSetting->mail_from_email, $smtpSetting->mail_from_name)
+                            ->subject($appName . ' - Email Verification OTP')
+                            ->html(
+                                '<div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px;border:1px solid #e5e7eb;border-radius:8px;">'
+                                . '<h2 style="color:#111827;">Email Verification</h2>'
+                                . '<p style="color:#374151;">Hello <strong>' . htmlspecialchars($this->fullName) . '</strong>,</p>'
+                                . '<p style="color:#374151;">Your OTP for email verification is:</p>'
+                                . '<div style="font-size:32px;font-weight:bold;letter-spacing:8px;color:#111827;background:#f3f4f6;padding:16px;border-radius:6px;text-align:center;margin:16px 0;">' . $otp . '</div>'
+                                . '<p style="color:#6b7280;font-size:13px;">This OTP is valid for 15 minutes. Do not share it with anyone.</p>'
+                                . '</div>'
+                            );
+                    }
+                );
+            } catch (\Exception $e) {
+                \Log::error('Error sending signup OTP email: ' . $e->getMessage());
+            }
+
+            $this->emailOtpSent = true;
+            $this->step = 'otp';
             $this->showUserForm = false;
-            $this->showBranchForm = true;
+            $this->showBranchForm = false;
         } finally {
             $this->isSubmitting = false;
+        }
+    }
+
+    public function verifyEmailOtp()
+    {
+        $this->validate(['emailOtp' => 'required|digits:6']);
+
+        $storedOtp = session('signup_email_otp');
+        $expires = session('signup_email_otp_expires');
+
+        if (!$storedOtp || !$expires || now()->isAfter($expires)) {
+            $this->addError('emailOtp', 'OTP expired. Please go back and try again.');
+            return;
+        }
+
+        if ($this->emailOtp !== $storedOtp) {
+            $this->addError('emailOtp', 'Invalid OTP. Please try again.');
+            return;
+        }
+
+        session()->forget(['signup_email_otp', 'signup_email_otp_expires']);
+        $this->emailVerified = true;
+        $this->step = 'branch';
+        $this->showBranchForm = true;
+    }
+
+    public function resendEmailOtp()
+    {
+        $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        session(['signup_email_otp' => $otp, 'signup_email_otp_expires' => now()->addMinutes(15)]);
+
+        try {
+            \Illuminate\Support\Facades\Mail::send(
+                [],
+                [],
+                function ($message) use ($otp) {
+                    $smtpSetting = \App\Models\EmailSetting::first();
+                    $appName = config('app.name');
+                    $message->to($this->email, $this->fullName)
+                        ->from($smtpSetting->mail_from_email, $smtpSetting->mail_from_name)
+                        ->subject($appName . ' - Email Verification OTP')
+                        ->html(
+                            '<div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px;border:1px solid #e5e7eb;border-radius:8px;">'
+                            . '<h2 style="color:#111827;">Email Verification</h2>'
+                            . '<p style="color:#374151;">Hello <strong>' . htmlspecialchars($this->fullName) . '</strong>,</p>'
+                            . '<p style="color:#374151;">Your OTP for email verification is:</p>'
+                            . '<div style="font-size:32px;font-weight:bold;letter-spacing:8px;color:#111827;background:#f3f4f6;padding:16px;border-radius:6px;text-align:center;margin:16px 0;">' . $otp . '</div>'
+                            . '<p style="color:#6b7280;font-size:13px;">This OTP is valid for 15 minutes. Do not share it with anyone.</p>'
+                            . '</div>'
+                        );
+                }
+            );
+            session()->flash('otp_resent', 'OTP resent successfully.');
+        } catch (\Exception $e) {
+            $this->addError('emailOtp', 'Failed to resend OTP. Please try again.');
         }
     }
 
@@ -307,6 +398,7 @@ class RestaurantSignup extends Component
                 'phone_code' => $this->restaurantPhoneCode,
                 'terms_and_privacy_accepted' => $this->termsAndPrivacy,
                 'marketing_emails_accepted' => $this->marketingEmails,
+                'email_verified_at' => now(),
             ]);
 
             $adminRole = Role::create(['name' => 'Admin_' . $restaurant->id, 'display_name' => 'Admin', 'guard_name' => 'web', 'restaurant_id' => $restaurant->id]);
@@ -338,17 +430,14 @@ class RestaurantSignup extends Component
             if (module_enabled('Subdomain')) {
                 $hash = encrypt($user->id);
                 cache(['quick_login_' . $user->id => $hash], now()->addMinutes(2));
-                // Reset form state after successful creation
                 $this->resetFormState();
                 return redirect('https://' . $restaurant->sub_domain . '/quick-login/' . $hash);
             }
 
+            // Login the user directly (email already verified via OTP)
             $this->authLogin($user);
-            // Reset form state after successful creation
             $this->resetFormState();
-
-            return redirect(RouteServiceProvider::ONBOARDING_STEPS);
-        } catch (\Exception $e) {
+            return redirect(RouteServiceProvider::ONBOARDING_STEPS);        } catch (\Exception $e) {
             \Log::error('Error during restaurant signup: ' . $e->getMessage());
             session()->flash('error', 'An error occurred during signup. Please try again.');
             $this->addError('signup_error', 'An error occurred during signup. Please try again.');
@@ -389,6 +478,10 @@ class RestaurantSignup extends Component
         // Reset UI steps
         $this->showUserForm = true;
         $this->showBranchForm = false;
+        $this->step = 'user';
+        $this->emailOtp = '';
+        $this->emailOtpSent = false;
+        $this->emailVerified = false;
         $this->isSubmitting = false;
     }
 

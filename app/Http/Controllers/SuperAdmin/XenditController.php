@@ -385,6 +385,12 @@ class XenditController extends Controller
                 $restaurant->license_expire_on = null;
                 $restaurant->save();
 
+                // Notify restaurant admin of plan activation
+                $activatedPackage = \App\Models\Package::find($globalSubscription->package_id);
+                if ($activatedPackage) {
+                    $restaurant->sendPlanActivatedEmail($activatedPackage);
+                }
+
                 // Send notifications
                 $emailSetting = EmailSetting::first();
                 if ($emailSetting->mail_driver === 'smtp' && $emailSetting->verified) {

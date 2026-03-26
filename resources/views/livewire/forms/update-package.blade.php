@@ -76,6 +76,12 @@
                     {{ __('modules.package.annual') }} - {{ $selectedPackage?->currency?->currency_symbol }}{{ $annualPrice }}
                 </option>
                 @endif
+
+                @if($packageHalfYearlyStatus ?? false)
+                <option value="half_yearly">
+                    {{ __('modules.package.halfYearlyPlan') }} - {{ $selectedPackage?->currency?->currency_symbol }}{{ $halfYearlyPrice }}
+                </option>
+                @endif
             </x-select>
             <x-input-error for="billingCycle" class="mt-2" />
         </div>

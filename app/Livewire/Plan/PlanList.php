@@ -272,16 +272,26 @@ class PlanList extends Component
 
         $api = new Api($apiKey, $apiSecret);
         $restaurantId = restaurant()->id;
-        $amount = $plan->price ?? 0;
         $currencyCode = $plan->currency->currency_code;
         $currency_id = $plan->currency_id;
-        $type = $this->isAnnual ? 'annual' : 'monthly';
+
+        // Determine billing type
+        if ($plan->package_type == PackageType::LIFETIME) {
+            $type = 'lifetime';
+            $amount = $plan->price ?? 0;
+        } elseif ($plan->half_yearly_status && !$plan->monthly_status && !$plan->annual_status) {
+            $type = 'half_yearly';
+            $amount = $plan->half_yearly_price ?? 0;
+        } else {
+            $type = $this->isAnnual ? 'annual' : 'monthly';
+            $amount = $this->isAnnual ? $plan->annual_price : $plan->monthly_price;
+        }
 
         try {
             if ($plan->package_type == PackageType::LIFETIME) {
                 return $this->processLifetimePayment($apiKey, $api, $plan, $amount, $currencyCode, $currency_id, $restaurantId);
             } else {
-                return $this->processSubscription($apiKey, $api, $plan, $restaurantId, $currencyCode, $type);
+                return $this->processSubscription($apiKey, $api, $plan, $restaurantId, $currencyCode, $type, $amount, $currency_id);
             }
         } catch (\Exception $e) {
             return $this->showError($e->getMessage());
@@ -309,13 +319,49 @@ class PlanList extends Component
     }
 
     // Process Subscription for Razorpay
-    private function processSubscription($apiKey, $api, $plan, $restaurantId, $currencyCode, $type)
+    private function processSubscription($apiKey, $api, $plan, $restaurantId, $currencyCode, $type, $amount = null, $currency_id = null)
     {
+        $planID = match($type) {
+            'annual'      => $plan->razorpay_annual_plan_id,
+            'half_yearly' => $plan->razorpay_half_yearly_plan_id,
+            default       => $plan->razorpay_monthly_plan_id,
+        };
 
-        $planID = $type == 'annual' ? $plan->razorpay_annual_plan_id : $plan->razorpay_monthly_plan_id;
-
+        // If no Razorpay subscription plan ID is configured, fall back to one-time order
         if (!$planID) {
-            return $this->showError(__('messages.noPlanIdFound'));
+            $fallbackAmount = $amount ?? match($type) {
+                'annual'      => $plan->annual_price,
+                'half_yearly' => $plan->half_yearly_price,
+                default       => $plan->monthly_price,
+            };
+
+            if (!$fallbackAmount) {
+                return $this->showError(__('messages.noPlanIdFound'));
+            }
+
+            $currency_id = $currency_id ?? $plan->currency_id;
+
+            $restaurantPayment = RestaurantPayment::create([
+                'restaurant_id' => $restaurantId,
+                'amount' => $fallbackAmount,
+                'package_id' => $plan->id,
+                'package_type' => $type,
+                'currency_id' => $currency_id,
+            ]);
+
+            $razorpayOrder = $api->order->create([
+                'amount' => (int) round($fallbackAmount * 100),
+                'currency' => $currencyCode,
+                'notes' => [
+                    'package_id' => $plan->id,
+                    'package_type' => $type,
+                    'restaurant_id' => $restaurantId,
+                ],
+            ]);
+
+            $restaurantPayment->update(['razorpay_order_id' => $razorpayOrder->id]);
+
+            return $this->dispatchRazorpay($apiKey, $razorpayOrder->id, $plan, $fallbackAmount, $currencyCode, $restaurantId, $type);
         }
 
         $subscription = $api->subscription->create([
@@ -420,7 +466,12 @@ class PlanList extends Component
                 'trial_ends_at' => null,
                 'is_active' => true,
                 'status' => 'active',
-                'license_expire_on' => null,
+                'license_expire_on' => match($packageType) {
+                    'annual'      => now()->addYear(),
+                    'half_yearly' => now()->addMonths(6),
+                    'monthly'     => now()->addMonth(),
+                    default       => null,
+                },
                 'license_updated_at' => now()->format('Y-m-d'),
             ]);
 
@@ -435,14 +486,23 @@ class PlanList extends Component
                 'package_type' => $packageType,
                 'transaction_id' => $paymentId,
                 'currency_id' => $plan->currency_id,
-                'razorpay_id' => $packageType == 'annual' ? $plan->razorpay_annual_plan_id : $plan->razorpay_monthly_plan_id,
+                'razorpay_id' => match($packageType) {
+                    'annual'      => $plan->razorpay_annual_plan_id,
+                    'half_yearly' => $plan->razorpay_half_yearly_plan_id,
+                    default       => $plan->razorpay_monthly_plan_id,
+                },
                 'razorpay_plan' => $packageType,
                 'quantity' => 1,
                 'package_id' => $plan->id,
                 'subscription_id' => ($packageType == 'lifetime') ? $payment->order_id : $referenceId,
                 'gateway_name' => 'razorpay',
                 'subscription_status' => 'active',
-                'ends_at' => $restaurant->license_expire_on ?? null,
+                'ends_at' => match($packageType) {
+                    'annual'      => now()->addYear(),
+                    'half_yearly' => now()->addMonths(6),
+                    'monthly'     => now()->addMonth(),
+                    default       => null,
+                },
                 'subscribed_on_date' => now(),
             ]);
 
@@ -458,9 +518,14 @@ class PlanList extends Component
                 'package_type' => $subscription->package_type,
                 'plan_id' => $subscription->razorpay_id,
                 'amount' => $payment->amount / 100,
-                'total' => $payment->amount / 100,
+                'total' => (int) round($payment->amount / 100),
                 'pay_date' => now()->format('Y-m-d H:i:s'),
-                'next_pay_date' => ($packageType == 'annual') ? now()->addYear() : now()->addMonth(),
+                'next_pay_date' => match($packageType) {
+                    'annual'      => now()->addYear(),
+                    'half_yearly' => now()->addMonths(6),
+                    'lifetime'    => null,
+                    default       => now()->addMonth(),
+                },
                 'gateway_name' => 'razorpay',
                 'status' => 'active',
             ]);
@@ -506,27 +571,29 @@ class PlanList extends Component
             return;
         }
 
-        // Determine subscription status field based on isAnnual
-        $statusField = $this->isAnnual ? 'annual_status' : 'monthly_status';
-
-        // Build query
+        // Build query — show monthly, annual, half_yearly, lifetime, default, free packages
         $this->packages = Package::with(['currency', 'modules'])
-            ->where('is_private', 0) // Non-private packages only
-            ->where(function ($query) use ($statusField) {
+            ->where('is_private', 0)
+            ->where(function ($query) {
                 $query->where('package_type', 'lifetime')
-                    ->orWhere('package_type', 'default') // Default packages
-                    ->orWhere('is_free', true) // Include free packages
-                    ->orWhere(function ($query) use ($statusField) {
+                    ->orWhere('package_type', 'default')
+                    ->orWhere('is_free', true)
+                    ->orWhere(function ($query) {
                         $query->where('package_type', 'standard')
-                            ->where($statusField, true); // Standard packages with the relevant status
+                            ->where(function ($q) {
+                                $q->where('monthly_status', true)
+                                  ->orWhere('annual_status', true)
+                                  ->orWhere('half_yearly_status', true);
+                            });
                     });
             })
-            ->where('package_type', '!=', 'trial') // Exclude trial packages
+            ->where('package_type', '!=', 'trial')
             ->where(function ($query) {
                 $query->where('currency_id', $this->selectedCurrency)
-                    ->orWhere('package_type', 'default') // Default packages ignore currency
-                    ->orWhere('is_free', true); // Free packages ignore currency
-            })->orderBy('sort_order')
+                    ->orWhere('package_type', 'default')
+                    ->orWhere('is_free', true);
+            })
+            ->orderBy('sort_order')
             ->get();
     }
 

@@ -53,7 +53,7 @@ class CallWaiterButton extends Component
         WaiterRequest::create([
             'table_id' => $this->tableNumber,
             'branch_id' => $this->shopBranch->id,
-            'status' => 'Pending',
+            'status' => 'pending',
         ]);
 
         $this->showConfirmation = false;

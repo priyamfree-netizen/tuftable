@@ -276,6 +276,11 @@ class FlutterwaveController extends Controller
                 $invoice->save();
             }
 
+            // Notify restaurant admin of plan activation
+            if ($package) {
+                $restaurant->sendPlanActivatedEmail($package);
+            }
+
             $emailSetting = EmailSetting::first();
 
             if ($emailSetting->mail_driver === 'smtp' && $emailSetting->verified) {
@@ -284,7 +289,7 @@ class FlutterwaveController extends Controller
 
                 // Notify restaurant admin
                 $restaurantAdmin = $restaurant->restaurantAdmin($restaurant);
-                Notification::send($restaurantAdmin, new restaurantUpdatedPlan($restaurant, $subscription->package_id));
+                Notification::send($restaurantAdmin, new RestaurantUpdatedPlan($restaurant, $subscription->package_id));
             }
 
             session()->forget('restaurant');

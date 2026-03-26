@@ -99,12 +99,19 @@
                                     @endif
                                 </td>
 
-                                <td class="py-2.5 px-4 text-base text-gray-900 whitespace-nowrap dark:text-white">
-                                @if ($item->is_active == true)
-                                    <span class="bg-green-100 uppercase text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">@lang('app.active')</span>
-                                @else
-                                    <span class="bg-red-100 uppercase text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">@lang('app.inactive')</span>
-                                @endif
+                                <td class="py-2.5 px-4 text-base text-gray-900 dark:text-white">
+                                    @if (!$item->is_active)
+                                        <span class="bg-red-100 uppercase text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">@lang('app.inactive')</span>
+                                    @elseif ($item->access_expires_at && $item->access_expires_at->isPast())
+                                        <span class="bg-orange-100 uppercase text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-orange-900 dark:text-orange-300">Expired</span>
+                                    @else
+                                        <span class="bg-green-100 uppercase text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">@lang('app.active')</span>
+                                    @endif
+                                    @if ($item->access_expires_at && !$item->access_expires_at->isPast())
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                            Expires: {{ $item->access_expires_at->format('d M Y') }}
+                                        </div>
+                                    @endif
                                 </td>
 
                                 <td class="py-2.5 px-4 text-sm text-gray-900 whitespace-nowrap dark:text-white text-center">
@@ -139,6 +146,9 @@
                                             @if (user_can('Update Restaurant'))
                                                 <x-dropdown-link wire:click='showEditCustomer({{ $item->id }})' wire:key='member-edit-{{ $item->id }}'>
                                                     @lang('app.update')
+                                                </x-dropdown-link>
+                                                <x-dropdown-link wire:click="showAccessModal({{ $item->id }})" wire:key='access-{{ $item->id }}' class="text-blue-600 dark:text-blue-400">
+                                                    Manage Access
                                                 </x-dropdown-link>
                                             @endif
                                             @if (user_can('Delete Restaurant'))
@@ -249,6 +259,52 @@
             <x-danger-button class="ml-3" wire:click="saveRejectionReason" wire:loading.attr="disabled">
                 {{ __('Submit') }}
             </x-danger-button>
+        </x-slot>
+    </x-dialog-modal>
+
+    {{-- Manage Access Modal --}}
+    <x-dialog-modal wire:model.live="showAccessModal">
+        <x-slot name="title">
+            Manage Restaurant Access
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="space-y-4">
+                {{-- Enable / Disable toggle --}}
+                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Restaurant Active</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Disable to immediately block access</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" wire:model.live="accessIsActive" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                {{-- Access Expiry Date --}}
+                <div>
+                    <x-label value="Access Expiry Date" />
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Leave empty for unlimited access. After this date, restaurant will be automatically blocked.</p>
+                    <x-input type="date" class="block mt-1 w-full" wire:model="accessExpiresAt" />
+                    <x-input-error for="accessExpiresAt" class="mt-2" />
+                </div>
+
+                @if ($accessExpiresAt)
+                    <div class="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg text-sm text-yellow-800 dark:text-yellow-300">
+                        Access will expire on <strong>{{ \Carbon\Carbon::parse($accessExpiresAt)->format('d M Y') }}</strong>
+                    </div>
+                @endif
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showAccessModal', false)" wire:loading.attr="disabled">
+                {{ __('app.cancel') }}
+            </x-secondary-button>
+            <x-button class="ml-3" wire:click="saveAccess" wire:loading.attr="disabled">
+                Save
+            </x-button>
         </x-slot>
     </x-dialog-modal>
 

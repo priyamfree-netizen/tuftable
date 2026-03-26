@@ -107,6 +107,7 @@ if (!function_exists('module_enabled') || !module_enabled('Subdomain')) {
 }
 
 Route::get('/restaurant-signup', [HomeController::class, 'signup'])->name('restaurant_signup');
+Route::get('/verify-signup-otp/{userId}', \App\Livewire\Forms\VerifySignupOtp::class)->name('verify_signup_otp');
 Route::get('/customer-logout', [HomeController::class, 'customerLogout'])->name('customer_logout');
 Route::get('page/{slug}', [CustomMenuController::class, 'index'])->name('customMenu');
 

@@ -107,11 +107,11 @@ class DeliveryAppReport extends Component
             ->where('order_type_id', $deliveryOrderTypes->id)
             ->where(function ($q) use ($dateTimeData) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw("TIME(date_time) BETWEEN ? AND ?", [$dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw("date_time::time BETWEEN ?::time AND ?::time", [$dateTimeData['startTime'], $dateTimeData['endTime']]);
                 } else {
                     $q->where(function ($sub) use ($dateTimeData) {
-                        $sub->whereRaw("TIME(date_time) >= ?", [$dateTimeData['startTime']])
-                            ->orWhereRaw("TIME(date_time) <= ?", [$dateTimeData['endTime']]);
+                        $sub->whereRaw("date_time::time >= ?::time", [$dateTimeData['startTime']])
+                            ->orwhereRaw("date_time::time <= ?::time", [$dateTimeData['endTime']]);
                     });
                 }
             });
@@ -195,3 +195,4 @@ class DeliveryAppReport extends Component
         ]);
     }
 }
+

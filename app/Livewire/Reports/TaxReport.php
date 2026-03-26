@@ -175,11 +175,11 @@ class TaxReport extends Component
             ->whereBetween('date_time', [$dateTimeData['startDateTime'], $dateTimeData['endDateTime']])
             ->where(function ($q) use ($dateTimeData, $offset) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw("TIME(CONVERT_TZ(date_time, '+00:00', ?)) BETWEEN ? AND ?", [$offset, $dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw("(date_time AT TIME ZONE INTERVAL ?)::time BETWEEN ?::time AND ?::time", [$offset, $dateTimeData['startTime'], $dateTimeData['endTime']]);
                 } else {
                     $q->where(function ($sub) use ($dateTimeData, $offset) {
-                        $sub->whereRaw("TIME(CONVERT_TZ(date_time, '+00:00', ?)) >= ?", [$offset, $dateTimeData['startTime']])
-                            ->orWhereRaw("TIME(CONVERT_TZ(date_time, '+00:00', ?)) <= ?", [$offset, $dateTimeData['endTime']]);
+                        $sub->whereRaw("(date_time AT TIME ZONE INTERVAL ?)::time >= ?::time", [$offset, $dateTimeData['startTime']])
+                            ->orwhereRaw("(date_time AT TIME ZONE INTERVAL ?)::time <= ?::time", [$offset, $dateTimeData['endTime']]);
                     });
                 }
             });
@@ -532,11 +532,11 @@ class TaxReport extends Component
             ->whereBetween('date_time', [$startDateTime, $endDateTime])
             ->where(function ($q) use ($dateTimeData, $offset) {
                 if ($dateTimeData['startTime'] < $dateTimeData['endTime']) {
-                    $q->whereRaw("TIME(CONVERT_TZ(date_time, '+00:00', ?)) BETWEEN ? AND ?", [$offset, $dateTimeData['startTime'], $dateTimeData['endTime']]);
+                    $q->whereRaw("(date_time AT TIME ZONE INTERVAL ?)::time BETWEEN ?::time AND ?::time", [$offset, $dateTimeData['startTime'], $dateTimeData['endTime']]);
                 } else {
                     $q->where(function ($sub) use ($dateTimeData, $offset) {
-                        $sub->whereRaw("TIME(CONVERT_TZ(date_time, '+00:00', ?)) >= ?", [$offset, $dateTimeData['startTime']])
-                            ->orWhereRaw("TIME(CONVERT_TZ(date_time, '+00:00', ?)) <= ?", [$offset, $dateTimeData['endTime']]);
+                        $sub->whereRaw("(date_time AT TIME ZONE INTERVAL ?)::time >= ?::time", [$offset, $dateTimeData['startTime']])
+                            ->orwhereRaw("(date_time AT TIME ZONE INTERVAL ?)::time <= ?::time", [$offset, $dateTimeData['endTime']]);
                     });
                 }
             })
@@ -695,4 +695,5 @@ class TaxReport extends Component
     }
 
 }
+
 

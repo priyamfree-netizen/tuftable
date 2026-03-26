@@ -301,7 +301,7 @@ class Pos extends Component
                     return $q->where('branch_id', branch()->id)
                         ->orWhereNull('branch_id');
                 })
-                ->role('waiter_' . $this->restaurant->id)
+                ->role('Waiter_' . $this->restaurant->id)
                 ->where('restaurant_id', $this->restaurant->id)
                 ->get();
         });
@@ -5331,7 +5331,13 @@ class Pos extends Component
                 if (!empty($this->menuId)) {
                     $query->where('menu_id', $this->menuId);
                 }
-            }])->having('items_count', '>', 0)->get();
+            }])
+            ->whereHas('items', function ($query) {
+                if (!empty($this->menuId)) {
+                    $query->where('menu_id', $this->menuId);
+                }
+            })
+            ->get();
     }
 
     /**

@@ -335,7 +335,7 @@ class Tables extends Component
                     return $q->where('branch_id', branch()->id)
                         ->orWhereNull('branch_id');
                 })
-                ->role('waiter_' . restaurant()->id)
+                ->role('Waiter_' . restaurant()->id)
                 ->where('restaurant_id', restaurant()->id)
                 ->get();
         });

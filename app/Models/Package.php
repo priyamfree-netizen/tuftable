@@ -17,6 +17,12 @@ class Package extends BaseModel
         'package_type' => PackageType::class,
         'trial_days' => 'integer',
         'trial_notification_before_days' => 'integer',
+        'monthly_status' => 'boolean',
+        'annual_status' => 'boolean',
+        'half_yearly_status' => 'boolean',
+        'is_free' => 'boolean',
+        'is_private' => 'boolean',
+        'is_recommended' => 'boolean',
     ];
 
     const ADDITIONAL_FEATURES = [

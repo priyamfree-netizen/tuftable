@@ -117,11 +117,11 @@ class CancelledOrderReportExport implements WithMapping, FromCollection, WithHea
             ->whereBetween('updated_at', [$this->startDateTime, $this->endDateTime])
             ->where(function ($q) {
                 if ($this->startTime < $this->endTime) {
-                    $q->whereRaw('TIME(updated_at) BETWEEN ? AND ?', [$this->startTime, $this->endTime]);
+                    $q->whereRaw('updated_at::time BETWEEN ?::time AND ?::time', [$this->startTime, $this->endTime]);
                 } else {
                     $q->where(function ($sub) {
-                        $sub->whereRaw('TIME(updated_at) >= ?', [$this->startTime])
-                            ->orWhereRaw('TIME(updated_at) <= ?', [$this->endTime]);
+                        $sub->whereRaw('updated_at::time >= ?::time', [$this->startTime])
+                            ->orwhereRaw('updated_at::time <= ?::time', [$this->endTime]);
                     });
                 }
             });
@@ -137,4 +137,5 @@ class CancelledOrderReportExport implements WithMapping, FromCollection, WithHea
         return $query->orderBy('updated_at', 'desc')->get();
     }
 }
+
 

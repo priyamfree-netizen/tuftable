@@ -132,6 +132,9 @@ class PaypalController extends Controller
             'amount' => $package->price
         ]);
 
+        // Notify restaurant admin of plan activation
+        $restaurant->sendPlanActivatedEmail($package);
+
         // Deactivate any active subscriptions before assigning new one
         GlobalSubscription::where('restaurant_id', $restaurant->id)
             ->where('subscription_status', 'active')
@@ -357,6 +360,9 @@ class PaypalController extends Controller
                     $restaurant->status = 'active';
                     $restaurant->license_expire_on = null;
                     $restaurant->save();
+
+                    // Notify restaurant admin of plan activation
+                    $restaurant->sendPlanActivatedEmail($package);
 
                     // Deactivate existing subscriptions
                     GlobalSubscription::where('restaurant_id', $restaurant->id)

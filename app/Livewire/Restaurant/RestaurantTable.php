@@ -27,6 +27,12 @@ class RestaurantTable extends Component
     public $rejectionReason;
     public $restaurantId;
 
+    // Access control
+    public $showAccessModal = false;
+    public $accessRestaurantId;
+    public $accessExpiresAt;
+    public $accessIsActive;
+
     protected $listeners = ['refreshRestaurants' => '$refresh'];
 
     public function showEditCustomer($id)
@@ -145,6 +151,39 @@ class RestaurantTable extends Component
             'position' => 'top-end',
             'showCancelButton' => false,
             'cancelButtonText' => __('app.close')
+        ]);
+    }
+
+    public function showAccessModal($id)
+    {
+        abort_if(!user_can('Update Restaurant'), 403);
+        $restaurant = Restaurant::findOrFail($id);
+        $this->accessRestaurantId = $id;
+        $this->accessIsActive = $restaurant->is_active;
+        $this->accessExpiresAt = $restaurant->access_expires_at
+            ? $restaurant->access_expires_at->format('Y-m-d')
+            : null;
+        $this->showAccessModal = true;
+    }
+
+    public function saveAccess()
+    {
+        abort_if(!user_can('Update Restaurant'), 403);
+        $this->validate([
+            'accessExpiresAt' => 'nullable|date',
+        ]);
+
+        $restaurant = Restaurant::findOrFail($this->accessRestaurantId);
+        $restaurant->is_active = $this->accessIsActive;
+        $restaurant->access_expires_at = $this->accessExpiresAt ?: null;
+        $restaurant->save();
+
+        $this->showAccessModal = false;
+        $this->reset('accessRestaurantId', 'accessExpiresAt', 'accessIsActive');
+        $this->alert('success', 'Access settings updated.', [
+            'toast' => true,
+            'position' => 'top-end',
+            'showCancelButton' => false,
         ]);
     }
 

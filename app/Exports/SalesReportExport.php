@@ -237,11 +237,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
         if (empty($this->shiftId)) {
             $query->where(function ($q) {
                 if ($this->startTime < $this->endTime) {
-                    $q->whereRaw("TIME(orders.date_time) BETWEEN ? AND ?", [$this->startTime, $this->endTime]);
+                    $q->whereRaw("orders.date_time::time BETWEEN ?::time AND ?::time", [$this->startTime, $this->endTime]);
                 } else {
                     $q->where(function ($sub) {
-                        $sub->whereRaw("TIME(orders.date_time) >= ?", [$this->startTime])
-                            ->orWhereRaw("TIME(orders.date_time) <= ?", [$this->endTime]);
+                        $sub->whereRaw("orders.date_time::time >= ?::time", [$this->startTime])
+                            ->orwhereRaw("orders.date_time::time <= ?::time", [$this->endTime]);
                     });
                 }
             });
@@ -254,15 +254,15 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
                 $q->where('orders.added_by', $this->waiterId);
             })
             ->select(
-                DB::raw("DATE(CONVERT_TZ(orders.date_time, '+00:00', '{$this->offset}')) as date"),
+                DB::raw("(orders.date_time AT TIME ZONE INTERVAL '{$this->offset}')::date as date"),
                 DB::raw('COUNT(DISTINCT orders.id) as total_orders'),
                 DB::raw('SUM(payments.amount) as total_amount'),
-                DB::raw('SUM(CASE WHEN payments.payment_method = "cash" THEN payments.amount ELSE 0 END) as cash_amount'),
-                DB::raw('SUM(CASE WHEN payments.payment_method = "card" THEN payments.amount ELSE 0 END) as card_amount'),
-                DB::raw('SUM(CASE WHEN payments.payment_method = "upi" THEN payments.amount ELSE 0 END) as upi_amount'),
-                DB::raw('SUM(CASE WHEN payments.payment_method = "razorpay" THEN payments.amount ELSE 0 END) as razorpay_amount'),
-                DB::raw('SUM(CASE WHEN payments.payment_method = "stripe" THEN payments.amount ELSE 0 END) as stripe_amount'),
-                DB::raw('SUM(CASE WHEN payments.payment_method = "flutterwave" THEN payments.amount ELSE 0 END) as flutterwave_amount'),
+                DB::raw("SUM(CASE WHEN payments.payment_method = 'cash' THEN payments.amount ELSE 0 END) as cash_amount"),
+                DB::raw("SUM(CASE WHEN payments.payment_method = 'card' THEN payments.amount ELSE 0 END) as card_amount"),
+                DB::raw("SUM(CASE WHEN payments.payment_method = 'upi' THEN payments.amount ELSE 0 END) as upi_amount"),
+                DB::raw("SUM(CASE WHEN payments.payment_method = 'razorpay' THEN payments.amount ELSE 0 END) as razorpay_amount"),
+                DB::raw("SUM(CASE WHEN payments.payment_method = 'stripe' THEN payments.amount ELSE 0 END) as stripe_amount"),
+                DB::raw("SUM(CASE WHEN payments.payment_method = 'flutterwave' THEN payments.amount ELSE 0 END) as flutterwave_amount"),
             )
             ->groupBy('date')
             ->orderBy('date')
@@ -278,11 +278,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
         if (empty($this->shiftId)) {
             $orderData->where(function ($q) {
                 if ($this->startTime < $this->endTime) {
-                    $q->whereRaw("TIME(date_time) BETWEEN ? AND ?", [$this->startTime, $this->endTime]);
+                    $q->whereRaw("date_time::time BETWEEN ?::time AND ?::time", [$this->startTime, $this->endTime]);
                 } else {
                     $q->where(function ($sub) {
-                        $sub->whereRaw("TIME(date_time) >= ?", [$this->startTime])
-                            ->orWhereRaw("TIME(date_time) <= ?", [$this->endTime]);
+                        $sub->whereRaw("date_time::time >= ?::time", [$this->startTime])
+                            ->orwhereRaw("date_time::time <= ?::time", [$this->endTime]);
                     });
                 }
             });
@@ -295,8 +295,7 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
                 $q->where('added_by', $this->waiterId);
             })
             ->select(
-                DB::raw("DATE(CONVERT_TZ(date_time, '+00:00', '{$this->offset}')) as date"),
-                DB::raw('SUM(discount_amount) as discount_amount'),
+                DB::raw("(date_time AT TIME ZONE INTERVAL '{$this->offset}')::date as date"),
                 DB::raw('SUM(tip_amount) as tip_amount'),
                 DB::raw('SUM(delivery_fee) as delivery_fee'),
             )
@@ -313,11 +312,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
         if (empty($this->shiftId)) {
             $outstandingQuery->where(function ($q) {
                 if ($this->startTime < $this->endTime) {
-                    $q->whereRaw("TIME(date_time) BETWEEN ? AND ?", [$this->startTime, $this->endTime]);
+                    $q->whereRaw("date_time::time BETWEEN ?::time AND ?::time", [$this->startTime, $this->endTime]);
                 } else {
                     $q->where(function ($sub) {
-                        $sub->whereRaw("TIME(date_time) >= ?", [$this->startTime])
-                            ->orWhereRaw("TIME(date_time) <= ?", [$this->endTime]);
+                        $sub->whereRaw("date_time::time >= ?::time", [$this->startTime])
+                            ->orwhereRaw("date_time::time <= ?::time", [$this->endTime]);
                     });
                 }
             });
@@ -332,22 +331,22 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
         }
 
         $outstandingData = $outstandingQuery->select(
-            DB::raw("DATE(CONVERT_TZ(date_time, '+00:00', '{$this->offset}')) as date"),
-            DB::raw('SUM(
+            DB::raw("(date_time AT TIME ZONE INTERVAL '{$this->offset}')::date as date"),
+            DB::raw("SUM(
                 CASE
-                    WHEN split_type = "items" THEN
+                    WHEN split_type = 'items' THEN
                         total - COALESCE((
                             SELECT SUM(so.amount)
                             FROM split_orders so
                             WHERE so.order_id = orders.id
-                            AND so.status = "paid"
+                            AND so.status = 'paid'
                         ), 0)
                     ELSE
                         total - COALESCE((
                             SELECT SUM(p.amount)
                             FROM payments p
                             WHERE p.order_id = orders.id
-                            AND p.payment_method != "due"
+                            AND p.payment_method != 'due'
                         ), 0)
                 END
             ) as outstanding_amount')
@@ -369,11 +368,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
         if (empty($this->shiftId)) {
             $dueReceivedQuery->where(function ($q) {
                 if ($this->startTime < $this->endTime) {
-                    $q->whereRaw("TIME(orders.date_time) BETWEEN ? AND ?", [$this->startTime, $this->endTime]);
+                    $q->whereRaw("orders.date_time::time BETWEEN ?::time AND ?::time", [$this->startTime, $this->endTime]);
                 } else {
                     $q->where(function ($sub) {
-                        $sub->whereRaw("TIME(orders.date_time) >= ?", [$this->startTime])
-                            ->orWhereRaw("TIME(orders.date_time) <= ?", [$this->endTime]);
+                        $sub->whereRaw("orders.date_time::time >= ?::time", [$this->startTime])
+                            ->orwhereRaw("orders.date_time::time <= ?::time", [$this->endTime]);
                     });
                 }
             });
@@ -388,7 +387,7 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
         }
 
         $dueReceivedData = $dueReceivedQuery->select(
-            DB::raw("DATE(CONVERT_TZ(orders.date_time, '+00:00', '{$this->offset}')) as date"),
+            DB::raw("(orders.date_time AT TIME ZONE INTERVAL '{$this->offset}')::date as date"),
             DB::raw('SUM(payments.due_amount_received) as due_received_amount')
         )
         ->groupBy('date')
@@ -435,11 +434,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
                     ->whereBetween('orders.date_time', [$window['startDateTime'], $window['endDateTime']])
                     ->where(function ($q) use ($window) {
                         if ($window['startTime'] < $window['endTime']) {
-                            $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$window['startTime'], $window['endTime']]);
+                            $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$window['startTime'], $window['endTime']]);
                         } else {
                             $q->where(function ($sub) use ($window) {
-                                $sub->whereRaw('TIME(orders.date_time) >= ?', [$window['startTime']])
-                                    ->orWhereRaw('TIME(orders.date_time) <= ?', [$window['endTime']]);
+                                $sub->whereRaw('orders.date_time::time >= ?::time', [$window['startTime']])
+                                    ->orwhereRaw('orders.date_time::time <= ?::time', [$window['endTime']]);
                             });
                         }
                     })
@@ -479,11 +478,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
                 ->whereBetween('orders.date_time', [$window['startDateTime'], $window['endDateTime']])
                 ->where(function ($q) use ($window) {
                     if ($window['startTime'] < $window['endTime']) {
-                        $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$window['startTime'], $window['endTime']]);
+                        $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$window['startTime'], $window['endTime']]);
                     } else {
                         $q->where(function ($sub) use ($window) {
-                            $sub->whereRaw('TIME(orders.date_time) >= ?', [$window['startTime']])
-                                ->orWhereRaw('TIME(orders.date_time) <= ?', [$window['endTime']]);
+                            $sub->whereRaw('orders.date_time::time >= ?::time', [$window['startTime']])
+                                ->orwhereRaw('orders.date_time::time <= ?::time', [$window['endTime']]);
                         });
                     }
                 })
@@ -539,11 +538,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
             if (empty($this->shiftId)) {
                 $orderTaxQuery->where(function ($q) use ($window) {
                     if ($window['startTime'] < $window['endTime']) {
-                        $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$window['startTime'], $window['endTime']]);
+                        $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$window['startTime'], $window['endTime']]);
                     } else {
                         $q->where(function ($sub) use ($window) {
-                            $sub->whereRaw('TIME(orders.date_time) >= ?', [$window['startTime']])
-                                ->orWhereRaw('TIME(orders.date_time) <= ?', [$window['endTime']]);
+                            $sub->whereRaw('orders.date_time::time >= ?::time', [$window['startTime']])
+                                ->orwhereRaw('orders.date_time::time <= ?::time', [$window['endTime']]);
                         });
                     }
                 });
@@ -620,11 +619,11 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
                         ->whereBetween('orders.date_time', [$window['startDateTime'], $window['endDateTime']])
                         ->where(function ($q) use ($window) {
                             if ($window['startTime'] < $window['endTime']) {
-                                $q->whereRaw('TIME(orders.date_time) BETWEEN ? AND ?', [$window['startTime'], $window['endTime']]);
+                                $q->whereRaw('orders.date_time::time BETWEEN ?::time AND ?::time', [$window['startTime'], $window['endTime']]);
                             } else {
                                 $q->where(function ($sub) use ($window) {
-                                    $sub->whereRaw('TIME(orders.date_time) >= ?', [$window['startTime']])
-                                        ->orWhereRaw('TIME(orders.date_time) <= ?', [$window['endTime']]);
+                                    $sub->whereRaw('orders.date_time::time >= ?::time', [$window['startTime']])
+                                        ->orwhereRaw('orders.date_time::time <= ?::time', [$window['endTime']]);
                                 });
                             }
                         })
@@ -669,3 +668,6 @@ class SalesReportExport implements WithMapping, FromCollection, WithHeadings, Wi
         return $data;
     }
 }
+
+
+

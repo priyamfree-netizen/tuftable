@@ -240,6 +240,49 @@
         </form>
     @endif
 
+    {{-- Step 2: Email OTP Verification --}}
+    @if ($step === 'otp')
+        <div class="text-center">
+            <div class="mb-4">
+                <svg class="w-12 h-12 text-skin-base mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <h2 class="text-xl font-medium mb-2 dark:text-white">@lang('app.verifyEmail')</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                We sent a 6-digit OTP to <strong class="text-gray-700 dark:text-gray-200">{{ $email }}</strong>
+            </p>
+
+            @if (session('otp_resent'))
+                <div class="mb-4 text-sm text-green-600 dark:text-green-400">{{ session('otp_resent') }}</div>
+            @endif
+
+            <div class="mb-4">
+                <x-input id="emailOtp" class="block w-full text-center text-2xl tracking-widest"
+                    type="text" wire:model="emailOtp" maxlength="6" placeholder="000000" autofocus />
+                <x-input-error for="emailOtp" class="mt-2" />
+            </div>
+
+            <x-button wire:click="verifyEmailOtp" wire:loading.attr="disabled" class="w-full justify-center mb-3">
+                <span wire:loading.remove wire:target="verifyEmailOtp">Verify OTP</span>
+                <span wire:loading wire:target="verifyEmailOtp">Verifying...</span>
+            </x-button>
+
+            <button wire:click="resendEmailOtp" wire:loading.attr="disabled"
+                class="text-sm text-skin-base hover:underline">
+                <span wire:loading.remove wire:target="resendEmailOtp">Resend OTP</span>
+                <span wire:loading wire:target="resendEmailOtp">Sending...</span>
+            </button>
+
+            <div class="mt-4">
+                <button wire:click="$set('step', 'user'), $set('showUserForm', true)"
+                    class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 underline">
+                    &larr; Back
+                </button>
+            </div>
+        </div>
+    @endif
+
     @if ($showBranchForm)
         <form wire:submit="submitForm2">
             @csrf

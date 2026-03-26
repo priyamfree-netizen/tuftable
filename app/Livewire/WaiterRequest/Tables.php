@@ -71,12 +71,12 @@ class Tables extends Component
 
     public function showTableOrder($id)
     {
-        return $this->redirect(route('pos.show', $id), navigate: true);
+        return $this->redirect(route('pos.show', $id));
     }
 
     public function showTableOrderDetail($id)
     {
-        return $this->redirect(route('pos.order', [$id]), navigate: true);
+        return $this->redirect(route('pos.order', [$id]));
     }
 
     public function markCompleted($id)

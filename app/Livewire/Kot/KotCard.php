@@ -63,7 +63,9 @@ class KotCard extends Component
                     'status' => 'cooking'
                 ]);
             
+            if ($kot->order) {
                 $kot->order->updateQuietly(['order_status' => 'preparing']);
+            }
         }
 
         // Refresh the KOT data
