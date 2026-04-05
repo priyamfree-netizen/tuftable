@@ -1,68 +1,26 @@
 @extends('layouts.landing-page')
 
 @section('content')
-    <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
 
-            <h1
-                class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                    {{ $frontDetails->header_title ?? __('landing.heroTitle') }}
-                </h1>
-            <div class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                {!! $frontDetails->header_description ?? __('landing.heroSubTitle') !!}
-            </div>
-            <div
-                class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
-                <a href="{{ route('restaurant_signup') }}"
-                    class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-skin-base hover:bg-skin-base/[0.7] focus:ring-4 focus:ring-skin-base dark:focus:ring-skin-base">
-                    @if ($trialPackage)
-                        @lang('landing.startTrial', ['days' => $trialPackage->trial_days])
-                    @else
-                        @lang('landing.getStartedFree')
-                    @endif
-                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </a>
-
-            </div>
-
-            <div class="relative  max-w-screen-lg flex justify-center mx-auto">
-
-                <div>
-                    <img src="{{ $frontDetails->image_url ?? asset('landing/dashboard.png') }}" class="shadow-lg border rounded-lg " alt="">
+{{-- Hero Section --}}
+<div class="home-7_hero-section" style="background:#f8fafc;padding:80px 0 60px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <span style="display:inline-block;background:#4f46e5;color:#fff;font-size:12px;font-weight:700;padding:4px 16px;border-radius:999px;margin-bottom:20px;letter-spacing:1px;">All-in-One Restaurant Management</span>
+                <h1 style="font-size:3rem;font-weight:800;color:#111827;line-height:1.15;margin-bottom:20px;">Run your restaurant<br><span style="color:#4f46e5;">smarter, faster</span> &amp; easier</h1>
+                <p style="font-size:1.1rem;color:#6b7280;margin-bottom:32px;line-height:1.7;">TufTable gives your team everything they need — QR ordering, kitchen displays, billing, reservations and real-time analytics — in one simple cloud platform.</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <a href="{{ route('restaurant_signup') }}" style="padding:14px 32px;background:#4f46e5;color:#fff;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;">Start Free Trial</a>
+                    <a href="{{ route('landing.contact') }}" style="padding:14px 32px;background:#fff;color:#111827;border:2px solid #e5e7eb;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;">Contact Us</a>
                 </div>
-
-                <!-- SVG Element -->
-                <div class="hidden md:block absolute top-0 end-0 -translate-y-12 translate-x-20">
-                    <svg class="w-16 h-auto text-skin-base" width="121" height="135" viewBox="0 0 121 135"
-                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 16.4754C11.7688 27.4499 21.2452 57.3224 5 89.0164" stroke="currentColor"
-                            stroke-width="10" stroke-linecap="round" />
-                        <path d="M33.6761 112.104C44.6984 98.1239 74.2618 57.6776 83.4821 5" stroke="currentColor"
-                            stroke-width="10" stroke-linecap="round" />
-                        <path d="M50.5525 130C68.2064 127.495 110.731 117.541 116 78.0874" stroke="currentColor"
-                            stroke-width="10" stroke-linecap="round" />
-                    </svg>
-                </div>
-                <!-- End SVG Element -->
-
-                <!-- SVG Element -->
-                <div class="hidden md:block absolute bottom-0 start-0 translate-y-10 -translate-x-32">
-                    <svg class="w-40 h-auto text-gray-500" width="347" height="188" viewBox="0 0 347 188"
-                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M4 82.4591C54.7956 92.8751 30.9771 162.782 68.2065 181.385C112.642 203.59 127.943 78.57 122.161 25.5053C120.504 2.2376 93.4028 -8.11128 89.7468 25.5053C85.8633 61.2125 130.186 199.678 180.982 146.248L214.898 107.02C224.322 95.4118 242.9 79.2851 258.6 107.02C274.299 134.754 299.315 125.589 309.861 117.539L343 93.4426"
-                            stroke="currentColor" stroke-width="7" stroke-linecap="round" />
-                    </svg>
-                </div>
-                <!-- End SVG Element -->
             </div>
-
+            <div class="col-lg-6" style="margin-top:40px;">
+                <img src="{{ $frontDetails->image_url ?? asset('landing/dashboard.png') }}" style="width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.12);" alt="TufTable Dashboard" />
+            </div>
         </div>
-    </section>
+    </div>
+</div>
 
     @if (!$frontFeatures->isEmpty() )
     <!-- Features -->
