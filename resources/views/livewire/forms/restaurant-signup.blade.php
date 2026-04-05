@@ -23,7 +23,7 @@
                 <x-input-error for="email" class="mt-2" />
             </div>
             <div class="mt-4">
-                <x-label for="restaurantPhoneNumber" value="{{ __('modules.settings.phone') }}" />
+                <x-label for="restaurantPhoneNumber" value="{{ __('modules.settings.phone') . ' (' . __('app.optional') . ')' }}" />
 
                 @if($phoneCodeDetected && $restaurantPhoneCode)
                     <div class="text-xs text-green-600 dark:text-green-400 mb-1">

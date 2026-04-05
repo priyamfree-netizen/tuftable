@@ -37,7 +37,7 @@ class HomeController extends Controller
         }
 
         if (!session()->has('customer_is_rtl')) {
-            session(['customer_is_rtl' => $languageSetting->is_rtl == 1]);
+            session(['customer_is_rtl' => ($languageSetting ? $languageSetting->is_rtl == 1 : false)]);
         }
 
         app()->setLocale($locale);
@@ -108,6 +108,72 @@ class HomeController extends Controller
         }
 
         return view('landing.dynamic-index', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages', 'customMenu', 'frontDetails', 'frontFeatures', 'frontReviews', 'frontFaqs', 'frontContact'));
+    }
+
+    public function about()
+    {
+        $global = global_setting();
+
+        if ($global->disable_landing_site && !request()->ajax()) {
+            return redirect(route('login'));
+        }
+
+        return view('landing.about-page');
+    }
+
+    public function blog()
+    {
+        $global = global_setting();
+
+        if ($global->disable_landing_site && !request()->ajax()) {
+            return redirect(route('login'));
+        }
+
+        return view('landing.blog');
+    }
+
+    public function pricing()
+    {
+        $global = global_setting();
+
+        if ($global->disable_landing_site && !request()->ajax()) {
+            return redirect(route('login'));
+        }
+
+        $packages = Package::with('modules')
+            ->where('package_type', '!=', PackageType::DEFAULT)
+            ->where('package_type', '!=', PackageType::TRIAL)
+            ->where('is_private', false)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+
+        $trialPackage = Package::where('package_type', PackageType::TRIAL)->first();
+        $this->modules = Module::where('is_superadmin', 0)->pluck('name')->toArray();
+        $this->PackageFeatures = Package::ADDITIONAL_FEATURES;
+        $AllModulesWithFeature = array_merge($this->modules, $this->PackageFeatures);
+
+        $monthlyPackages = Package::where('package_type', PackageType::STANDARD)->where('monthly_status', true)->where('is_private', false)->get();
+        $annualPackages = Package::where('package_type', PackageType::STANDARD)->where('annual_status', true)->where('is_private', false)->get();
+        $lifetimePackages = Package::where('package_type', PackageType::LIFETIME)->where('is_private', false)->get();
+
+        return view('landing.pricing-page', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages'));
+    }
+
+    public function contact()
+    {
+        $global = global_setting();
+
+        if ($global->disable_landing_site && !request()->ajax()) {
+            return redirect(route('login'));
+        }
+
+        $language = $this->language;
+        $languageSetting = \App\Models\LanguageSetting::where('language_code', $language)->first();
+        $languageId = $languageSetting ? $languageSetting->id : null;
+        $frontContact = \App\Models\Contact::where('language_setting_id', $languageId)->first();
+        $frontDetails = \App\Models\FrontDetail::where('language_setting_id', $languageId)->first();
+
+        return view('landing.contact-page', compact('frontContact', 'frontDetails'));
     }
 
     public function signup()

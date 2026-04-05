@@ -12,7 +12,46 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('printers', function (Blueprint $table) {
-		});
+            if (!Schema::hasColumn('printers', 'restaurant_id')) {
+                $table->foreignId('restaurant_id')->constrained()->cascadeOnDelete();
+            }
+            if (!Schema::hasColumn('printers', 'branch_id')) {
+                $table->foreignId('branch_id')->nullable()->constrained()->cascadeOnDelete();
+            }
+            if (!Schema::hasColumn('printers', 'is_active')) {
+                $table->boolean('is_active')->default(true);
+            }
+            if (!Schema::hasColumn('printers', 'is_default')) {
+                $table->boolean('is_default')->default(false);
+            }
+            if (!Schema::hasColumn('printers', 'printing_choice')) {
+                $table->string('printing_choice')->default('browser');
+            }
+            if (!Schema::hasColumn('printers', 'kots')) {
+                $table->boolean('kots')->default(false);
+            }
+            if (!Schema::hasColumn('printers', 'orders')) {
+                $table->boolean('orders')->default(false);
+            }
+            if (!Schema::hasColumn('printers', 'print_format')) {
+                $table->string('print_format')->default('pos_80mm');
+            }
+            if (!Schema::hasColumn('printers', 'invoice_qr_code')) {
+                $table->boolean('invoice_qr_code')->default(false);
+            }
+            if (!Schema::hasColumn('printers', 'open_cash_drawer')) {
+                $table->boolean('open_cash_drawer')->default(false);
+            }
+            if (!Schema::hasColumn('printers', 'ipv4_address')) {
+                $table->string('ipv4_address')->nullable();
+            }
+            if (!Schema::hasColumn('printers', 'thermal_or_nonthermal')) {
+                $table->string('thermal_or_nonthermal')->default('thermal');
+            }
+            if (!Schema::hasColumn('printers', 'share_name')) {
+                $table->string('share_name')->nullable();
+            }
+        });
     }
 
     public function down(): void

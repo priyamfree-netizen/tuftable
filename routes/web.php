@@ -111,6 +111,11 @@ Route::get('/verify-signup-otp/{userId}', \App\Livewire\Forms\VerifySignupOtp::c
 Route::get('/customer-logout', [HomeController::class, 'customerLogout'])->name('customer_logout');
 Route::get('page/{slug}', [CustomMenuController::class, 'index'])->name('customMenu');
 
+// Landing site public pages
+Route::get('/blog', [HomeController::class, 'blog'])->name('landing.blog')->middleware(DisableFrontend::class);
+Route::get('/contact', [HomeController::class, 'contact'])->name('landing.contact')->middleware(DisableFrontend::class);
+Route::get('/about', [HomeController::class, 'about'])->name('landing.about')->middleware(DisableFrontend::class);
+
 
 
 Route::post('stripe/order-payment', [StripeController::class, 'orderPayment'])->name('stripe.order_payment');

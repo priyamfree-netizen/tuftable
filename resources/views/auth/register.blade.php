@@ -1,57 +1,83 @@
-<x-auth-layout>
-    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+@extends('layouts.landing')
 
-        <x-validation-errors class="mb-4" />
+@section('content')
+<script>
+    // Spoof the URL for React Router to trigger the Masco Sign-Up component
+    window.history.replaceState({}, '', '/sign-up');
+</script>
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+<div id="root"></div>
 
-            <div>
-                <x-label for="name" value="{{ __('app.name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const observer = new MutationObserver((mutations, obs) => {
+        // Find the Masco Auth form
+        const authForm = document.querySelector('form[action="#"]') || document.querySelector('form');
+        
+        if (authForm && window.location.pathname === '/sign-up') {
+            const inputs = Array.from(authForm.querySelectorAll('input'));
+            
+            // Map the inputs intuitively based on type or placeholder
+            const email = inputs.find(i => i.type === 'email');
+            const password = inputs.find(i => i.type === 'password');
+            const textFields = inputs.filter(i => i.type === 'text');
+            const name = textFields.length > 0 ? textFields[0] : null;
 
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('app.email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
+            if (email && password) {
+                if (name) name.name = "name";
+                email.name = "email";
+                password.name = "password";
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('app.password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
+                authForm.action = "{{ route('register') }}";
+                authForm.method = "POST";
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('modules.profile.confirmPassword') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
+                // Inject Laravel CSRF token
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = "{{ csrf_token() }}";
+                authForm.appendChild(csrf);
+                
+                // Inject fake password confirmation so Laravel accepts the registration happily
+                // even if the template didn't include one natively.
+                const confirmPassword = document.createElement('input');
+                confirmPassword.type = 'hidden';
+                confirmPassword.name = 'password_confirmation';
+                authForm.appendChild(confirmPassword);
 
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
+                // Clone form to destroy React Synthetic onSubmit
+                const newForm = authForm.cloneNode(true);
+                authForm.parentNode.replaceChild(newForm, authForm);
 
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
-                </div>
-            @endif
+                // Re-fetch the cloned form's elements for event hooking
+                const newPassword = newForm.querySelector('input[name="password"]');
+                const newConfirmPassword = newForm.querySelector('input[name="password_confirmation"]');
+                
+                // Listen to actual submit event to sync the fake password confirmation value
+                newForm.addEventListener('submit', (e) => {
+                    newConfirmPassword.value = newPassword.value;
+                });
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
+                // Rewrite visual 'Sign In' links below the form to navigate to Laravel's /login
+                const loginLink = document.querySelector('a[href*="sign-in"]');
+                if (loginLink) {
+                    loginLink.href = "/login";
+                }
 
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
-    </div>
-</x-auth-layout>
+                @if ($errors->any())
+                    const errorBox = document.createElement('div');
+                    errorBox.style.color = 'red';
+                    errorBox.style.padding = '10px';
+                    errorBox.innerHTML = `<strong>{{ $errors->first() }}</strong>`;
+                    newForm.prepend(errorBox);
+                @endif
+                
+                obs.disconnect();
+            }
+        }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
+@endsection

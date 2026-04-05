@@ -228,25 +228,97 @@
     <!-- End Testimonials -->
     @endif
 
-    <!-- Features -->
-    <div id="simple-pricing" class="mb-5"> </div>
-    <div class="overflow-hidden" id="simple-pricing">
-        <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-            <!-- Title -->
-            <div class="mx-auto mb-8 lg:mb-14 text-center">
-                <h2 class="text-3xl lg:text-4xl text-gray-800 font-bold dark:text-neutral-200">
-                    {{ $frontDetails->price_heading ?? __('landing.pricingTitle1')}}
-                </h2>
-                <div class="my-5 font-light text-gray-500 sm:text-base dark:text-gray-400">
-                    {!! $frontDetails->price_description ?? __('landing.pricingSubTitle1')!!}
+    <!-- Pricing Section -->
+    <div id="simple-pricing"></div>
+    <section style="background:#0f172a;padding:80px 0;">
+        <div class="container">
+
+            {{-- Heading --}}
+            <div style="text-align:center;margin-bottom:56px;">
+                <span style="display:inline-block;background:#fef08a;color:#713f12;font-size:12px;font-weight:700;padding:4px 16px;border-radius:999px;margin-bottom:16px;letter-spacing:1px;">SIMPLE &amp; TRANSPARENT PLANS</span>
+                <h2 style="font-size:2.5rem;font-weight:800;color:#fff;line-height:1.2;margin:0 0 12px;">All features included.<br>No hidden charges.</h2>
+                <p style="color:#94a3b8;font-size:1rem;margin:0;">Pick the billing cycle that works for your restaurant.</p>
+            </div>
+
+            {{-- 3 Cards --}}
+            <div class="row justify-content-center">
+
+                {{-- Monthly --}}
+                <div class="col-lg-4 col-md-6" style="padding:12px;">
+                    <div style="background:#fff;border-radius:20px;padding:36px 32px;height:100%;display:flex;flex-direction:column;">
+                        <div style="margin-bottom:28px;">
+                            <span style="display:inline-block;background:#ede9fe;color:#4f46e5;font-size:11px;font-weight:700;padding:3px 12px;border-radius:999px;letter-spacing:1px;margin-bottom:12px;">MONTHLY</span>
+                            <h3 style="font-size:1.4rem;font-weight:800;color:#111827;margin:0 0 6px;">Pay as you go</h3>
+                            <p style="font-size:13px;color:#6b7280;margin:0;">Billed every month. Cancel anytime.</p>
+                        </div>
+                        <ul style="list-style:none;padding:0;margin:0 0 32px;flex:1;">
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> KOT &amp; Digital Order Management</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> QR Code Menu &amp; Ordering</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> GST Billing &amp; Invoices</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Table &amp; Floor Management</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Sales &amp; Payment Reports</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Customer Management</li>
+                        </ul>
+                        <a href="{{ route('landing.contact') }}" style="display:block;text-align:center;padding:14px;border:2px solid #111827;border-radius:999px;font-weight:700;font-size:15px;color:#111827;text-decoration:none;" onmouseover="this.style.background='#111827';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#111827'">Get Started</a>
+                    </div>
+                </div>
+
+                {{-- 1 Year (Popular) --}}
+                <div class="col-lg-4 col-md-6" style="padding:12px;">
+                    <div style="background:#4f46e5;border-radius:20px;padding:36px 32px;height:100%;display:flex;flex-direction:column;position:relative;box-shadow:0 24px 60px rgba(79,70,229,0.45);">
+                        <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#fef08a;color:#713f12;font-size:11px;font-weight:800;padding:4px 18px;border-radius:999px;white-space:nowrap;letter-spacing:1px;">MOST POPULAR</div>
+                        <div style="margin-bottom:28px;">
+                            <span style="display:inline-block;background:rgba(255,255,255,0.15);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:999px;letter-spacing:1px;margin-bottom:12px;">1 YEAR</span>
+                            <h3 style="font-size:1.4rem;font-weight:800;color:#fff;margin:0 0 6px;">Best value plan</h3>
+                            <p style="font-size:13px;color:#c7d2fe;margin:0;">Billed annually. Save more, stress less.</p>
+                        </div>
+                        <ul style="list-style:none;padding:0;margin:0 0 32px;flex:1;">
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:14px;color:#fff;"><span style="color:#fef08a;font-weight:700;flex-shrink:0;">&#10003;</span> Everything in Monthly</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:14px;color:#fff;"><span style="color:#fef08a;font-weight:700;flex-shrink:0;">&#10003;</span> Online Table Reservations</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:14px;color:#fff;"><span style="color:#fef08a;font-weight:700;flex-shrink:0;">&#10003;</span> Staff &amp; Waiter Management</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:14px;color:#fff;"><span style="color:#fef08a;font-weight:700;flex-shrink:0;">&#10003;</span> Delivery Executive Module</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:14px;color:#fff;"><span style="color:#fef08a;font-weight:700;flex-shrink:0;">&#10003;</span> Advanced Analytics &amp; Exports</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:14px;color:#fff;"><span style="color:#fef08a;font-weight:700;flex-shrink:0;">&#10003;</span> WhatsApp &amp; OTP Notifications</li>
+                        </ul>
+                        <a href="{{ route('landing.contact') }}" style="display:block;text-align:center;padding:14px;background:#fff;border-radius:999px;font-weight:700;font-size:15px;color:#4f46e5;text-decoration:none;" onmouseover="this.style.background='#fef08a'" onmouseout="this.style.background='#fff'">Get Started</a>
+                    </div>
+                </div>
+
+                {{-- 3 Years --}}
+                <div class="col-lg-4 col-md-6" style="padding:12px;">
+                    <div style="background:#fff;border-radius:20px;padding:36px 32px;height:100%;display:flex;flex-direction:column;border:2px solid #e5e7eb;">
+                        <div style="margin-bottom:28px;">
+                            <span style="display:inline-block;background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;padding:3px 12px;border-radius:999px;letter-spacing:1px;margin-bottom:12px;">3 YEARS</span>
+                            <h3 style="font-size:1.4rem;font-weight:800;color:#111827;margin:0 0 6px;">Maximum savings</h3>
+                            <p style="font-size:13px;color:#6b7280;margin:0;">Billed once for 3 years. Lowest cost.</p>
+                        </div>
+                        <ul style="list-style:none;padding:0;margin:0 0 32px;flex:1;">
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Everything in 1 Year</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Multi-Branch Management</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Custom Branding &amp; Domain</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Priority WhatsApp Support</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Dedicated Onboarding</li>
+                            <li style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:14px;color:#374151;"><span style="color:#4f46e5;font-weight:700;flex-shrink:0;">&#10003;</span> Expense &amp; Modifier Modules</li>
+                        </ul>
+                        <a href="{{ route('landing.contact') }}" style="display:block;text-align:center;padding:14px;border:2px solid #111827;border-radius:999px;font-weight:700;font-size:15px;color:#111827;text-decoration:none;" onmouseover="this.style.background='#111827';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#111827'">Get Started</a>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- Bottom feature tags --}}
+            <div style="margin-top:48px;text-align:center;">
+                <p style="color:#64748b;font-size:13px;margin-bottom:16px;">All plans include:</p>
+                <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+                    @foreach(['KOT System','QR Menu','GST Billing','Table Management','Sales Reports','Customer Management','Menu Builder','Payment Tracking','Expense Tracking','Item Modifiers','Reservation System','Delivery Module'] as $feat)
+                    <span style="background:#1e293b;color:#94a3b8;font-size:12px;padding:5px 14px;border-radius:999px;">{{ $feat }}</span>
+                    @endforeach
                 </div>
             </div>
-            <!-- End Title -->
-            @include('landing.pricing', ['packages' => $packages, 'modules' => $AllModulesWithFeature])
 
         </div>
-    </div>
-    <!-- End Features -->
+    </section>
+    <!-- End Pricing Section -->
 
     @if(!$frontFaqs->isEmpty())
     <!-- FAQ -->

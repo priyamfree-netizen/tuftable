@@ -224,9 +224,9 @@ class RestaurantSignup extends Component
                 'fullName' => 'required',
                 'email' => 'required|unique:users,email',
                 'password' => 'required',
-                'restaurantPhoneCode' => 'required',
+                'restaurantPhoneCode' => 'nullable',
                 'restaurantPhoneNumber' => [
-                    'required',
+                    'nullable',
                     'regex:/^[0-9\s]{5,20}$/',
                 ],
             ];
