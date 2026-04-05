@@ -108,10 +108,6 @@ class HomeController extends Controller
         $frontFaqs = FrontFaq::where('language_setting_id', $languageId)->get();
         $frontContact = Contact::where('language_setting_id', $languageId)->first();
 
-        if ($global->landing_type == 'static') {
-            return view('landing.index', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages'));
-        }
-
         return view('landing.dynamic-index', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages', 'customMenu', 'frontDetails', 'frontFeatures', 'frontReviews', 'frontFaqs', 'frontContact'));
     }
 
