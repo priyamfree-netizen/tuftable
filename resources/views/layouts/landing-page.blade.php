@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="livewire-navigate" content="false">
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ global_setting()->logoUrl }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
@@ -40,6 +41,16 @@
     @yield('content')
 
     @livewireScripts
+    <script>
+        // If Livewire's SPA navigate brought us here from the authenticated app,
+        // force a hard reload so old dashboard components don't bleed in
+        document.addEventListener('livewire:navigated', function() {
+            var hasAppComponents = document.querySelector('[wire\\:id][wire\\:snapshot]');
+            if (hasAppComponents) {
+                window.location.href = window.location.href;
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>
