@@ -62,6 +62,11 @@ class HomeController extends Controller
 
         $this->showInstall();
 
+        // Redirect authenticated users to their dashboard
+        if (auth()->check()) {
+            return redirect(route('dashboard'));
+        }
+
         $global = global_setting();
 
         if ($global->disable_landing_site && !request()->ajax()) {
