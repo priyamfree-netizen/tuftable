@@ -1,0 +1,202 @@
+[
+  {
+    "title": " Demos",
+    "subMenuItem": [
+      {
+        "name": "Digital agency",
+        "link": "/"
+      },
+      {
+        "name": "Chat software",
+        "link": "/home-2"
+      },
+      {
+        "name": "Fitness App",
+        "link": "/home-3"
+      },
+      {
+        "name": "Online Courses",
+        "link": "/home-4"
+      },
+      {
+        "name": "SEO Agency",
+        "link": "/home-5"
+      },
+      {
+        "name": "Cold Email",
+        "link": "/home-6"
+      },
+      {
+        "name": "Web Hosting",
+        "link": "/home-7"
+      },
+      {
+        "name": "Startup",
+        "link": "/home-8"
+      },
+      {
+        "name": "Tracking Software",
+        "link": "/home-9"
+      },
+      {
+        "name": "AI Writing Tool",
+        "link": "/home-10"
+      }
+    ]
+  },
+  {
+    "title": "About Us",
+    "link": "/about"
+  },
+  {
+    "title": "Pages",
+    "subMenuItem": [
+      {
+        "name": "Services",
+        "childSub": [
+          {
+            "name": "Service",
+            "link": "/service"
+          },
+          {
+            "name": "Service Details",
+            "link": "/service-details"
+          }
+        ]
+      },
+      {
+        "name": "Team",
+        "link": "/team"
+      },
+      {
+        "name": "Pricing",
+        "childSub": [
+          {
+            "name": "Pricing 1",
+            "link": "/pricing"
+          },
+          {
+            "name": "Pricing 2",
+            "link": "/pricing-2"
+          }
+        ]
+      },
+      {
+        "name": "Career",
+        "childSub": [
+          {
+            "name": "Career",
+            "link": "/career"
+          },
+          {
+            "name": "Career Details",
+            "link": "/career-details"
+          }
+        ]
+      },
+      {
+        "name": "Portfolio",
+        "childSub": [
+          {
+            "name": " Portfolio  Classic",
+            "link": "/portfolio"
+          },
+
+          {
+            "name": "Portfolio  Modern",
+            "link": "/portfolio-3"
+          },
+          {
+            "name": "Portfolio  Minimal",
+            "link": "/portfolio-4"
+          },
+          {
+            "name": "Portfolio Details",
+            "link": "/portfolio-details"
+          }
+        ]
+      },
+      {
+        "name": "Blog",
+        "childSub": [
+          {
+            "name": "Blog",
+            "link": "/blog"
+          },
+          {
+            "name": "Blog Details",
+            "link": "/blog-details"
+          }
+        ]
+      },
+      {
+        "name": "Faq",
+        "childSub": [
+          {
+            "name": "FAQ 1",
+            "link": "/faq"
+          },
+          {
+            "name": "FAQ 2",
+            "link": "/faq-2"
+          },
+          {
+            "name": "FAQ 3",
+            "link": "/faq-3"
+          },
+          {
+            "name": "FAQ 4",
+            "link": "/faq-4"
+          }
+        ]
+      },
+      {
+        "name": "Utility",
+        "childSub": [
+          {
+            "name": "404",
+            "link": "/404"
+          },
+          {
+            "name": "Coming Soon",
+            "link": "/coming-soon"
+          }
+        ]
+      },
+      {
+        "name": "Account",
+        "childSub": [
+          {
+            "name": "Sign In",
+            "link": "/sign-in"
+          },
+          {
+            "name": "Sign Up",
+            "link": "/sign-up"
+          },
+          {
+            "name": "Reset Password",
+            "link": "/reset-password"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Contact",
+    "subMenuItem": [
+      {
+        "name": "Contact 1",
+        "link": "/contact"
+      },
+      {
+        "name": "Contact 2",
+        "link": "/contact-2"
+      },
+      {
+        "name": "Contact 3",
+        "link": "/contact-3"
+      }
+    ]
+  }
+]
