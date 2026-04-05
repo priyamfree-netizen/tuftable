@@ -43,10 +43,6 @@
     @yield('content')
 
     @livewireScripts
-    <!-- Prevent React bundle from mounting (we only need its CSS/AOS) -->
-    <div id="root" style="display:none;"></div>
-    <!-- Masco JS bundle for AOS animations and interactions -->
-    <script type="module" crossorigin src="{{ asset('landing_new_assets/index-3f204186.js') }}"></script>
     @stack('scripts')
 </body>
 </html>
