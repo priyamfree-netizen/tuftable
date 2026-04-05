@@ -91,4 +91,4 @@
         }
     })();
 </script>
-<?php /**PATH /var/www/tuftable/resources/views/partials/landing-header.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Priyam\Documents\GitHub\tuftable\resources\views/partials/landing-header.blade.php ENDPATH**/ ?>

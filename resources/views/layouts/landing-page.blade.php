@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="livewire-navigate" content="false">
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ global_setting()->logoUrl }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
@@ -15,10 +14,13 @@
 
     <title>@yield('title', global_setting()->meta_title ?? global_setting()->name)</title>
 
+    <!-- Masco template CSS -->
+    <link rel="stylesheet" href="{{ asset('landing_new_assets/index-c46ffb0e.css') }}" />
+
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
     @include('sections.theme_style', [
@@ -41,21 +43,10 @@
     @yield('content')
 
     @livewireScripts
-    <script>
-        // Safety net: if persisted app components (sidebar/nav) bled in via Livewire SPA,
-        // force a hard reload to clear them. This runs synchronously before paint.
-        (function() {
-            if (document.getElementById('sidebar') || document.querySelector('[wire\\:persist]')) {
-                window.location.replace(window.location.href);
-            }
-        })();
-        // Also check after DOM is ready in case components mount async
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('sidebar') || document.querySelector('[wire\\:persist]')) {
-                window.location.replace(window.location.href);
-            }
-        });
-    </script>
+    <!-- Prevent React bundle from mounting (we only need its CSS/AOS) -->
+    <div id="root" style="display:none;"></div>
+    <!-- Masco JS bundle for AOS animations and interactions -->
+    <script type="module" crossorigin src="{{ asset('landing_new_assets/index-3f204186.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

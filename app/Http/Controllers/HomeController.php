@@ -62,14 +62,6 @@ class HomeController extends Controller
 
         $this->showInstall();
 
-        // Redirect authenticated users to their dashboard (force full page, bypass Livewire SPA)
-        if (auth()->check()) {
-            if (request()->hasHeader('X-Livewire')) {
-                return response()->json(['redirectTo' => route('dashboard')]);
-            }
-            return redirect(route('dashboard'));
-        }
-
         $global = global_setting();
 
         if ($global->disable_landing_site && !request()->ajax()) {
@@ -110,6 +102,10 @@ class HomeController extends Controller
         $frontReviews = FrontReviewSetting::where('language_setting_id', $languageId)->get();
         $frontFaqs = FrontFaq::where('language_setting_id', $languageId)->get();
         $frontContact = Contact::where('language_setting_id', $languageId)->first();
+
+        if ($global->landing_type == 'static') {
+            return view('landing.index', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages'));
+        }
 
         return view('landing.dynamic-index', compact('packages', 'AllModulesWithFeature', 'trialPackage', 'monthlyPackages', 'annualPackages', 'lifetimePackages', 'customMenu', 'frontDetails', 'frontFeatures', 'frontReviews', 'frontFaqs', 'frontContact'));
     }
