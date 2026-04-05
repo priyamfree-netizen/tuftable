@@ -1,4 +1,4 @@
-@extends('layouts.landing')
+@extends('layouts.landing-page')
 
 @section('content')
     <section class="bg-white dark:bg-gray-900">
