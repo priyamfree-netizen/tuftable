@@ -42,14 +42,16 @@
 
     @livewireScripts
     <script>
-        // If Livewire's SPA navigate brought us here from the authenticated app,
-        // force a hard reload so old dashboard components don't bleed in
-        document.addEventListener('livewire:navigated', function() {
-            var hasAppComponents = document.querySelector('[wire\\:id][wire\\:snapshot]');
-            if (hasAppComponents) {
-                window.location.href = window.location.href;
+        // The app layout uses @persist for sidebar/nav which survives Livewire SPA navigation.
+        // If we detect persisted app components on this landing page, force a hard reload.
+        (function() {
+            var persisted = document.querySelector('[wire\\:persist]') || 
+                            document.getElementById('sidebar') ||
+                            document.querySelector('.navigation-menu');
+            if (persisted) {
+                window.location.replace(window.location.href);
             }
-        });
+        })();
     </script>
     @stack('scripts')
 </body>
