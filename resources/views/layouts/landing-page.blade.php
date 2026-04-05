@@ -42,16 +42,19 @@
 
     @livewireScripts
     <script>
-        // The app layout uses @persist for sidebar/nav which survives Livewire SPA navigation.
-        // If we detect persisted app components on this landing page, force a hard reload.
+        // Safety net: if persisted app components (sidebar/nav) bled in via Livewire SPA,
+        // force a hard reload to clear them. This runs synchronously before paint.
         (function() {
-            var persisted = document.querySelector('[wire\\:persist]') || 
-                            document.getElementById('sidebar') ||
-                            document.querySelector('.navigation-menu');
-            if (persisted) {
+            if (document.getElementById('sidebar') || document.querySelector('[wire\\:persist]')) {
                 window.location.replace(window.location.href);
             }
         })();
+        // Also check after DOM is ready in case components mount async
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('sidebar') || document.querySelector('[wire\\:persist]')) {
+                window.location.replace(window.location.href);
+            }
+        });
     </script>
     @stack('scripts')
 </body>

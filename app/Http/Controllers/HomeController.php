@@ -62,8 +62,11 @@ class HomeController extends Controller
 
         $this->showInstall();
 
-        // Redirect authenticated users to their dashboard
+        // Redirect authenticated users to their dashboard (force full page, bypass Livewire SPA)
         if (auth()->check()) {
+            if (request()->hasHeader('X-Livewire')) {
+                return response()->json(['redirectTo' => route('dashboard')]);
+            }
             return redirect(route('dashboard'));
         }
 
