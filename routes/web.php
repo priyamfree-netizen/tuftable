@@ -258,7 +258,8 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified', SuperAd
         Route::resource('custom-modules', CustomModuleController::class)->except(['update']);
         Route::put('custom-modules/{custom_module}', [CustomModuleController::class, 'update'])->withoutMiddleware('csrf')->name('custom-modules.update');
 
-        Route::resource('landing-sites', LandingSiteController::class);
+        // Landing Sites route removed — static hardcoded website is used instead
+        // Route::resource('landing-sites', LandingSiteController::class);
     });
 });
 

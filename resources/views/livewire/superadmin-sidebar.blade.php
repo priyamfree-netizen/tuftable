@@ -36,9 +36,10 @@
                             @livewire('sidebar-menu-item', ['name' => __('superadmin.menu.superadmin'), 'icon' => 'staff', 'link' => route('superadmin.users.index'), 'active' => request()->routeIs('superadmin.users.*')])
                         @endif
 
-                        @if (user_can('Show Landing Site'))
+                        {{-- Landing Sites removed — static hardcoded website is used instead --}}
+                        {{-- @if (user_can('Show Landing Site'))
                             @livewire('sidebar-menu-item', ['name' => __('menu.landingSites'), 'icon' => 'landing', 'link' => route('superadmin.landing-sites.index'), 'active' => request()->routeIs('superadmin.landing-sites.*')])
-                        @endif
+                        @endif --}}
 
                         @foreach (custom_module_plugins() as $item)
                             @includeIf(strtolower($item) . '::sections.superadmin-sidebar')
