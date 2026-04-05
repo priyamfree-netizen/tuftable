@@ -14,9 +14,6 @@
 
     <title>@yield('title', global_setting()->meta_title ?? global_setting()->name)</title>
 
-    <!-- Masco template CSS -->
-    <link rel="stylesheet" href="{{ asset('landing_new_assets/index-c46ffb0e.css') }}" />
-
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 

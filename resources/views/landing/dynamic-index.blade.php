@@ -3,7 +3,7 @@
 @section('content')
 
 {{-- Hero Section --}}
-<div class="home-7_hero-section" style="background:#f8fafc;padding:80px 0 60px;">
+<div style="background:#f8fafc;padding:80px 0 60px;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
