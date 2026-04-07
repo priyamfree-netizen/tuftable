@@ -145,13 +145,7 @@ class HomeController extends Controller
             return redirect(route('login'));
         }
 
-        $language = $this->language;
-        $languageSetting = \App\Models\LanguageSetting::where('language_code', $language)->first();
-        $languageId = $languageSetting ? $languageSetting->id : null;
-        $frontContact = \App\Models\Contact::where('language_setting_id', $languageId)->first();
-        $frontDetails = \App\Models\FrontDetail::where('language_setting_id', $languageId)->first();
-
-        return view('landing.contact-page', compact('frontContact', 'frontDetails'));
+        return view('landing.contact-page');
     }
 
     public function signup()

@@ -33,7 +33,6 @@ use App\Http\Controllers\CustomMenuController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\TapPaymentController;
 use App\Http\Controllers\EpayPaymentController;
-use App\Http\Controllers\LandingSiteController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Middleware\CheckRestaurantPackage;
 use App\Http\Middleware\CustomerSiteMiddleware;
